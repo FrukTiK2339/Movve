@@ -16,3 +16,7 @@ extension NetApiRequest {
 extension NetRequestMovieCast {
     static let creditsURL: String = "/credits"
 }
+
+extension Notification.Name {
+    public static let successDataLoading = Notification.Name("successDataLoading")
+}
