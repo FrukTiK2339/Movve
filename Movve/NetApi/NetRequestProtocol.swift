@@ -9,15 +9,15 @@ import Foundation
 
 public protocol NetApiRequestProtocol {
     var configuration: URLSessionConfiguration { get }
-    var movieType: MovieType { get }
+    var targetType: TargetType { get }
     var searchType: SearchType { get }
     
     func createURL() -> URL?
     func processCall(completion: @escaping (Any?) -> Void)
 }
 
-public enum MovieType {
-    case movie, tvshow, serial
+public enum TargetType {
+    case movie, tvshow
     
     var urlPart: String {
         switch self {
@@ -25,8 +25,6 @@ public enum MovieType {
             return "/movie"
         case .tvshow:
             return "/tv"
-        case .serial:
-            return "/serial"
         }
     }
 }

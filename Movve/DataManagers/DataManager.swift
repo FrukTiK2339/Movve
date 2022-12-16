@@ -5,7 +5,7 @@
 //  Created by Дмитрий Рыбаков on 16.12.2022.
 //
 
-import Foundation
+import UIKit
 
 class DataManager {
     
@@ -16,19 +16,21 @@ class DataManager {
     let loadingTasks = DispatchGroup()
     
     private var movieArray = [Movie]()
-    private var tvshowArray = [Movie]()
+    private var tvshowArray = [TVShow]()
     
     let dataLoader = DataLoader()
+    let imageLoader = ImageLoader()
     
-    public func giveMovieData(movieType: MovieType) -> [Movie] {
-        switch movieType {
-        case .movie:
-            return movieArray
-        case .tvshow:
-            return tvshowArray
-        case .serial:
-            return []
-        }
+    public func giveMovieData() -> [Movie] {
+        return movieArray
+    }
+    
+    public func giveTVShowData() -> [TVShow] {
+        return tvshowArray
+    }
+    
+    public func loadImage(urlString: String, view: UIImageView) {
+        loadImage(urlString: urlString, view: view)
     }
     
     public func getReqiedData() {
@@ -41,7 +43,7 @@ class DataManager {
     
     private func getMovies() {
         loadingTasks.enter()
-        dataLoader.getMovies(.movie, .popular) { [weak self] popularMovies in
+        dataLoader.getMovies(.popular) { [weak self] popularMovies in
             guard let popularMovies = popularMovies else {
                 return
             }
@@ -53,7 +55,7 @@ class DataManager {
     
     private func getTVShows() {
         loadingTasks.enter()
-        dataLoader.getMovies(.tvshow, .topRated) { [weak self] topRatedTVShows in
+        dataLoader.getTVShows(.topRated) { [weak self] topRatedTVShows in
             guard let topRatedTVShows = topRatedTVShows else {
                 return
             }

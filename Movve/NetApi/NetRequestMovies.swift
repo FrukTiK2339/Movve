@@ -10,6 +10,12 @@ import UIKit
 
 class NetRequestMovies: NetApiRequest {
     
+    let tasks = DispatchGroup()
+    
+    init(searchType: SearchType) {
+        super.init(targetType: .movie, searchType: searchType)
+    }
+    
     func processMovieCall(completion: @escaping ([Movie]?) -> Void) {
         super.processCall { data in
             guard let nDict = data as? [String: Any] else {
@@ -17,16 +23,6 @@ class NetRequestMovies: NetApiRequest {
                 return
             }
             completion(self.parseMovie(nDict))
-        }
-    }
-    
-    func processMovieDetailsCall(completion: @escaping (MovieDetails?) -> Void) {
-        super.processCall { data in
-            guard let nDict = data as? [String: Any] else {
-                completion(nil)
-                return
-            }
-            completion(self.parseDetails(nDict))
         }
     }
     
@@ -39,51 +35,26 @@ class NetRequestMovies: NetApiRequest {
         var receivedMovies = [Movie]()
         
         for mDict in movieDicts {
+            
             if let id = mDict["id"] as? Int,
                let title = mDict["title"] as? String,
                let releaseDate = mDict["release_date"] as? String,
-               let posterImage = mDict["poster_path"] as? String {
-                let newMovie = Movie(
-                    id: id,
-                    title: title,
-                    releaseDate: releaseDate,
-                    posterImage: posterImage
-                )
-                receivedMovies.append(newMovie)
+               let imageURL = mDict["poster_path"] as? String {
+                tasks.enter()
+                imageLoader.download(with: imageURL) { [weak self] image in
+                    let newMovie = Movie(
+                        id: id,
+                        title: title,
+                        releaseDate: releaseDate,
+                        posterImage: image
+                    )
+                    receivedMovies.append(newMovie)
+                    self?.tasks.leave()
+                }
             }
         }
+        tasks.wait()
         DLog(receivedMovies.description)
         return receivedMovies
-    }
-    
-    private func parseDetails(_ detailDict: [String: Any]) -> MovieDetails? {
-        guard let runtime = detailDict["runtime"] as? Int,
-              let genresDict = detailDict["genres"] as? [[String: Any]],
-              let homepage = detailDict["homepage"] as? String,
-              let overview = detailDict["overview"] as? String,
-              let rating = detailDict["vote_average"] as? Double
-        else {
-            return nil
-        }
-        var receivedGenres = [Genre]()
-        for genreDict in genresDict {
-            if let id = genreDict["id"] as? Int,
-               let name = genreDict["name"] as? String {
-                let newGenre = Genre(
-                    id: id,
-                    name: name
-                )
-                receivedGenres.append(newGenre)
-            }
-        }
-        let receivedDetails = MovieDetails(
-            genres: receivedGenres,
-            runtime: runtime,
-            rating: rating,
-            overview: overview,
-            homepage: homepage
-        )
-        DLog(receivedDetails)
-        return receivedDetails
     }
 }

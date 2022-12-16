@@ -12,27 +12,31 @@ class NetApiRequest: NetApiRequestProtocol {
     
     var configuration: URLSessionConfiguration = URLSessionConfiguration.default
     
-    var movieType: MovieType
+    var targetType: TargetType
     var searchType: SearchType
     
     var masterURL: URL? {
         createURL()
     }
     
-    init(movieType: MovieType, searchType: SearchType) {
-        self.movieType = movieType
+    let imageLoader = ImageLoader()
+    
+    //MARK: - Init
+    init(targetType: TargetType, searchType: SearchType) {
+        self.targetType = targetType
         self.searchType = searchType
     }
     
     
     func createURL() -> URL? {
-        let urlString = NetApiRequest.baseURL + movieType.urlPart + searchType.urlPart + NetApiRequest.apiKey
+        let urlString = NetApiRequest.baseURL + targetType.urlPart + searchType.urlPart + NetApiRequest.apiKey
         guard let url = URL(string: urlString) else {
             return nil
         }
         return url
     }
     
+    //Main call
     func processCall(completion: @escaping (Any?) -> Void) {
         guard let url = masterURL else {
             return
@@ -68,6 +72,49 @@ class NetApiRequest: NetApiRequestProtocol {
             }
         })
         dataTask.resume()
+    }
+    
+    //Details Call
+    func processDetailsCall(completion: @escaping (Details?) -> Void) {
+        processCall { data in
+            guard let nDict = data as? [String: Any] else {
+                completion(nil)
+                return
+            }
+            completion(self.parseDetails(nDict))
+        }
+    }
+    
+    //Parse Details Call
+    private func parseDetails(_ detailDict: [String: Any]) -> Details? {
+        guard let runtime = detailDict["runtime"] as? Int,
+              let genresDict = detailDict["genres"] as? [[String: Any]],
+              let homepage = detailDict["homepage"] as? String,
+              let overview = detailDict["overview"] as? String,
+              let rating = detailDict["vote_average"] as? Double
+        else {
+            return nil
+        }
+        var receivedGenres = [Genre]()
+        for genreDict in genresDict {
+            if let id = genreDict["id"] as? Int,
+               let name = genreDict["name"] as? String {
+                let newGenre = Genre(
+                    id: id,
+                    name: name
+                )
+                receivedGenres.append(newGenre)
+            }
+        }
+        let receivedDetails = Details(
+            genres: receivedGenres,
+            runtime: runtime,
+            rating: rating,
+            overview: overview,
+            homepage: homepage
+        )
+        DLog(receivedDetails)
+        return receivedDetails
     }
     
 }

@@ -10,7 +10,7 @@ import UIKit
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
   
     private var collectionView: UICollectionView?
-    private var sections = [MovieSection]()
+    private var sections = [TargetSection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,20 +23,20 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func configureModels() {
         sections.append(
-            MovieSection(
+            TargetSection(
                 type: .movies,
-                cells: DataManager.shared.giveMovieData(movieType: .movie).compactMap({
-                    return MovieCell.movie(viewModel: $0)
+                cells: DataManager.shared.giveMovieData().compactMap({
+                    return TargetCell.movie(viewModel: $0)
                     
                 })
             )
         )
         
         sections.append(
-            MovieSection(
+            TargetSection(
                 type: .tvshows,
-                cells: DataManager.shared.giveMovieData(movieType: .tvshow).compactMap({
-                    return MovieCell.tvshow(viewModel: $0)
+                cells: DataManager.shared.giveTVShowData().compactMap({
+                    return TargetCell.tvshow(viewModel: $0)
                 })
             )
         )
@@ -95,6 +95,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         
@@ -106,25 +108,32 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         switch sectionType {
             
         case .movies:
+            let movieRowHeight = view.frame.size.height/3.4
+            let movieRowWidth = movieRowHeight*3/4.5
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .fractionalHeight(1)
                 )
             )
-            item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+            
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.9),
-                    heightDimension: .absolute(200)
-                ),
-                subitems: [item]
-            )
+                    widthDimension: .absolute(movieRowWidth),
+                    heightDimension: .absolute(movieRowHeight)),
+                subitems: [item])
+            
             let sectionLayout = NSCollectionLayoutSection(group: group)
-            sectionLayout.orthogonalScrollingBehavior = .groupPaging
+            sectionLayout.orthogonalScrollingBehavior = .continuous
+            
+            
             return sectionLayout
             
         case .tvshows:
+            let tvshowRowHeight = view.frame.size.height/3.6
+            let tvshowRowWidth = tvshowRowHeight*3/5
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -132,12 +141,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 )
             )
             
-            item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
             
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .absolute(110),
-                    heightDimension: .absolute(200)),
+                    widthDimension: .absolute(tvshowRowWidth),
+                    heightDimension: .absolute(tvshowRowHeight)),
                 subitems: [item])
             
             let sectionLayout = NSCollectionLayoutSection(group: group)

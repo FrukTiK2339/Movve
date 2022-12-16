@@ -7,17 +7,18 @@
 
 import Foundation
 
-class NetRequestMovieCast: NetApiRequest {
+class NetRequestActorCast: NetApiRequest {
+    
     
     override func createURL() -> URL? {
-        let urlString = NetApiRequest.baseURL + movieType.urlPart + searchType.urlPart + NetRequestMovieCast.creditsURL + NetApiRequest.apiKey
+        let urlString = NetApiRequest.baseURL + targetType.urlPart + searchType.urlPart + NetRequestActorCast.creditsURL + NetApiRequest.apiKey
         guard let url = URL(string: urlString) else {
             return nil
         }
         return url
     }
     
-    func processMovieCastCall(completion: @escaping ([Cast]?) -> Void) {
+    func processCall(completion: @escaping ([Cast]?) -> Void) {
         super.processCall { data in
             guard let nDict = data as? [String: Any] else {
                 completion(nil)

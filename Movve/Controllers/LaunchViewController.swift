@@ -9,8 +9,6 @@ import UIKit
 
 class LaunchViewController: UIViewController {
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(occuredFullData), name: Notification.Name.successDataLoading, object: nil)
     }
@@ -22,7 +20,6 @@ class LaunchViewController: UIViewController {
     }
     
     private func normalRun() {
-        
         DataManager.shared.getReqiedData()
     }
     

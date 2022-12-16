@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct MovieSection {
-    let type: MovieSectionType
-    let cells: [MovieCell]
+struct TargetSection {
+    let type: SectionType
+    let cells: [TargetCell]
 }
 
-enum MovieSectionType: CaseIterable {
+enum SectionType: CaseIterable {
     case movies
     case tvshows
     
@@ -26,7 +26,7 @@ enum MovieSectionType: CaseIterable {
     }
 }
 
-enum MovieCell {
+enum TargetCell {
     case movie(viewModel: Movie)
-    case tvshow(viewModel: Movie)
+    case tvshow(viewModel: TVShow)
 }

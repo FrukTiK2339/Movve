@@ -13,10 +13,18 @@ extension NetApiRequest {
     static let timeoutMaxTime: Double = 30.0
 }
 
-extension NetRequestMovieCast {
+extension NetRequestActorCast {
     static let creditsURL: String = "/credits"
 }
 
 extension Notification.Name {
     public static let successDataLoading = Notification.Name("successDataLoading")
+}
+
+extension ImageLoader {
+    static let baseURL: String = "https://image.tmdb.org/t/p/w500"
+}
+
+extension MovieCollectionViewCell {
+    static let cornerRadius: CGFloat = 8
 }

@@ -1,13 +1,13 @@
 //
-//  MovieOverview.swift
+//  Details.swift
 //  Movve
 //
-//  Created by Дмитрий Рыбаков on 14.12.2022.
+//  Created by Дмитрий Рыбаков on 16.12.2022.
 //
 
-import UIKit
+import Foundation
 
-struct MovieDetails {
+struct Details {
     var genres: [Genre]
     var runtime: Int
     var rating: Double
@@ -42,18 +42,5 @@ struct Cast {
         self.name = name
         self.character = character
         self.avatar = avatar
-    }
-}
-
-struct MovieOverview {
-    //Movie Overview (Details) Screen
-    var movieInfo: Movie
-    var details: MovieDetails
-    var cast: [Cast]
-    
-    init(movieInfo: Movie, details: MovieDetails, cast: [Cast]) {
-        self.movieInfo = movieInfo
-        self.details = details
-        self.cast = cast
     }
 }
