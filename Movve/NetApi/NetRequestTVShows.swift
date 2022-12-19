@@ -10,7 +10,7 @@ import Foundation
 class NetRequestTVShows: NetApiRequest {
     
     
-    let tasks = DispatchGroup()
+//    let tasks = DispatchGroup()
     
     init(searchType: SearchType) {
         super.init(targetType: .tvshow, searchType: searchType)

@@ -17,6 +17,8 @@ class DataManager {
     
     private var movieArray = [Movie]()
     private var tvshowArray = [TVShow]()
+    private var movieOverview: MovieOverview?
+    private var tvshowOverview: TVShowOverview?
     
     let dataLoader = DataLoader()
     let imageLoader = ImageLoader()
@@ -29,6 +31,22 @@ class DataManager {
         return tvshowArray
     }
     
+    public func giveMovieOverview() -> MovieOverview? {
+        guard let movieOverview = movieOverview else {
+            DLog("No details received!...")
+            return nil
+        }
+        return movieOverview
+    }
+    
+    public func giveTVShowOverview() -> TVShowOverview? {
+        guard let tvshowOverview = tvshowOverview else {
+            DLog("No details received!...")
+            return nil
+        }
+        return tvshowOverview
+    }
+    
     public func loadImage(urlString: String, view: UIImageView) {
         loadImage(urlString: urlString, view: view)
     }
@@ -36,8 +54,42 @@ class DataManager {
     public func getReqiedData() {
         getMovies()
         getTVShows()
+        loadingTasks.wait()
         loadingTasks.notify(queue: .main) {
             NotificationCenter.default.post(name: Notification.Name.successDataLoading, object: nil)
+        }
+    }
+    
+    public func getMovieOverview(for movie: Movie) {
+        var details: Details?
+        var cast: [Cast]?
+        
+        loadingTasks.enter()
+        dataLoader.getDetails(.movie, targetID: movie.id) { [weak self] receivedDetails in
+            details = receivedDetails
+            self?.loadingTasks.leave()
+        }
+        
+        loadingTasks.enter()
+        dataLoader.getActorCast(.movie, movie.id) { [weak self] receivedCast in
+            cast = receivedCast
+            self?.loadingTasks.leave()
+        }
+        loadingTasks.wait()
+        
+        guard let details = details, let cast = cast else {
+            DLog("Received no details/cast")
+            return
+        }
+        
+        movieOverview = MovieOverview(
+            movieInfo: movie,
+            details: details,
+            cast: cast)
+        
+
+        loadingTasks.notify(queue: .main) {
+            NotificationCenter.default.post(name: Notification.Name.successMovieDetailsLoading, object: nil)
         }
     }
     
@@ -63,7 +115,5 @@ class DataManager {
             self?.loadingTasks.leave()
         }
     }
-    
-    
    
 }

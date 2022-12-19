@@ -31,7 +31,7 @@ class DataLoader {
         }
     }
     
-    func getDatails(_ targetType: TargetType, _ targetID: Int, comletion: @escaping (Details?) -> Void) {
+    func getDetails(_ targetType: TargetType, targetID: Int, comletion: @escaping (Details?) -> Void) {
         let detailsCall = NetApiRequest(targetType: targetType, searchType: .id(targetID))
         detailsCall.processDetailsCall { data in
             guard let receivedData = data else {

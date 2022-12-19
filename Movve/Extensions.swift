@@ -30,4 +30,18 @@ extension DateFormatter {
             return dateStr
         }
     }
+    
+    func showOnlyYear(from dateStr: String) -> String {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd"
+
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "yyyy"
+        
+        if let date = dateFormatterGet.date(from: dateStr) {
+            return dateFormatterPrint.string(from: date)
+        } else {
+            return dateStr
+        }
+    }
 }

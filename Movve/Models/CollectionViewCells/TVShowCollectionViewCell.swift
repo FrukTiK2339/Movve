@@ -14,7 +14,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     private let dateFormatter = DateFormatter()
     
     private let posterImageView = UIImageView()
-    private let movieTitleLabel = UILabel ()
+    private let tvShowTitleLabel = UILabel ()
     private let dateReleaseLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -30,7 +30,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     private func setupContentView() {
         contentView.clipsToBounds = true
         contentView.addSubview(posterImageView)
-        contentView.addSubview(movieTitleLabel)
+        contentView.addSubview(tvShowTitleLabel)
         contentView.addSubview(dateReleaseLabel)
         contentView.layer.masksToBounds = true
     }
@@ -42,15 +42,15 @@ class TVShowCollectionViewCell: UICollectionViewCell {
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        movieTitleLabel.numberOfLines = 0
-        movieTitleLabel.textColor = .white
-        movieTitleLabel.font = .movieTitleFont
-        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tvShowTitleLabel.numberOfLines = 0
+        tvShowTitleLabel.textColor = .prettyWhite
+        tvShowTitleLabel.font = .cellTitleFont
+        tvShowTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         dateReleaseLabel.numberOfLines = 0
         dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateReleaseLabel.textColor = .gray
-        dateReleaseLabel.font = .movieReleaseDateFont
+        dateReleaseLabel.textColor = .prettyGray
+        dateReleaseLabel.font = .cellDateFont
         
         let posterHeight: CGFloat = contentView.frame.width*3/2
         
@@ -59,12 +59,12 @@ class TVShowCollectionViewCell: UICollectionViewCell {
             posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             posterImageView.heightAnchor.constraint(equalToConstant: posterHeight),
             
-            movieTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
-            movieTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            movieTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
+            tvShowTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
+            tvShowTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            tvShowTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
             
-            dateReleaseLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor),
-            dateReleaseLabel.heightAnchor.constraint(equalToConstant: MovieCollectionViewCell.dateLabelHeight),
+            dateReleaseLabel.topAnchor.constraint(equalTo: tvShowTitleLabel.bottomAnchor),
+            dateReleaseLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
             dateReleaseLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
         ]
         
@@ -75,7 +75,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         posterImageView.image = nil
-        movieTitleLabel.text = nil
+        tvShowTitleLabel.text = nil
         dateReleaseLabel.text = nil
     }
     
@@ -86,7 +86,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
             posterImageView.image = .noImage
         }
         
-        movieTitleLabel.text = viewModel.name
+        tvShowTitleLabel.text = viewModel.name
         dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }

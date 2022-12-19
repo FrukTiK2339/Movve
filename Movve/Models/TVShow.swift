@@ -23,3 +23,16 @@ struct TVShow {
         self.rating = rating
     }
 }
+
+struct TVShowOverview {
+    ///Movie Overview (Details) Screen
+    var tvshowInfo: TVShow
+    var details: Details
+    var cast: [Cast]
+    
+    init(tvshowInfo: TVShow, details: Details, cast: [Cast]) {
+        self.tvshowInfo = tvshowInfo
+        self.details = details
+        self.cast = cast
+    }
+}

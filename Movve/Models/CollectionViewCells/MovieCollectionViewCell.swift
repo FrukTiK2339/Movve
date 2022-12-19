@@ -42,14 +42,14 @@ class MovieCollectionViewCell: UICollectionViewCell {
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         
         movieTitleLabel.numberOfLines = 0
-        movieTitleLabel.textColor = .white
-        movieTitleLabel.font = .movieTitleFont
+        movieTitleLabel.textColor = .prettyWhite
+        movieTitleLabel.font = .cellTitleFont
         movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         dateReleaseLabel.numberOfLines = 0
         dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateReleaseLabel.textColor = .gray
-        dateReleaseLabel.font = .movieReleaseDateFont
+        dateReleaseLabel.textColor = .prettyGray
+        dateReleaseLabel.font = .cellDateFont
         
         let posterHeight: CGFloat = contentView.frame.width*3/2
         
@@ -63,7 +63,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
             movieTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
             
             dateReleaseLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor),
-            dateReleaseLabel.heightAnchor.constraint(equalToConstant: MovieCollectionViewCell.dateLabelHeight),
+            dateReleaseLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
             dateReleaseLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
         ]
         

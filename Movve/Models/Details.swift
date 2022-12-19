@@ -5,7 +5,7 @@
 //  Created by Дмитрий Рыбаков on 16.12.2022.
 //
 
-import Foundation
+import UIKit
 
 struct Details {
     var genres: [Genre]
@@ -13,13 +13,15 @@ struct Details {
     var rating: Double
     var overview: String
     var homepage: String
+    var detailsImage: UIImage?
     
-    init(genres: [Genre], runtime: Int, rating: Double, overview: String, homepage: String) {
+    init(genres: [Genre], runtime: Int, rating: Double, overview: String, homepage: String, detailsImage: UIImage?) {
         self.genres = genres
         self.runtime = runtime
         self.rating = rating
         self.overview = overview
         self.homepage = homepage
+        self.detailsImage = detailsImage
     }
 }
 

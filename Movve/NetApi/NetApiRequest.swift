@@ -20,6 +20,7 @@ class NetApiRequest: NetApiRequestProtocol {
     }
     
     let imageLoader = ImageLoader()
+    let tasks = DispatchGroup()
     
     //MARK: - Init
     init(targetType: TargetType, searchType: SearchType) {
@@ -91,10 +92,13 @@ class NetApiRequest: NetApiRequestProtocol {
               let genresDict = detailDict["genres"] as? [[String: Any]],
               let homepage = detailDict["homepage"] as? String,
               let overview = detailDict["overview"] as? String,
-              let rating = detailDict["vote_average"] as? Double
+              let rating = detailDict["vote_average"] as? Double,
+              let imageStr = detailDict["backdrop_path"] as? String
         else {
             return nil
         }
+        var receivedDetails: Details?
+        
         var receivedGenres = [Genre]()
         for genreDict in genresDict {
             if let id = genreDict["id"] as? Int,
@@ -106,13 +110,20 @@ class NetApiRequest: NetApiRequestProtocol {
                 receivedGenres.append(newGenre)
             }
         }
-        let receivedDetails = Details(
-            genres: receivedGenres,
-            runtime: runtime,
-            rating: rating,
-            overview: overview,
-            homepage: homepage
-        )
+        tasks.enter()
+        imageLoader.download(with: imageStr) { [weak self] image in
+            receivedDetails = Details(
+                genres: receivedGenres,
+                runtime: runtime,
+                rating: rating,
+                overview: overview,
+                homepage: homepage,
+                detailsImage: image
+            )
+            self?.tasks.leave()
+            
+        }
+        tasks.wait()
         DLog(receivedDetails)
         return receivedDetails
     }

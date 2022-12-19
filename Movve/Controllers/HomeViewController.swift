@@ -23,16 +23,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     private func configureModels() {
+        ///Movies(popular) section
         sections.append(
             TargetSection(
                 type: .movies,
                 cells: DataManager.shared.giveMovieData().compactMap({
                     return TargetCell.movie(viewModel: $0)
-                    
                 })
             )
         )
-        
+        ///TV Show(top rated) section
         sections.append(
             TargetSection(
                 type: .tvshows,
@@ -47,13 +47,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let layout = UICollectionViewCompositionalLayout { section, _ -> NSCollectionLayoutSection? in
             return self.layout(for: section)
         }
-        
         let collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
+        
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
         collectionView.register(TVShowCollectionViewCell.self, forCellWithReuseIdentifier: TVShowCollectionViewCell.identifier)
-        collectionView.register(InteractiveHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InteractiveHeader.identifier)
+        collectionView.register(CollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeader.identifier)
         
-        collectionView.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
+        collectionView.backgroundColor = .mainAppColor
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsVerticalScrollIndicator = false
@@ -64,15 +64,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func setupIconLabel() {
         view.addSubview(iconLabel)
-        let string = NSMutableAttributedString(string: "Movve")
-        string.setColorForText("Mov", with: .white)
-        string.setColorForText("ve", with: .red)
+        let string = NSMutableAttributedString(string: .appIconTittleFull)
+        string.setColorForText(.appIconTittleFirst, with: .prettyWhite)
+        string.setColorForText(.appIconTittleSecond, with: .redIconColor)
         iconLabel.font = .iconFont
         iconLabel.attributedText = string
     }
     
     private func setupUI() {
-        view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
+        view.backgroundColor = .mainAppColor
         
         guard let collectionView = collectionView else {
             fatalError()
@@ -125,11 +125,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
+        let model = sections[indexPath.section].cells[indexPath.row]
+        switch model {
+        case .movie(let movie):
+            showDetailsVC()
+            DataManager.shared.getMovieOverview(for: movie)
+            
+        case .tvshow(let tvshow):
+            return
+        }
+    }
+    
+    private func showDetailsVC() {
+        let vc = DetailsViewController()
+        self.present(vc, animated: true)
     }
     
     func layout(for section: Int) -> NSCollectionLayoutSection {
@@ -216,7 +226,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let sectionType = sections[indexPath.section].type
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: InteractiveHeader.identifier, for: indexPath) as? InteractiveHeader else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.identifier, for: indexPath) as? CollectionHeader else {
             return UICollectionReusableView()
         }
         switch sectionType {

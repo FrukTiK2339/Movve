@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InteractiveHeader: UICollectionReusableView {
+class CollectionHeader: UICollectionReusableView {
     
     static let identifier = "InteractiveHeader"
     
@@ -28,9 +28,8 @@ class InteractiveHeader: UICollectionReusableView {
         titleLabel.font = .headerFont
         let constraints = [
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
-            titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
-            
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -.smallPadding),
+            titleLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: .smallPadding)
         ]
         NSLayoutConstraint.activate(constraints)
     }

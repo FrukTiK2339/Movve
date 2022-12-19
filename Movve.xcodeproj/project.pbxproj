@@ -31,7 +31,7 @@
 		EF21C8A3294C801500E3661D /* NetRequestTVShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A2294C801500E3661D /* NetRequestTVShows.swift */; };
 		EF21C8A5294C809B00E3661D /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A4294C809B00E3661D /* Details.swift */; };
 		EF21C8A7294C88CF00E3661D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A6294C88CF00E3661D /* ImageLoader.swift */; };
-		EF21C8A9294CB15F00E3661D /* InteractiveHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */; };
+		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +62,7 @@
 		EF21C8A2294C801500E3661D /* NetRequestTVShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestTVShows.swift; sourceTree = "<group>"; };
 		EF21C8A4294C809B00E3661D /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		EF21C8A6294C88CF00E3661D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveHeader.swift; sourceTree = "<group>"; };
+		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,13 +100,13 @@
 				EF21C869294C5FD900E3661D /* AppDelegate.swift */,
 				EF21C86B294C5FD900E3661D /* SceneDelegate.swift */,
 				EF21C891294C615200E3661D /* AppConsts.swift */,
+				EFBFCCFA29505E190006DD79 /* Extensions.swift */,
 				EF21C893294C615E00E3661D /* DLog.swift */,
 				EF21C87E294C5FF300E3661D /* Models */,
 				EF21C87D294C5FE500E3661D /* DataManagers */,
 				EF21C880294C600E00E3661D /* Controllers */,
 				EF21C87F294C600100E3661D /* NetApi */,
 				EF21C881294C602100E3661D /* Resources */,
-				EFBFCCFA29505E190006DD79 /* Extensions.swift */,
 			);
 			path = Movve;
 			sourceTree = "<group>";
@@ -178,7 +178,7 @@
 				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
 				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
 				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
-				EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */,
+				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -267,7 +267,7 @@
 				EF21C8A7294C88CF00E3661D /* ImageLoader.swift in Sources */,
 				EF21C89A294C68AE00E3661D /* DataLoader.swift in Sources */,
 				EF21C884294C60F100E3661D /* DataManager.swift in Sources */,
-				EF21C8A9294CB15F00E3661D /* InteractiveHeader.swift in Sources */,
+				EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */,
 				EF21C88E294C613800E3661D /* NetRequestActorCast.swift in Sources */,
 				EF21C86A294C5FD900E3661D /* AppDelegate.swift in Sources */,
 				EF21C890294C614700E3661D /* NetRequestProtocol.swift in Sources */,
