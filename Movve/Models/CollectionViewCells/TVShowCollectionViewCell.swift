@@ -11,21 +11,11 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "TVShowCollectionViewCell"
     
-    private let thumbnailImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .red
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
+    private let dateFormatter = DateFormatter()
     
-    private let captionLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        
-        
-        return label
-    }()
+    private let posterImageView = UIImageView()
+    private let movieTitleLabel = UILabel ()
+    private let dateReleaseLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,31 +29,65 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     
     private func setupContentView() {
         contentView.clipsToBounds = true
-        contentView.addSubview(thumbnailImageView)
-        contentView.addSubview(captionLabel)
+        contentView.addSubview(posterImageView)
+        contentView.addSubview(movieTitleLabel)
+        contentView.addSubview(dateReleaseLabel)
         contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .lightGray
     }
     
     private func setupSubViews() {
-        thumbnailImageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
-        captionLabel.frame = CGRect(x: 0, y: 20, width: 150, height: 100)
+        posterImageView.layer.masksToBounds = true
+        posterImageView.layer.cornerRadius = .cornerRadius
+        posterImageView.clipsToBounds = true
+        posterImageView.contentMode = .scaleAspectFill
+        posterImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        movieTitleLabel.numberOfLines = 0
+        movieTitleLabel.textColor = .white
+        movieTitleLabel.font = .movieTitleFont
+        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        dateReleaseLabel.numberOfLines = 0
+        dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateReleaseLabel.textColor = .gray
+        dateReleaseLabel.font = .movieReleaseDateFont
+        
+        let posterHeight: CGFloat = contentView.frame.width*3/2
+        
+        let constraints = [
+            posterImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            posterImageView.heightAnchor.constraint(equalToConstant: posterHeight),
+            
+            movieTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
+            movieTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            movieTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
+            
+            dateReleaseLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor),
+            dateReleaseLabel.heightAnchor.constraint(equalToConstant: MovieCollectionViewCell.dateLabelHeight),
+            dateReleaseLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
+        
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        thumbnailImageView.image = nil
-        captionLabel.text = nil
+        posterImageView.image = nil
+        movieTitleLabel.text = nil
+        dateReleaseLabel.text = nil
     }
     
     func configure(with viewModel: TVShow) {
         if let image = viewModel.posterImage {
-            thumbnailImageView.image = image
+            posterImageView.image = image
         } else {
-            thumbnailImageView.image = UIImage(systemName: "xmark")
+            posterImageView.image = .noImage
         }
-        captionLabel.text = viewModel.name
+        
+        movieTitleLabel.text = viewModel.name
+        dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }
 
