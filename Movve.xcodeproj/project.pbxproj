@@ -31,7 +31,8 @@
 		EF21C8A3294C801500E3661D /* NetRequestTVShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A2294C801500E3661D /* NetRequestTVShows.swift */; };
 		EF21C8A5294C809B00E3661D /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A4294C809B00E3661D /* Details.swift */; };
 		EF21C8A7294C88CF00E3661D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A6294C88CF00E3661D /* ImageLoader.swift */; };
-		EF21C8A9294CB15F00E3661D /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* SectionHeader.swift */; };
+		EF21C8A9294CB15F00E3661D /* InteractiveHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */; };
+		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +62,8 @@
 		EF21C8A2294C801500E3661D /* NetRequestTVShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestTVShows.swift; sourceTree = "<group>"; };
 		EF21C8A4294C809B00E3661D /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		EF21C8A6294C88CF00E3661D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		EF21C8A8294CB15F00E3661D /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveHeader.swift; sourceTree = "<group>"; };
+		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				EF21C880294C600E00E3661D /* Controllers */,
 				EF21C87F294C600100E3661D /* NetApi */,
 				EF21C881294C602100E3661D /* Resources */,
+				EFBFCCFA29505E190006DD79 /* Extensions.swift */,
 			);
 			path = Movve;
 			sourceTree = "<group>";
@@ -175,7 +178,7 @@
 				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
 				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
 				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
-				EF21C8A8294CB15F00E3661D /* SectionHeader.swift */,
+				EF21C8A8294CB15F00E3661D /* InteractiveHeader.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */,
 				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
 				EF21C896294C65D200E3661D /* LaunchViewController.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
@@ -263,7 +267,7 @@
 				EF21C8A7294C88CF00E3661D /* ImageLoader.swift in Sources */,
 				EF21C89A294C68AE00E3661D /* DataLoader.swift in Sources */,
 				EF21C884294C60F100E3661D /* DataManager.swift in Sources */,
-				EF21C8A9294CB15F00E3661D /* SectionHeader.swift in Sources */,
+				EF21C8A9294CB15F00E3661D /* InteractiveHeader.swift in Sources */,
 				EF21C88E294C613800E3661D /* NetRequestActorCast.swift in Sources */,
 				EF21C86A294C5FD900E3661D /* AppDelegate.swift in Sources */,
 				EF21C890294C614700E3661D /* NetRequestProtocol.swift in Sources */,

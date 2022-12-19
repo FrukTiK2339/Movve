@@ -9,15 +9,16 @@ import UIKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
   
+    private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
     private var sections = [TargetSection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .green
-        
+      
         configureModels()
         setupCollectionView()
+        setupIconLabel()
         setupUI()
     }
     
@@ -46,25 +47,54 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let layout = UICollectionViewCompositionalLayout { section, _ -> NSCollectionLayoutSection? in
             return self.layout(for: section)
         }
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        let collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
         collectionView.register(TVShowCollectionViewCell.self, forCellWithReuseIdentifier: TVShowCollectionViewCell.identifier)
+        collectionView.register(InteractiveHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: InteractiveHeader.identifier)
         
-        collectionView.backgroundColor = .systemBackground
+        collectionView.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
         
         self.collectionView = collectionView
     }
     
+    private func setupIconLabel() {
+        view.addSubview(iconLabel)
+        let string = NSMutableAttributedString(string: "Movve")
+        string.setColorForText("Mov", with: .white)
+        string.setColorForText("ve", with: .red)
+        iconLabel.font = .iconFont
+        iconLabel.attributedText = string
+    }
+    
     private func setupUI() {
-        collectionView?.frame = view.bounds
+        view.backgroundColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
+        
+        guard let collectionView = collectionView else {
+            fatalError()
+        }
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        iconLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let constraints = [
+            iconLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            iconLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .smallPadding),
+            
+            collectionView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .iconPadding),
+            collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     //MARK: - Collection View Delegate & DataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        sections.count
+        return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -104,57 +134,101 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func layout(for section: Int) -> NSCollectionLayoutSection {
         let sectionType = sections[section].type
-        
+
         switch sectionType {
-            
+
         case .movies:
-            let movieRowHeight = view.frame.size.height/3.4
-            let movieRowWidth = movieRowHeight*3/4.5
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .fractionalHeight(1)
                 )
             )
+            item.contentInsets = NSDirectionalEdgeInsets(top: .smallPadding,
+                                                         leading: .smallPadding,
+                                                         bottom: .smallPadding,
+                                                         trailing: .smallPadding
+            )
             
-            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            let headerItemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(50)
+            )
+            let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerItemSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
             
+            let movieRowWidth = view.frame.size.width/2.3
+            let movieRowHeight = movieRowWidth*2
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
-                    widthDimension: .absolute(movieRowWidth),
-                    heightDimension: .absolute(movieRowHeight)),
+                    widthDimension: .estimated(movieRowWidth),
+                    heightDimension: .estimated(movieRowHeight)),
                 subitems: [item])
-            
+
             let sectionLayout = NSCollectionLayoutSection(group: group)
             sectionLayout.orthogonalScrollingBehavior = .continuous
-            
-            
+            sectionLayout.boundarySupplementaryItems = [headerItem]
+
             return sectionLayout
-            
+
         case .tvshows:
-            let tvshowRowHeight = view.frame.size.height/3.6
-            let tvshowRowWidth = tvshowRowHeight*3/5
+            let tvshowRowWidth = view.frame.size.width/2.8
+            let tvshowRowHeight = tvshowRowWidth*2
+            
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .fractionalHeight(1)
                 )
             )
+            item.contentInsets = NSDirectionalEdgeInsets(top: .smallPadding,
+                                                         leading: .smallPadding,
+                                                         bottom: .smallPadding,
+                                                         trailing: .smallPadding
+            )
             
-            item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            let headerItemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(50)
+            )
+            let headerItem = NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerItemSize,
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
             
+
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .absolute(tvshowRowWidth),
                     heightDimension: .absolute(tvshowRowHeight)),
                 subitems: [item])
-            
+    
             let sectionLayout = NSCollectionLayoutSection(group: group)
             sectionLayout.orthogonalScrollingBehavior = .continuous
-            
+            sectionLayout.boundarySupplementaryItems = [headerItem]
             return sectionLayout
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let sectionType = sections[indexPath.section].type
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: InteractiveHeader.identifier, for: indexPath) as? InteractiveHeader else {
+            return UICollectionReusableView()
+        }
+        switch sectionType {
+            
+        case .movies:
+            header.configure(with: sectionType.title)
+        case .tvshows:
+            header.configure(with: sectionType.title)
+        }
+        return header
+    }
+    
 }
 
 

@@ -10,24 +10,11 @@ import UIKit
 class MovieCollectionViewCell: UICollectionViewCell {
     static let identifier = "MovieCollectionViewCell"
     
-    private let posterImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleToFill
-        return imageView
-    }()
+    private let posterImageView = UIImageView()
+    private let movieTitleLabel = UILabel ()
+    private let dateReleaseLabel = UILabel()
     
-    private let movieTitleLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private let dateReleaseLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
-    }()
+    private let dateFormatter = DateFormatter()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,16 +32,42 @@ class MovieCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(movieTitleLabel)
         contentView.addSubview(dateReleaseLabel)
         contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .gray
     }
     
     private func setupSubViews() {
         posterImageView.layer.masksToBounds = true
-        posterImageView.layer.cornerRadius = MovieCollectionViewCell.cornerRadius
+        posterImageView.layer.cornerRadius = .cornerRadius
+        posterImageView.clipsToBounds = true
+        posterImageView.contentMode = .scaleAspectFill
+        posterImageView.translatesAutoresizingMaskIntoConstraints = false
         
+        movieTitleLabel.numberOfLines = 0
+        movieTitleLabel.textColor = .white
+        movieTitleLabel.font = .movieTitleFont
+        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-
+        dateReleaseLabel.numberOfLines = 0
+        dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateReleaseLabel.textColor = .gray
+        dateReleaseLabel.font = .movieReleaseDateFont
+        
+        let posterHeight: CGFloat = contentView.frame.width*3/2
+        
+        let constraints = [
+            posterImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            posterImageView.heightAnchor.constraint(equalToConstant: posterHeight),
+            
+            movieTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
+            movieTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            movieTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
+            
+            dateReleaseLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor),
+            dateReleaseLabel.heightAnchor.constraint(equalToConstant: MovieCollectionViewCell.dateLabelHeight),
+            dateReleaseLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(constraints)
         
     }
     
@@ -69,11 +82,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
         if let image = viewModel.posterImage {
             posterImageView.image = image
         } else {
-            posterImageView.image = UIImage(systemName: "xmark")
+            posterImageView.image = .noImage
         }
         
         movieTitleLabel.text = viewModel.title
-        dateReleaseLabel.text = viewModel.releaseDate
+        dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }
 
