@@ -61,11 +61,11 @@ class DataManager {
     }
     
     public func getMovieOverview(for movie: Movie) {
-        var details: Details?
+        var details: MovieDetails?
         var cast: [Cast]?
         
         loadingTasks.enter()
-        dataLoader.getDetails(.movie, targetID: movie.id) { [weak self] receivedDetails in
+        dataLoader.getMovieDetails(targetID: movie.id) { [weak self] receivedDetails in
             details = receivedDetails
             self?.loadingTasks.leave()
         }
@@ -87,9 +87,41 @@ class DataManager {
             details: details,
             cast: cast)
         
-
         loadingTasks.notify(queue: .main) {
             NotificationCenter.default.post(name: Notification.Name.successMovieDetailsLoading, object: nil)
+            
+        }
+    }
+    
+    public func getTVShowOverview(for tvshow: TVShow) {
+        var details: TVShowDetails?
+        var cast: [Cast]?
+        
+        loadingTasks.enter()
+        dataLoader.getTVShowDetails(targetID: tvshow.id) { [weak self] receivedDetails in
+            details = receivedDetails
+            self?.loadingTasks.leave()
+        }
+        
+        loadingTasks.enter()
+        dataLoader.getActorCast(.tvshow, tvshow.id) { [weak self] receivedCast in
+            cast = receivedCast
+            self?.loadingTasks.leave()
+        }
+        loadingTasks.wait()
+        
+        guard let details = details, let cast = cast else {
+            DLog("Received no details/cast")
+            return
+        }
+        
+        tvshowOverview = TVShowOverview(
+            tvshowInfo: tvshow,
+            details: details,
+            cast: cast)
+        loadingTasks.notify(queue: .main) {
+            NotificationCenter.default.post(name: Notification.Name.successTVShowDetailsLoading, object: nil)
+            
         }
     }
     

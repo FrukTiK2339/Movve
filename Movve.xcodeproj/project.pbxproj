@@ -33,6 +33,7 @@
 		EF21C8A7294C88CF00E3661D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A6294C88CF00E3661D /* ImageLoader.swift */; };
 		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
+		EFD7ADD42951B445002E47B5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD32951B445002E47B5 /* RatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		EF21C8A6294C88CF00E3661D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		EFD7ADD32951B445002E47B5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				EF21C885294C610000E3661D /* Movie.swift */,
 				EF21C887294C611000E3661D /* TVShow.swift */,
 				EF21C8A4294C809B00E3661D /* Details.swift */,
+				EFD7ADD32951B445002E47B5 /* RatingView.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */,
 				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
 				EF21C896294C65D200E3661D /* LaunchViewController.swift in Sources */,
+				EFD7ADD42951B445002E47B5 /* RatingView.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
 				EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */,
 				EF21C89C294C6ACC00E3661D /* MovieSection.swift in Sources */,
@@ -431,6 +435,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -459,6 +464,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

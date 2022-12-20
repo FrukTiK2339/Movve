@@ -10,8 +10,6 @@ import UIKit
 
 class NetRequestMovies: NetApiRequest {
     
-//    let tasks = DispatchGroup()
-    
     init(searchType: SearchType) {
         super.init(targetType: .movie, searchType: searchType)
     }
@@ -57,4 +55,58 @@ class NetRequestMovies: NetApiRequest {
         DLog(receivedMovies.description)
         return receivedMovies
     }
+    
+    //Details Call
+    func processMovieDetailsCall(completion: @escaping (MovieDetails?) -> Void) {
+        processCall { data in
+            guard let nDict = data as? [String: Any] else {
+                completion(nil)
+                return
+            }
+            completion(self.parseDetails(nDict))
+        }
+    }
+    
+    //Parse Details Call
+    private func parseDetails(_ detailDict: [String: Any]) -> MovieDetails? {
+        guard let genresDict = detailDict["genres"] as? [[String: Any]],
+              let homepage = detailDict["homepage"] as? String,
+              let overview = detailDict["overview"] as? String,
+              let rating = detailDict["vote_average"] as? Double,
+              let runtime = detailDict["runtime"] as? Int,
+              let imageStr = detailDict["backdrop_path"] as? String
+        else {
+            return nil
+        }
+        var receivedDetails: MovieDetails?
+        
+        var receivedGenres = [Genre]()
+        for genreDict in genresDict {
+            if let id = genreDict["id"] as? Int,
+               let name = genreDict["name"] as? String {
+                let newGenre = Genre(
+                    id: id,
+                    name: name
+                )
+                receivedGenres.append(newGenre)
+            }
+        }
+        tasks.enter()
+        imageLoader.download(with: imageStr) { [weak self] image in
+            receivedDetails = MovieDetails(
+                genres: receivedGenres,
+                runtime: runtime,
+                rating: rating,
+                overview: overview,
+                homepage: homepage,
+                image: image
+            )
+            self?.tasks.leave()
+            
+        }
+        tasks.wait()
+        DLog(receivedDetails)
+        return receivedDetails
+    }
+    
 }

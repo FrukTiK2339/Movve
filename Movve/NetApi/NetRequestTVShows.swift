@@ -39,8 +39,7 @@ class NetRequestTVShows: NetApiRequest {
             if let id = tDict["id"] as? Int,
                let name = tDict["name"] as? String,
                let releaseDate = tDict["first_air_date"] as? String,
-               let imageURL = tDict["poster_path"] as? String,
-               let rating = tDict["vote_average"] as? Double {
+               let imageURL = tDict["poster_path"] as? String {
                 tasks.enter()
                 ImageLoader.shared.download(with: imageURL) { [weak self] image in
                     
@@ -48,8 +47,7 @@ class NetRequestTVShows: NetApiRequest {
                         id: id,
                         name: name,
                         releaseDate: releaseDate,
-                        posterImage: image,
-                        rating: rating
+                        posterImage: image
                     )
                     receivedTVShows.append(newMovie)
                     self?.tasks.leave()
@@ -62,5 +60,58 @@ class NetRequestTVShows: NetApiRequest {
         tasks.wait()
         DLog(receivedTVShows.description)
         return receivedTVShows
+    }
+    
+    //Details Call
+    func processTVShowDetailsCall(completion: @escaping (TVShowDetails?) -> Void) {
+        processCall { data in
+            guard let nDict = data as? [String: Any] else {
+                completion(nil)
+                return
+            }
+            completion(self.parseDetails(nDict))
+        }
+    }
+    
+    //Parse Details Call
+    private func parseDetails(_ detailDict: [String: Any]) -> TVShowDetails? {
+        guard let genresDict = detailDict["genres"] as? [[String: Any]],
+              let homepage = detailDict["homepage"] as? String,
+              let overview = detailDict["overview"] as? String,
+              let rating = detailDict["vote_average"] as? Double,
+              let seasons = detailDict["seasons"] as? [[String: Any]],
+              let imageStr = detailDict["backdrop_path"] as? String
+        else {
+            return nil
+        }
+        var receivedDetails: TVShowDetails?
+        
+        var receivedGenres = [Genre]()
+        for genreDict in genresDict {
+            if let id = genreDict["id"] as? Int,
+               let name = genreDict["name"] as? String {
+                let newGenre = Genre(
+                    id: id,
+                    name: name
+                )
+                receivedGenres.append(newGenre)
+            }
+        }
+        tasks.enter()
+        imageLoader.download(with: imageStr) { [weak self] image in
+            receivedDetails = TVShowDetails(
+                genres: receivedGenres,
+                rating: rating,
+                seasons: seasons.count,
+                overview: overview,
+                homepage: homepage,
+                image: image
+            )
+            self?.tasks.leave()
+            
+        }
+        tasks.wait()
+        DLog(receivedDetails)
+        return receivedDetails
     }
 }

@@ -61,6 +61,7 @@ extension UIColor {
 }
 
 extension String {
+    static let appIconTitleAddon: String = "Watch on"
     static let appIconTittleFull: String = "Movve"
     static let appIconTittleFirst: String = "Mov"
     static let appIconTittleSecond: String = "ve"

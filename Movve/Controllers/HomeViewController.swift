@@ -127,13 +127,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = sections[indexPath.section].cells[indexPath.row]
+        
         switch model {
         case .movie(let movie):
-            showDetailsVC()
-            DataManager.shared.getMovieOverview(for: movie)
-            
+            DispatchQueue.global(qos: .background).async {
+                DataManager.shared.getMovieOverview(for: movie)
+            }
         case .tvshow(let tvshow):
-            return
+            DispatchQueue.global(qos: .background).async {
+                DataManager.shared.getTVShowOverview(for: tvshow)
+            }
+        }
+        DispatchQueue.main.async {
+            self.showDetailsVC()
         }
     }
     

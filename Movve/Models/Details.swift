@@ -7,23 +7,7 @@
 
 import UIKit
 
-struct Details {
-    var genres: [Genre]
-    var runtime: Int
-    var rating: Double
-    var overview: String
-    var homepage: String
-    var detailsImage: UIImage?
-    
-    init(genres: [Genre], runtime: Int, rating: Double, overview: String, homepage: String, detailsImage: UIImage?) {
-        self.genres = genres
-        self.runtime = runtime
-        self.rating = rating
-        self.overview = overview
-        self.homepage = homepage
-        self.detailsImage = detailsImage
-    }
-}
+
 
 struct Genre {
     var id: Int

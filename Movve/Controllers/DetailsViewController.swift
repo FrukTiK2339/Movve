@@ -10,7 +10,9 @@ import UIKit
 class DetailsViewController: UIViewController {
     
     private let dateFormatter = DateFormatter()
-        
+    
+    public var movie: Movie?
+    
     private var loadingIndicator = UIActivityIndicatorView()
     
     private var iconLabel = UILabel()
@@ -24,18 +26,22 @@ class DetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addObservers()
+        setupUI()
+        showLoadingIndicator()
+        hideUI()
+    }
+    
+    private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDetailsLoading, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDetailsLoading, object: nil)
-        hideUI()
-        setupUI()
-        view.backgroundColor = .mainAppColor
     }
     
     private func setupUI() {
+        view.backgroundColor = .mainAppColor
         addSubviews()
         setupSubviews()
         setupConstraints()
-        
     }
     
     private func addSubviews() {
@@ -54,9 +60,16 @@ class DetailsViewController: UIViewController {
     private func setupSubviews() {
         ///Loading indicator
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.style = .large
         
         ///Icon Label
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
+        let string = NSMutableAttributedString(string: .appIconTitleAddon + " " + .appIconTittleFull)
+        string.setColorForText(.appIconTitleAddon, with: .prettyWhite)
+        string.setColorForText(.appIconTittleFirst, with: .prettyWhite)
+        string.setColorForText(.appIconTittleSecond, with: .redIconColor)
+        iconLabel.font = UIFont(name: "Trebuchet-BoldItalic", size: 32)
+        iconLabel.attributedText = string
         
         
         ///Image View
@@ -99,22 +112,25 @@ class DetailsViewController: UIViewController {
     
     private func setupConstraints() {
         let constraints = [
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            iconLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            iconLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: .smallPadding),
             iconLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .smallPadding),
             
             imageView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .iconPadding),
             imageView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: .smallPadding),
             imageView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -.smallPadding),
-            imageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1/2),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/2),
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: .smallPadding),
             titleLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: infoLabel.topAnchor),
             
             infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            infoLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
+//            infoLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
             infoLabel.widthAnchor.constraint(equalTo: view.widthAnchor),
+            infoLabel.bottomAnchor.constraint(equalTo: ratingView.topAnchor),
             
             ratingView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor),
             ratingView.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -124,8 +140,6 @@ class DetailsViewController: UIViewController {
             overviewLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor),
             overviewLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor),
             
-            
-            
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -133,7 +147,7 @@ class DetailsViewController: UIViewController {
     
     @objc private func didRecivedMovieData() {
         updateUIWithMovieData()
-//        hideLoadingIndicator()
+        hideLoadingIndicator()
         showUI()
     }
     
@@ -152,45 +166,63 @@ class DetailsViewController: UIViewController {
     }
     
     private func updateUIWithTVShowData() {
-//        guard let receivedDetails = DataManager.shared.giveDetailsData() else {
-//            DLog("No data received from DataManager!")
-//            return
-//        }
-//        updateUI(with: receivedDetails)
+        guard let tvshowOverview = DataManager.shared.giveTVShowOverview() else {
+            DLog("No data received from DataManager!")
+            return
+        }
+        updateUI(with: tvshowOverview)
     }
     
     
     
     private func updateUI(with model: MovieOverview) {
         ///Image
-        if let image = model.details.detailsImage {
+        if let image = model.details.image {
             imageView.image = image
         } else {
             imageView.image = .noImage
         }
         
         ///Title
-        titleLabel.text = model.movieInfo.title
+        titleLabel.text = model.info.title
+        
+        ///Info Label ( Year(from Date) * Genre-Genre-Genre * RunTime )
+        let dateInfo = model.info.getReleaseDateYear()
+        let genres = model.details.getGenres()
+        let runtime = model.details.getRuntime()
+        infoLabel.text = "\(dateInfo) * \(genres) * \(runtime)"
+        
+        ///Rating View
+        let starsView = StarsView(rating: model.details.rating, frame: .zero)
+        ratingView.addSubview(starsView)
+        starsView.frame = ratingView.bounds
+        
+        ///Overview
+        overviewLabel.text = model.details.overview
+    }
+    
+    private func updateUI(with model: TVShowOverview) {
+        ///Image
+        if let image = model.details.image {
+            imageView.image = image
+        } else {
+            imageView.image = .noImage
+        }
+        
+        ///Title
+        titleLabel.text = model.info.name
         
         ///Info Label ( Date * Genre-Genre-Genre * RunTime )
-        let dateInfo = dateFormatter.showOnlyYear(from: model.movieInfo.releaseDate)
-        let genres = getGenres(from: model.details)
-        let runtime = getRuntime(from: model.details)
-        infoLabel.text = "\(dateInfo) * \(genres) * \(runtime)"
+        let dateInfo = model.info.getReleaseDateYear()
+        let genres = model.details.getGenres()
+        let seasonCount = model.details.seasons
+        infoLabel.text = "\(dateInfo) * \(genres) * \(seasonCount) season(s)"
         
         ///Rating View
         
         
         ///Overview
         overviewLabel.text = model.details.overview
-    }
-    
-    private func updateUI(with overviewModel: TVShowOverview) {
-        if let image = overviewModel.details.detailsImage {
-            imageView.image = image
-        } else {
-            imageView.image = .noImage
-        }
     }
     
     private func showLoadingIndicator() {
@@ -233,24 +265,4 @@ class DetailsViewController: UIViewController {
         }
     }
     
-    private func getGenres(from details: Details) -> String {
-        var result = String()
-        for genre in details.genres {
-            result += "\(genre.name), "
-        }
-        return String(result.dropLast(2))
-    }
-    
-    private func getRuntime(from details: Details) -> String {
-        return "\(details.runtime / 60) h \((details.runtime % 60)) min"
-    }
-    
-    private func setupIconLabel() {
-        view.addSubview(iconLabel)
-        let string = NSMutableAttributedString(string: .appIconTittleFull)
-        string.setColorForText(.appIconTittleFirst, with: .prettyWhite)
-        string.setColorForText(.appIconTittleSecond, with: .redIconColor)
-        iconLabel.font = .iconFont
-        iconLabel.attributedText = string
-    }
 }

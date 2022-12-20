@@ -31,9 +31,21 @@ class DataLoader {
         }
     }
     
-    func getDetails(_ targetType: TargetType, targetID: Int, comletion: @escaping (Details?) -> Void) {
-        let detailsCall = NetApiRequest(targetType: targetType, searchType: .id(targetID))
-        detailsCall.processDetailsCall { data in
+    func getMovieDetails(targetID: Int, comletion: @escaping (MovieDetails?) -> Void) {
+        let detailsCall = NetRequestMovies(searchType: .id(targetID))
+        detailsCall.processMovieDetailsCall { data in
+            guard let receivedData = data else {
+                DLog("Received no data!")
+                comletion(nil)
+                return
+            }
+            comletion(receivedData)
+        }
+    }
+    
+    func getTVShowDetails(targetID: Int, comletion: @escaping (TVShowDetails?) -> Void) {
+        let detailsCall = NetRequestTVShows(searchType: .id(targetID))
+        detailsCall.processTVShowDetailsCall { data in
             guard let receivedData = data else {
                 DLog("Received no data!")
                 comletion(nil)
