@@ -19,9 +19,9 @@ class StarsView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(rating: Double, frame: CGRect) {
+    init(rating: Double) {
         self.rating = rating
-        super.init(frame: frame)
+        super.init(frame: .zero)
         configureViews()
     }
     
@@ -29,25 +29,36 @@ class StarsView: UIStackView {
     let ratingLabel = UILabel()
     
     func configureViews() {
-        contentMode = .center
-        
+        ///Rating Label
         self.addSubview(ratingLabel)
         ratingLabel.translatesAutoresizingMaskIntoConstraints = false
-        ratingLabel.text = "\(rating)"
+        ratingLabel.text = String(format: "%.1f", rating)
+        ratingLabel.textColor = .systemYellow
+       
         
+        ///Rating Stars
         let starsCount = Int(rating / 1.5)
         var lastPosition = ratingLabel.rightAnchor
+        var starWidth: CGFloat = 0
+        
+        ///Normal Star
         for _  in 1...starsCount {
             let star = UIImageView(image: UIImage(systemName: "star.fill"))
+            star.tintColor = .systemYellow
+            starWidth = star.frame.size.width
             self.addSubview(star)
             star.translatesAutoresizingMaskIntoConstraints = false
             star.leftAnchor.constraint(equalTo: lastPosition, constant: .smallPadding).isActive = true
             star.topAnchor.constraint(equalTo: ratingLabel.topAnchor).isActive = true
             lastPosition = star.rightAnchor
         }
+        
+        ///Empty Star
         if starsCount < 5 {
             for _ in 1...5 - starsCount {
-                let emptyStar = UIImageView(image: UIImage(systemName: "star"))
+                let emptyStar = UIImageView(image: UIImage(systemName: "star.fill"))
+                emptyStar.tintColor = .prettyGray
+                starWidth = emptyStar.frame.size.width
                 self.addSubview(emptyStar)
                 emptyStar.translatesAutoresizingMaskIntoConstraints = false
                 emptyStar.leftAnchor.constraint(equalTo: lastPosition, constant: .smallPadding).isActive = true
@@ -55,9 +66,13 @@ class StarsView: UIStackView {
                 lastPosition = emptyStar.rightAnchor
             }
         }
+        
+        
+        let padding: CGFloat = .smallPadding*2.5 + starWidth*3
+        
         let constraints = [
             ratingLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            ratingLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+            ratingLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -padding)
         ]
         NSLayoutConstraint.activate(constraints)
         

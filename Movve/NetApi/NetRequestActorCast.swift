@@ -39,15 +39,20 @@ class NetRequestActorCast: NetApiRequest {
         for mDict in castDicts {
             if let name = mDict["name"] as? String,
                let character = mDict["character"] as? String,
-               let avatar = mDict["profile_path"] as? String {
-                let newCast = Cast(
-                    name: name,
-                    character: character,
-                    avatar: avatar
-                )
-                receivedCast.append(newCast)
+               let imageStr = mDict["profile_path"] as? String {
+                tasks.enter()
+                imageLoader.download(with: imageStr) { [weak self] image in
+                    let newCast = Cast(
+                        name: name,
+                        character: character,
+                        avatar: image
+                    )
+                    receivedCast.append(newCast)
+                    self?.tasks.leave()
+                }
             }
         }
+        tasks.wait()
         DLog(receivedCast.description)
         return receivedCast
     }

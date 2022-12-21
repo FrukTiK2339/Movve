@@ -22,9 +22,9 @@ struct Genre {
 struct Cast {
     var name: String
     var character: String
-    var avatar: String
+    var avatar: UIImage?
     
-    init(name: String, character: String, avatar: String) {
+    init(name: String, character: String, avatar: UIImage?) {
         self.name = name
         self.character = character
         self.avatar = avatar

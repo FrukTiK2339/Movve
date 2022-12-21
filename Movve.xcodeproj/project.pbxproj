@@ -34,6 +34,7 @@
 		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
 		EFD7ADD42951B445002E47B5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD32951B445002E47B5 /* RatingView.swift */; };
+		EFD7ADD62951D149002E47B5 /* HorizontalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EFD7ADD32951B445002E47B5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
 				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
 				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
+				EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				EF21C89A294C68AE00E3661D /* DataLoader.swift in Sources */,
 				EF21C884294C60F100E3661D /* DataManager.swift in Sources */,
 				EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */,
+				EFD7ADD62951D149002E47B5 /* HorizontalCollectionViewCell.swift in Sources */,
 				EF21C88E294C613800E3661D /* NetRequestActorCast.swift in Sources */,
 				EF21C86A294C5FD900E3661D /* AppDelegate.swift in Sources */,
 				EF21C890294C614700E3661D /* NetRequestProtocol.swift in Sources */,

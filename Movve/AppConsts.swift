@@ -29,10 +29,14 @@ extension ImageLoader {
 }
 
 extension UIFont {
+    static let iconFontItalic = UIFont(name: "Trebuchet-BoldItalic", size: 32)
     static let iconFont = UIFont(name: "TrebuchetMS-Bold", size: 32)
     static let headerFont = UIFont(name: "TrebuchetMS-Bold", size: 20)
     static let cellTitleFont = UIFont(name: "TrebuchetMS-Bold", size: 14)
     static let cellDateFont = UIFont(name: "TrebuchetMS-Bold", size: 12)
+    
+    static let actorsNameFont = UIFont(name: "TrebuchetMS", size: 12)
+    static let charactersNameFont = UIFont(name: "TrebuchetMS", size: 10)
 }
 
 extension CGFloat {
@@ -46,7 +50,11 @@ extension CGFloat {
     ///Height Consts
     static let cellTitleHeight: CGFloat = 40
     static let cellDateHeight: CGFloat = 20
+    static let watchButtonHeight: CGFloat = 60
+    static let ratingViewHeight: CGFloat = 40
     
+    ///Width
+    static let watchButtonWidth: CGFloat = 180
 }
 
 extension UIImage {
@@ -65,4 +73,7 @@ extension String {
     static let appIconTittleFull: String = "Movve"
     static let appIconTittleFirst: String = "Mov"
     static let appIconTittleSecond: String = "ve"
+    
+    static let castSectionTitle = "Cast"
+    static let overviewSectionTitle = "Overview"
 }
