@@ -50,13 +50,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
         dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
         dateReleaseLabel.textColor = .prettyGray
         dateReleaseLabel.font = .cellDateFont
-        
-        let posterHeight: CGFloat = contentView.frame.width*3/2
-        
+            
         let constraints = [
             posterImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            posterImageView.heightAnchor.constraint(equalToConstant: posterHeight),
+            posterImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3/2),
             
             movieTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
             movieTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),

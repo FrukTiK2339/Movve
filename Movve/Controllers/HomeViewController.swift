@@ -145,7 +145,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func showDetailsVC() {
         let vc = DetailsViewController()
-//        vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
     

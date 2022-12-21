@@ -21,6 +21,7 @@ extension Notification.Name {
     public static let successDataLoading = Notification.Name("successDataLoading")
     public static let successMovieDetailsLoading = Notification.Name("successMovieDetailsLoading")
     public static let successTVShowDetailsLoading = Notification.Name("successTVShowDetailsLoading")
+    public static let dataLoadingProgress = Notification.Name("dataLoadingProgress")
     
 }
 
@@ -30,6 +31,7 @@ extension ImageLoader {
 
 extension UIFont {
     static let iconFontItalic = UIFont(name: "Trebuchet-BoldItalic", size: 32)
+    static let launcgIconFont = UIFont(name: "TrebuchetMS-Bold", size: 52)
     static let iconFont = UIFont(name: "TrebuchetMS-Bold", size: 32)
     static let headerFont = UIFont(name: "TrebuchetMS-Bold", size: 20)
     static let cellTitleFont = UIFont(name: "TrebuchetMS-Bold", size: 14)
@@ -37,11 +39,14 @@ extension UIFont {
     
     static let actorsNameFont = UIFont(name: "TrebuchetMS", size: 12)
     static let charactersNameFont = UIFont(name: "TrebuchetMS", size: 10)
+    
+    static let sectionsItalicFont = UIFont.italicSystemFont(ofSize: 20)
 }
 
 extension CGFloat {
     ///Padding
     static let iconPadding: CGFloat = 16
+    static let launchIconPadding: CGFloat = 104
     static let smallPadding: CGFloat = 8
     
     ///Layers
@@ -52,13 +57,16 @@ extension CGFloat {
     static let cellDateHeight: CGFloat = 20
     static let watchButtonHeight: CGFloat = 60
     static let ratingViewHeight: CGFloat = 40
+    static let castViewHeight: CGFloat = 120
     
     ///Width
     static let watchButtonWidth: CGFloat = 180
+    static let dismissButtonWidth: CGFloat = 60
 }
 
 extension UIImage {
     static let noImage: UIImage? = UIImage(systemName: "xmark")
+    static let dismissImage: UIImage? = UIImage(systemName: "chevron.down")
 }
 
 extension UIColor {
@@ -76,4 +84,9 @@ extension String {
     
     static let castSectionTitle = "Cast"
     static let overviewSectionTitle = "Overview"
+    static let watchButtonTitle = "Watch now"
+}
+
+extension CGSize {
+    static let castRowSize: CGSize = CGSize(width: 90, height: 120)
 }

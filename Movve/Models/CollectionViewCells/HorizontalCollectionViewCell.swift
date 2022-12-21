@@ -42,11 +42,13 @@ class HorizontalCollectionViewCell: UICollectionViewCell {
   
         actorNameLabel.translatesAutoresizingMaskIntoConstraints = false
         actorNameLabel.font = .actorsNameFont
+        actorNameLabel.textColor = .prettyWhite
         actorNameLabel.numberOfLines = 0
         actorNameLabel.textAlignment = .center
         
         characterNameLabel.translatesAutoresizingMaskIntoConstraints = false
         characterNameLabel.font = .charactersNameFont
+        characterNameLabel.textColor = .prettyGray
         characterNameLabel.numberOfLines = 0
         characterNameLabel.textAlignment = .center
     }

@@ -6,22 +6,25 @@
 //
 
 import UIKit
+import SafariServices
 
 class DetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    static let headerIdentifier = "DetailsViewControllerHeader"
-  
+      
     private var loadingIndicator = UIActivityIndicatorView()
+    
+    private var iconLabel = UILabel()
+    private var dismissButton = UIButton()
     
     private var scrollView = UIScrollView()
     
-    private var iconLabel = UILabel()
     private var imageView = UIImageView()
     private var titleLabel = UILabel()
     private var infoLabel = UILabel()
     private var ratingView = UIView()
     private var overviewSectionLabel = UILabel()
     private var overviewLabel = UILabel()
+    
+    private var watchButtonTarget = String()
     private var watchButton = UIButton()
     
     private var cast = [Cast]()
@@ -59,8 +62,9 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private func addSubviews() {
         view.addSubview(scrollView)
         view.addSubview(loadingIndicator)
+        view.addSubview(iconLabel)
+        view.addSubview(dismissButton)
         
-        scrollView.addSubview(iconLabel)
         scrollView.addSubview(imageView)
         scrollView.addSubview(titleLabel)
         scrollView.addSubview(infoLabel)
@@ -69,13 +73,11 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         scrollView.addSubview(overviewLabel)
         scrollView.addSubview(castSectionLabel)
         scrollView.addSubview(castCollectionView)
-        scrollView.addSubview(watchButton)
+        
+        view.addSubview(watchButton)
     }
     
     private func setupSubviews() {
-        ///Scroll View
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
         ///Loading indicator
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
         loadingIndicator.style = .large
@@ -88,6 +90,16 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         string.setColorForText(.appIconTittleSecond, with: .redIconColor)
         iconLabel.font = .iconFontItalic
         iconLabel.attributedText = string
+        
+        //Dismiss Button
+        dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.setImage(.dismissImage, for: .normal)
+        dismissButton.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
+        dismissButton.tintColor = .redIconColor
+        
+        ///Scroll View
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
         
         ///Image View
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +126,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         ///Overview Label + Section Label
         overviewSectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        overviewSectionLabel.font = .italicSystemFont(ofSize: 20)
+        overviewSectionLabel.font = .sectionsItalicFont
         overviewSectionLabel.textAlignment = .left
         overviewSectionLabel.textColor = .prettyWhite
         overviewSectionLabel.text = .overviewSectionTitle
@@ -127,7 +139,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         ///Cast Horizontal Collection View
         castSectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        castSectionLabel.font = .italicSystemFont(ofSize: 20)
+        castSectionLabel.font = .sectionsItalicFont
         castSectionLabel.textAlignment = .left
         castSectionLabel.textColor = .prettyWhite
         castSectionLabel.text = .castSectionTitle
@@ -140,8 +152,9 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///"Watch Now" Button
         watchButton.translatesAutoresizingMaskIntoConstraints = false
         watchButton.backgroundColor = .redIconColor
-        watchButton.setTitle("Watch now", for: .normal)
+        watchButton.setTitle(.watchButtonTitle, for: .normal)
         watchButton.layer.cornerRadius = .cornerRadius
+        watchButton.addTarget(self, action: #selector(didTapWatchButton), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -152,15 +165,20 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            scrollView.topAnchor.constraint(equalTo: safeG.topAnchor, constant: .smallPadding),
+            iconLabel.topAnchor.constraint(equalTo: safeG.topAnchor, constant: .smallPadding),
+            iconLabel.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
+            
+            dismissButton.topAnchor.constraint(equalTo: iconLabel.topAnchor),
+            dismissButton.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
+            dismissButton.bottomAnchor.constraint(equalTo: iconLabel.bottomAnchor),
+            dismissButton.widthAnchor.constraint(equalToConstant: .dismissButtonWidth),
+            
+            scrollView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .smallPadding),
             scrollView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             scrollView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
-            scrollView.bottomAnchor.constraint(equalTo: safeG.bottomAnchor, constant: -.smallPadding),
+            scrollView.bottomAnchor.constraint(equalTo: watchButton.topAnchor, constant: -.smallPadding),
             
-            iconLabel.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .smallPadding),
-            iconLabel.leftAnchor.constraint(equalTo: contentG.leftAnchor, constant: .smallPadding),
-            
-            imageView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .iconPadding),
+            imageView.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .iconPadding),
             imageView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             imageView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/2),
@@ -185,18 +203,16 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             castSectionLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor),
             
             castCollectionView.topAnchor.constraint(equalTo: castSectionLabel.bottomAnchor, constant: .smallPadding),
-            castCollectionView.heightAnchor.constraint(equalToConstant: 120),
+            castCollectionView.heightAnchor.constraint(equalToConstant: .castViewHeight),
             castCollectionView.widthAnchor.constraint(equalTo: imageView.widthAnchor),
+            castCollectionView.bottomAnchor.constraint(equalTo: contentG.bottomAnchor, constant: -.smallPadding),
             
-            watchButton.topAnchor.constraint(equalTo: castCollectionView.bottomAnchor, constant: .smallPadding*3),
             watchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             watchButton.widthAnchor.constraint(equalToConstant: .watchButtonWidth),
             watchButton.heightAnchor.constraint(equalToConstant: .watchButtonHeight),
-            watchButton.bottomAnchor.constraint(equalTo: contentG.bottomAnchor, constant: -.smallPadding)
+            watchButton.bottomAnchor.constraint(equalTo: safeG.bottomAnchor, constant: -.smallPadding)
         ]
         NSLayoutConstraint.activate(constraints)
-        
-        
     }
     
     @objc private func didRecivedMovieData() {
@@ -241,6 +257,9 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///Cast
         self.cast = model.cast
         castCollectionView.reloadData()
+        
+        ///Button
+        self.watchButtonTarget = model.details.homepage
     }
     
     @objc private func didRecivedTVShowData() {
@@ -285,6 +304,26 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///Cast
         self.cast = model.cast
         castCollectionView.reloadData()
+        
+        ///Button
+        self.watchButtonTarget = model.details.homepage
+    }
+    
+    @objc private func didTapWatchButton() {
+        showSafariVC(urlString: watchButtonTarget)
+    }
+    
+    @objc private func didTapDismiss() {
+        self.dismiss(animated: true)
+    }
+    
+    private func showSafariVC(urlString: String) {
+        guard let url = URL(string: urlString) else {
+            DLog("Incorect homepage data!")
+            return
+        }
+        let vc = SFSafariViewController(url: url)
+        present(vc, animated: true)
     }
     
     private func showLoadingIndicator() {
@@ -306,10 +345,12 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private func showUI() {
         DispatchQueue.main.async {
             self.imageView.isHidden = false
+            self.castSectionLabel.isHidden = false
             self.castCollectionView.isHidden = false
             self.titleLabel.isHidden = false
             self.infoLabel.isHidden = false
             self.ratingView.isHidden = false
+            self.overviewSectionLabel.isHidden = false
             self.overviewLabel.isHidden = false
             self.watchButton.isHidden = false
         }
@@ -318,14 +359,18 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private func hideUI() {
         DispatchQueue.main.async {
             self.imageView.isHidden = true
+            self.castSectionLabel.isHidden = true
             self.castCollectionView.isHidden = true
             self.titleLabel.isHidden = true
             self.infoLabel.isHidden = true
             self.ratingView.isHidden = true
+            self.overviewSectionLabel.isHidden = true
             self.overviewLabel.isHidden = true
             self.watchButton.isHidden = true
         }
     }
+    
+    //MARK: - Collection View Methods
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cast.count
@@ -337,6 +382,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 90, height: 120)
+        return .castRowSize
     }
 }

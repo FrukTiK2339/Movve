@@ -52,12 +52,10 @@ class TVShowCollectionViewCell: UICollectionViewCell {
         dateReleaseLabel.textColor = .prettyGray
         dateReleaseLabel.font = .cellDateFont
         
-        let posterHeight: CGFloat = contentView.frame.width*3/2
-        
         let constraints = [
             posterImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            posterImageView.heightAnchor.constraint(equalToConstant: posterHeight),
+            posterImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3/2),
             
             tvShowTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
             tvShowTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
