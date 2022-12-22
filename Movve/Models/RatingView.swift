@@ -43,7 +43,7 @@ class StarsView: UIStackView {
         
         ///Normal Star
         for _  in 1...starsCount {
-            let star = UIImageView(image: UIImage(systemName: "star.fill"))
+            let star = UIImageView(image: .starImage)
             star.tintColor = .systemYellow
             starWidth = star.frame.size.width
             self.addSubview(star)
@@ -56,7 +56,7 @@ class StarsView: UIStackView {
         ///Empty Star
         if starsCount < 5 {
             for _ in 1...5 - starsCount {
-                let emptyStar = UIImageView(image: UIImage(systemName: "star.fill"))
+                let emptyStar = UIImageView(image: .starImage)
                 emptyStar.tintColor = .prettyGray
                 starWidth = emptyStar.frame.size.width
                 self.addSubview(emptyStar)

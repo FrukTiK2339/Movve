@@ -21,7 +21,7 @@ extension Notification.Name {
     public static let successDataLoading = Notification.Name("successDataLoading")
     public static let successMovieDetailsLoading = Notification.Name("successMovieDetailsLoading")
     public static let successTVShowDetailsLoading = Notification.Name("successTVShowDetailsLoading")
-    public static let dataLoadingProgress = Notification.Name("dataLoadingProgress")
+    public static let errorLoadingData = Notification.Name("errorLoadingData")
     
 }
 
@@ -51,6 +51,7 @@ extension CGFloat {
     
     ///Layers
     static let cornerRadius: CGFloat = 8
+    static let imageCornerRadius: CGFloat = 40
     
     ///Height Consts
     static let cellTitleHeight: CGFloat = 40
@@ -58,6 +59,7 @@ extension CGFloat {
     static let watchButtonHeight: CGFloat = 60
     static let ratingViewHeight: CGFloat = 40
     static let castViewHeight: CGFloat = 120
+    static let castImageViewHeigt: CGFloat = 80
     
     ///Width
     static let watchButtonWidth: CGFloat = 180
@@ -67,6 +69,7 @@ extension CGFloat {
 extension UIImage {
     static let noImage: UIImage? = UIImage(systemName: "xmark")
     static let dismissImage: UIImage? = UIImage(systemName: "chevron.down")
+    static let starImage: UIImage? = UIImage(systemName: "star.fill")
 }
 
 extension UIColor {

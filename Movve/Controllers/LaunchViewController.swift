@@ -16,22 +16,19 @@ class LaunchViewController: UIViewController {
         super.viewDidLoad()
         addObservers()
         setupIconLabel()
-        showLoadingIndicator()
         setupUI()
         normalRun()
     }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(occuredFullData), name: Notification.Name.successDataLoading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingError), name: Notification.Name.errorLoadingData, object: nil)
     }
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
         view.addSubview(iconLabel)
         view.addSubview(loadingIndicator)
-        
-       
-        
         
         loadingIndicator.style = .large
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -43,10 +40,6 @@ class LaunchViewController: UIViewController {
             iconLabel.bottomAnchor.constraint(equalTo: loadingIndicator.topAnchor, constant: -.launchIconPadding),
             iconLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
-        
-        
-
     }
     
     private func setupIconLabel() {
@@ -59,6 +52,7 @@ class LaunchViewController: UIViewController {
     }
     
     private func normalRun() {
+        showLoadingIndicator()
         DispatchQueue.global(qos: .background).async {
             DataManager.shared.getReqiedData()
         }
@@ -66,8 +60,24 @@ class LaunchViewController: UIViewController {
     }
     
     @objc private func occuredFullData() {
-        hideLoadingIndicator()
-        goToHomeVC()
+        DispatchQueue.main.async {
+            self.hideLoadingIndicator()
+            self.goToHomeVC()
+        }
+    }
+    
+    @objc private func occuredLoadingError() {
+        DispatchQueue.main.async {
+            self.hideLoadingIndicator()
+            let alert = UIAlertController(title: "Loading Failed", message: "Please check your Internet connection and try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Try Again", style: .default) { _ in
+                self.normalRun()
+            })
+            alert.addAction(UIAlertAction(title: "Exit", style: .cancel) { _ in
+                exit(0)
+            })
+            self.present(alert, animated: true)
+        }
     }
     
     private func showLoadingIndicator() {

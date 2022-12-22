@@ -9,7 +9,6 @@ import Foundation
 
 class NetRequestActorCast: NetApiRequest {
     
-    
     override func createURL() -> URL? {
         let urlString = NetApiRequest.baseURL + targetType.urlPart + searchType.urlPart + NetRequestActorCast.creditsURL + NetApiRequest.apiKey
         guard let url = URL(string: urlString) else {

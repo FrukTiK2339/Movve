@@ -37,7 +37,7 @@ class HorizontalCollectionViewCell: UICollectionViewCell {
     private func configureViews() {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 40
+        imageView.layer.cornerRadius = .imageCornerRadius
         imageView.layer.masksToBounds = true
   
         actorNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class HorizontalCollectionViewCell: UICollectionViewCell {
     private func setupConstraints() {
         let constraints = [
             imageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 80),
+            imageView.heightAnchor.constraint(equalToConstant: .castImageViewHeigt),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             

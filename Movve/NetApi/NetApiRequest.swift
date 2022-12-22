@@ -56,7 +56,8 @@ class NetApiRequest: NetApiRequestProtocol {
         let dataTask = apiSession.dataTask(with: request, completionHandler: { data, response, error in
             
             guard let httpResponse = response as? HTTPURLResponse, let data = data else {
-                print("error: not a valid http response")
+                DLog("Error: Not a valid http response. Check your VPN")
+                completion(nil)
                 return
             }
             switch httpResponse.statusCode {
@@ -68,7 +69,9 @@ class NetApiRequest: NetApiRequestProtocol {
                     }
                     completion(recivedData)
                 }
-            case 400: break
+            case 400:
+                DLog("Status code - 400.")
+                completion(nil)
             default: break
             }
         })

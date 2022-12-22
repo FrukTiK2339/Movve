@@ -129,6 +129,8 @@ class DataManager {
         loadingTasks.enter()
         dataLoader.getMovies(.popular) { [weak self] popularMovies in
             guard let popularMovies = popularMovies else {
+                DLog("Error loading popular movies")
+                NotificationCenter.default.post(name: Notification.Name.errorLoadingData, object: nil)
                 return
             }
             self?.movieArray = popularMovies
@@ -141,6 +143,8 @@ class DataManager {
         loadingTasks.enter()
         dataLoader.getTVShows(.topRated) { [weak self] topRatedTVShows in
             guard let topRatedTVShows = topRatedTVShows else {
+                DLog("Error loading top rated TV shows")
+                NotificationCenter.default.post(name: Notification.Name.errorLoadingData, object: nil)
                 return
             }
             self?.tvshowArray = topRatedTVShows
