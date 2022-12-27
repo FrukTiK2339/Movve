@@ -8,7 +8,7 @@
 import UIKit
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-  
+    
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
     private var sections = [TargetSection]()
@@ -27,7 +27,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sections.append(
             TargetSection(
                 type: .movies,
-                cells: DataManager.shared.giveMovieData().compactMap({
+                cells: dataManager.movieArray.compactMap({
                     return TargetCell.movie(viewModel: $0)
                 })
             )
@@ -36,7 +36,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         sections.append(
             TargetSection(
                 type: .tvshows,
-                cells: DataManager.shared.giveTVShowData().compactMap({
+                cells: dataManager.tvshowArray.compactMap({
                     return TargetCell.tvshow(viewModel: $0)
                 })
             )
@@ -131,11 +131,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         switch model {
         case .movie(let movie):
             DispatchQueue.global(qos: .background).async {
-                DataManager.shared.getMovieOverview(for: movie)
+                self.dataManager.getMovieOverview(for: movie)
             }
         case .tvshow(let tvshow):
             DispatchQueue.global(qos: .background).async {
-                DataManager.shared.getTVShowOverview(for: tvshow)
+                self.dataManager.getTVShowOverview(for: tvshow)
             }
         }
         DispatchQueue.main.async {
@@ -145,7 +145,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func showDetailsVC() {
         let vc = DetailsViewController()
-        self.present(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func layout(for section: Int) -> NSCollectionLayoutSection {

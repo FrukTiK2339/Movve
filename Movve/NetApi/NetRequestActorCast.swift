@@ -40,7 +40,7 @@ class NetRequestActorCast: NetApiRequest {
                let character = mDict["character"] as? String,
                let imageStr = mDict["profile_path"] as? String {
                 tasks.enter()
-                imageLoader.download(with: imageStr) { [weak self] image in
+                ImageLoader.shared.download(with: imageStr) { [weak self] image in
                     let newCast = Cast(
                         name: name,
                         character: character,

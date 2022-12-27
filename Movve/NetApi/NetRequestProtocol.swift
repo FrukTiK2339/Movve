@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol NetApiRequestProtocol {
-    var configuration: URLSessionConfiguration { get }
     var targetType: TargetType { get }
     var searchType: SearchType { get }
     

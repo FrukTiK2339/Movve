@@ -10,6 +10,8 @@ import UIKit
 
 class NetRequestMovies: NetApiRequest {
     
+//    private let tasks = DispatchGroup()
+    
     init(searchType: SearchType) {
         super.init(targetType: .movie, searchType: searchType)
     }
@@ -21,6 +23,7 @@ class NetRequestMovies: NetApiRequest {
                 return
             }
             completion(self.parseMovie(nDict))
+            
         }
     }
     
@@ -39,7 +42,8 @@ class NetRequestMovies: NetApiRequest {
                let releaseDate = mDict["release_date"] as? String,
                let imageURL = mDict["poster_path"] as? String {
                 tasks.enter()
-                imageLoader.download(with: imageURL) { [weak self] image in
+                
+                ImageLoader.shared.download(with: imageURL) { [weak self] image in
                     let newMovie = Movie(
                         id: id,
                         title: title,
@@ -92,7 +96,7 @@ class NetRequestMovies: NetApiRequest {
             }
         }
         tasks.enter()
-        imageLoader.download(with: imageStr) { [weak self] image in
+        ImageLoader.shared.download(with: imageStr) { [weak self] image in
             receivedDetails = MovieDetails(
                 genres: receivedGenres,
                 runtime: runtime,

@@ -9,6 +9,8 @@ import Foundation
 
 class NetRequestTVShows: NetApiRequest {
     
+//    private let tasks = DispatchGroup()
+    
     init(searchType: SearchType) {
         super.init(targetType: .tvshow, searchType: searchType)
     }
@@ -95,7 +97,7 @@ class NetRequestTVShows: NetApiRequest {
             }
         }
         tasks.enter()
-        imageLoader.download(with: imageStr) { [weak self] image in
+        ImageLoader.shared.download(with: imageStr) { [weak self] image in
             receivedDetails = TVShowDetails(
                 genres: receivedGenres,
                 rating: rating,

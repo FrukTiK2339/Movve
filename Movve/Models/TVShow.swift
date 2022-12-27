@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct TVShow {
+public struct TVShow {
     ///Main Screen
     var id: Int
     var name: String
@@ -27,7 +27,7 @@ struct TVShow {
     }
 }
 
-struct TVShowOverview {
+public struct TVShowOverview {
     ///Movie Overview (Details) Screen
     var info: TVShow
     var details: TVShowDetails

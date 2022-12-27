@@ -53,8 +53,8 @@ class LaunchViewController: UIViewController {
     
     private func normalRun() {
         showLoadingIndicator()
-        DispatchQueue.global(qos: .background).async {
-            DataManager.shared.getReqiedData()
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.dataManager.getReqiedData()
         }
       
     }

@@ -8,18 +8,21 @@
 import Foundation
 import UIKit
 
-class NetApiRequest: NetApiRequestProtocol {
-    
-    var configuration: URLSessionConfiguration = URLSessionConfiguration.default
+class NetApiRequest: NetApiRequestProtocol, CustomURLSessionProviderProtocol {
+   
+    var urlSessionProvider: CustomURLSessionProtocol {
+        return ImageLoader.shared
+    }
     
     var targetType: TargetType
     var searchType: SearchType
     
+    var sessuin: URLSession?
+    
     var masterURL: URL? {
         createURL()
     }
-    
-    let imageLoader = ImageLoader()
+
     let tasks = DispatchGroup()
     
     //MARK: - Init
@@ -39,13 +42,12 @@ class NetApiRequest: NetApiRequestProtocol {
     
     //Main call
     func processCall(completion: @escaping (Any?) -> Void) {
-        guard let url = masterURL else {
+        guard let url = masterURL, let urlSession = urlSessionProvider.urlSession else {
+            completion(nil)
             return
         }
         
         DLog("Current URL = \(url)")
-        
-        let apiSession = URLSession(configuration: configuration)
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -53,7 +55,8 @@ class NetApiRequest: NetApiRequestProtocol {
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.timeoutInterval = NetApiRequest.timeoutMaxTime
         
-        let dataTask = apiSession.dataTask(with: request, completionHandler: { data, response, error in
+        
+        urlSession.dataTask(with: request, completionHandler: { data, response, error in
             
             guard let httpResponse = response as? HTTPURLResponse, let data = data else {
                 DLog("Error: Not a valid http response. Check your VPN")
@@ -71,12 +74,10 @@ class NetApiRequest: NetApiRequestProtocol {
                 }
             case 400:
                 DLog("Status code - 400.")
+                fallthrough
+            default:
                 completion(nil)
-            default: break
             }
-        })
-        dataTask.resume()
+        }).resume()
     }
-    
-    
 }

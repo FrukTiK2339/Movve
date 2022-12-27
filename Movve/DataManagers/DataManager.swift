@@ -7,46 +7,17 @@
 
 import UIKit
 
-class DataManager {
+class DataManager: MovveDataProtocol {
     
     public static let shared = DataManager()
     
-    private init() {}
-    
-    let loadingTasks = DispatchGroup()
-    
-    private var movieArray = [Movie]()
-    private var tvshowArray = [TVShow]()
-    private var movieOverview: MovieOverview?
-    private var tvshowOverview: TVShowOverview?
-    
-    let dataLoader = DataLoader()
-    let imageLoader = ImageLoader()
-    
-    public func giveMovieData() -> [Movie] {
-        return movieArray
-    }
-    
-    public func giveTVShowData() -> [TVShow] {
-        return tvshowArray
-    }
-    
-    public func giveMovieOverview() -> MovieOverview? {
-        guard let movieOverview = movieOverview else {
-            DLog("No details received!...")
-            return nil
-        }
-        return movieOverview
-    }
-    
-    public func giveTVShowOverview() -> TVShowOverview? {
-        guard let tvshowOverview = tvshowOverview else {
-            DLog("No details received!...")
-            return nil
-        }
-        return tvshowOverview
-    }
-    
+    private let loadingTasks = DispatchGroup()
+    var movieArray = [Movie]()
+    var tvshowArray = [TVShow]()
+    var movieOverview: MovieOverview?
+    var tvshowOverview: TVShowOverview?
+    private let dataLoader = DataLoader()
+
     public func loadImage(urlString: String, view: UIImageView) {
         loadImage(urlString: urlString, view: view)
     }
@@ -131,6 +102,7 @@ class DataManager {
             guard let popularMovies = popularMovies else {
                 DLog("Error loading popular movies")
                 NotificationCenter.default.post(name: Notification.Name.errorLoadingData, object: nil)
+                self?.loadingTasks.leave()
                 return
             }
             self?.movieArray = popularMovies

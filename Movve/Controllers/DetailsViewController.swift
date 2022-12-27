@@ -12,8 +12,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
       
     private var loadingIndicator = UIActivityIndicatorView()
     
-    private var iconLabel = UILabel()
-    private var dismissButton = UIButton()
     
     private var scrollView = UIScrollView()
     
@@ -62,8 +60,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private func addSubviews() {
         view.addSubview(scrollView)
         view.addSubview(loadingIndicator)
-        view.addSubview(iconLabel)
-        view.addSubview(dismissButton)
         
         scrollView.addSubview(imageView)
         scrollView.addSubview(titleLabel)
@@ -81,21 +77,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///Loading indicator
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
         loadingIndicator.style = .large
-        
-        ///Icon Label
-        iconLabel.translatesAutoresizingMaskIntoConstraints = false
-        let string = NSMutableAttributedString(string: .appIconTitleAddon + " " + .appIconTittleFull)
-        string.setColorForText(.appIconTitleAddon, with: .prettyWhite)
-        string.setColorForText(.appIconTittleFirst, with: .prettyWhite)
-        string.setColorForText(.appIconTittleSecond, with: .redIconColor)
-        iconLabel.font = .iconFontItalic
-        iconLabel.attributedText = string
-        
-        //Dismiss Button
-        dismissButton.translatesAutoresizingMaskIntoConstraints = false
-        dismissButton.setImage(.dismissImage, for: .normal)
-        dismissButton.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
-        dismissButton.tintColor = .redIconColor
         
         ///Scroll View
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -165,15 +146,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            iconLabel.topAnchor.constraint(equalTo: safeG.topAnchor, constant: .smallPadding),
-            iconLabel.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
-            
-            dismissButton.topAnchor.constraint(equalTo: iconLabel.topAnchor),
-            dismissButton.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
-            dismissButton.bottomAnchor.constraint(equalTo: iconLabel.bottomAnchor),
-            dismissButton.widthAnchor.constraint(equalToConstant: .dismissButtonWidth),
-            
-            scrollView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .smallPadding),
+            scrollView.topAnchor.constraint(equalTo: safeG.topAnchor),
             scrollView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             scrollView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
             scrollView.bottomAnchor.constraint(equalTo: watchButton.topAnchor, constant: -.smallPadding),
@@ -222,7 +195,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithMovieData() {
-        guard let movieOverview = DataManager.shared.giveMovieOverview() else {
+        guard let movieOverview = dataManager.movieOverview else {
             DLog("No data received from DataManager!")
             return
         }
@@ -269,7 +242,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithTVShowData() {
-        guard let tvshowOverview = DataManager.shared.giveTVShowOverview() else {
+        guard let tvshowOverview = dataManager.tvshowOverview else {
             DLog("No data received from DataManager!")
             return
         }
