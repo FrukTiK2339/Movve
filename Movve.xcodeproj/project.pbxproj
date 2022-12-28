@@ -19,7 +19,7 @@
 		EF21C88A294C611F00E3661D /* NetApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C889294C611F00E3661D /* NetApiRequest.swift */; };
 		EF21C88C294C612C00E3661D /* NetRequestMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C88B294C612C00E3661D /* NetRequestMovies.swift */; };
 		EF21C88E294C613800E3661D /* NetRequestActorCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C88D294C613800E3661D /* NetRequestActorCast.swift */; };
-		EF21C890294C614700E3661D /* NetRequestProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C88F294C614700E3661D /* NetRequestProtocol.swift */; };
+		EF21C890294C614700E3661D /* NetProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C88F294C614700E3661D /* NetProtocols.swift */; };
 		EF21C892294C615200E3661D /* AppConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C891294C615200E3661D /* AppConsts.swift */; };
 		EF21C894294C615E00E3661D /* DLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C893294C615E00E3661D /* DLog.swift */; };
 		EF21C896294C65D200E3661D /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C895294C65D200E3661D /* LaunchViewController.swift */; };
@@ -54,7 +54,7 @@
 		EF21C889294C611F00E3661D /* NetApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetApiRequest.swift; sourceTree = "<group>"; };
 		EF21C88B294C612C00E3661D /* NetRequestMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestMovies.swift; sourceTree = "<group>"; };
 		EF21C88D294C613800E3661D /* NetRequestActorCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestActorCast.swift; sourceTree = "<group>"; };
-		EF21C88F294C614700E3661D /* NetRequestProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestProtocol.swift; sourceTree = "<group>"; };
+		EF21C88F294C614700E3661D /* NetProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetProtocols.swift; sourceTree = "<group>"; };
 		EF21C891294C615200E3661D /* AppConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConsts.swift; sourceTree = "<group>"; };
 		EF21C893294C615E00E3661D /* DLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLog.swift; sourceTree = "<group>"; };
 		EF21C895294C65D200E3661D /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
@@ -147,7 +147,7 @@
 				EF21C88B294C612C00E3661D /* NetRequestMovies.swift */,
 				EF21C8A2294C801500E3661D /* NetRequestTVShows.swift */,
 				EF21C88D294C613800E3661D /* NetRequestActorCast.swift */,
-				EF21C88F294C614700E3661D /* NetRequestProtocol.swift */,
+				EF21C88F294C614700E3661D /* NetProtocols.swift */,
 				EF21C8A6294C88CF00E3661D /* ImageLoader.swift */,
 			);
 			path = NetApi;
@@ -303,7 +303,7 @@
 				EFD7ADD62951D149002E47B5 /* HorizontalCollectionViewCell.swift in Sources */,
 				EF21C88E294C613800E3661D /* NetRequestActorCast.swift in Sources */,
 				EF21C86A294C5FD900E3661D /* AppDelegate.swift in Sources */,
-				EF21C890294C614700E3661D /* NetRequestProtocol.swift in Sources */,
+				EF21C890294C614700E3661D /* NetProtocols.swift in Sources */,
 				EF21C88C294C612C00E3661D /* NetRequestMovies.swift in Sources */,
 				EF21C86C294C5FD900E3661D /* SceneDelegate.swift in Sources */,
 				EF21C898294C65F300E3661D /* DetailsViewController.swift in Sources */,

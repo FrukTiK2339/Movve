@@ -7,14 +7,6 @@
 
 import UIKit
 
-protocol CustomURLSessionProviderProtocol {
-    var urlSessionProvider: CustomURLSessionProtocol { get }
-}
-
-protocol CustomURLSessionProtocol {
-    var urlSession: URLSession? { get }
-}
-
 class ImageLoader: CustomURLSessionProtocol {
     
     static let shared = ImageLoader()
