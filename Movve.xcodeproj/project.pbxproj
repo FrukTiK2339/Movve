@@ -106,11 +106,9 @@
 			children = (
 				EF21C877294C5FD900E3661D /* Info.plist */,
 				EF21C869294C5FD900E3661D /* AppDelegate.swift */,
-				EFBE736A295AF489009A5AAD /* AppNetConfig.swift */,
 				EF21C86B294C5FD900E3661D /* SceneDelegate.swift */,
-				EF21C891294C615200E3661D /* AppConsts.swift */,
-				EFBFCCFA29505E190006DD79 /* Extensions.swift */,
-				EF21C893294C615E00E3661D /* DLog.swift */,
+				EFBE736D295B08D0009A5AAD /* AppConfiguration */,
+				EFBE736C295B0880009A5AAD /* AppExtensions */,
 				EF21C87E294C5FF300E3661D /* Models */,
 				EF21C87D294C5FE500E3661D /* DataManagers */,
 				EF21C880294C600E00E3661D /* Controllers */,
@@ -193,6 +191,25 @@
 				EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
+			sourceTree = "<group>";
+		};
+		EFBE736C295B0880009A5AAD /* AppExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				EFBFCCFA29505E190006DD79 /* Extensions.swift */,
+				EF21C893294C615E00E3661D /* DLog.swift */,
+			);
+			path = AppExtensions;
+			sourceTree = "<group>";
+		};
+		EFBE736D295B08D0009A5AAD /* AppConfiguration */ = {
+			isa = PBXGroup;
+			children = (
+				EF21C891294C615200E3661D /* AppConsts.swift */,
+				EFBE736A295AF489009A5AAD /* AppNetConfig.swift */,
+			);
+			name = AppConfiguration;
+			path = AppExtensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
