@@ -24,8 +24,6 @@ class StarsView: UIStackView {
         super.init(frame: .zero)
         configureViews()
     }
-    
-    
     let ratingLabel = UILabel()
     
     func configureViews() {
@@ -35,7 +33,6 @@ class StarsView: UIStackView {
         ratingLabel.text = String(format: "%.1f", rating)
         ratingLabel.textColor = .systemYellow
        
-        
         ///Rating Stars
         let starsCount = Int(rating / 1.5)
         var lastPosition = ratingLabel.rightAnchor
@@ -52,7 +49,6 @@ class StarsView: UIStackView {
             star.topAnchor.constraint(equalTo: ratingLabel.topAnchor).isActive = true
             lastPosition = star.rightAnchor
         }
-        
         ///Empty Star
         if starsCount < 5 {
             for _ in 1...5 - starsCount {
@@ -66,17 +62,12 @@ class StarsView: UIStackView {
                 lastPosition = emptyStar.rightAnchor
             }
         }
-        
-        
         let padding: CGFloat = .smallPadding*2.5 + starWidth*3
-        
         let constraints = [
             ratingLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             ratingLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -padding)
         ]
         NSLayoutConstraint.activate(constraints)
-        
     }
-    
 }
 

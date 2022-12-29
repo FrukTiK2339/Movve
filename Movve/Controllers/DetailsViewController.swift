@@ -43,8 +43,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDetailsLoading, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDetailsLoading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDataLoading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDataLoading, object: nil)
     }
     
     private func setupUI() {
@@ -195,7 +195,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithMovieData() {
-        guard let movieOverview = dataManager.movieOverview else {
+        guard let movieOverview = dataManager.movieData else {
             DLog("No data received from DataManager!")
             return
         }
@@ -242,7 +242,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithTVShowData() {
-        guard let tvshowOverview = dataManager.tvshowOverview else {
+        guard let tvshowOverview = dataManager.tvshowData else {
             DLog("No data received from DataManager!")
             return
         }
@@ -304,14 +304,12 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.loadingIndicator.startAnimating()
             self.loadingIndicator.isHidden = false
         }
-        
     }
     
     private func hideLoadingIndicator() {
         DispatchQueue.main.async {
             self.loadingIndicator.stopAnimating()
             self.loadingIndicator.isHidden = true
-            
         }
     }
     

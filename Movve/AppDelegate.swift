@@ -15,10 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         ///Create main URL Session
-        let config = URLSessionConfiguration.default
-        let operQ = OperationQueue()
-        operQ.maxConcurrentOperationCount = 3
-        ImageLoader.shared.urlSession = URLSession(configuration: config, delegate: nil, delegateQueue: operQ)
+        NetApiFacade.shared.setupURLSession()
         
         return true
     }

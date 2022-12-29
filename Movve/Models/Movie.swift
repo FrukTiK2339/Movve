@@ -13,13 +13,6 @@ public struct Movie {
     var title: String
     var releaseDate: String
     var posterImage: UIImage?
-
-    init(id: Int, title: String, releaseDate: String, posterImage: UIImage?) {
-        self.id = id
-        self.title = title
-        self.releaseDate = releaseDate
-        self.posterImage = posterImage
-    }
     
     func getReleaseDateYear() -> String {
         let dateFormatter = DateFormatter()
@@ -32,12 +25,6 @@ public struct MovieOverview {
     var info: Movie
     var details: MovieDetails
     var cast: [Cast]
-    
-    init(movieInfo: Movie, details: MovieDetails, cast: [Cast]) {
-        self.info = movieInfo
-        self.details = details
-        self.cast = cast
-    }
 }
 
 struct MovieDetails {
@@ -47,15 +34,6 @@ struct MovieDetails {
     var overview: String
     var homepage: String
     var image: UIImage?
-    
-    init(genres: [Genre], runtime: Int, rating: Double, overview: String, homepage: String, image: UIImage?) {
-        self.genres = genres
-        self.runtime = runtime
-        self.rating = rating
-        self.overview = overview
-        self.homepage = homepage
-        self.image = image
-    }
     
     func getGenres() -> String {
         var result = String()

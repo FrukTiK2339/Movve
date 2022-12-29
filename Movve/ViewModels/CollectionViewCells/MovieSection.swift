@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct TargetSection {
+struct MovveSection {
     let type: SectionType
-    let cells: [TargetCell]
+    let cells: [MovveCell]
 }
 
 enum SectionType: CaseIterable {
@@ -26,7 +26,7 @@ enum SectionType: CaseIterable {
     }
 }
 
-enum TargetCell {
+enum MovveCell {
     case movie(viewModel: Movie)
     case tvshow(viewModel: TVShow)
 }
