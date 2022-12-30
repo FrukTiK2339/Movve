@@ -10,7 +10,6 @@ import Foundation
 class MovveManager: MovveDataManagerProtocol {
     static let shared = MovveManager()
     
-    
     var movies: [Movie] = []
     var tvshows: [TVShow] = []
     var movieData: MovieOverview?
@@ -65,13 +64,13 @@ class MovveManager: MovveDataManagerProtocol {
     
     private func loadMovieData(for movie: Movie) {
         dispatchGroup.enter()
-        netApiFacade.loadDetailsData(for: movie) { [weak self] movieData in
+        netApiFacade.loadDetailsData(for: movie) { [self] movieData in
             guard movieData != nil else {
                 DLog("Bad data occured! Couldn't load movie details.")
                 return
             }
-            self?.movieData = movieData
-            self?.dispatchGroup.leave()
+            self.movieData = movieData
+            self.dispatchGroup.leave()
         }
         dispatchGroup.wait()
         dispatchGroup.notify(queue: .main) {

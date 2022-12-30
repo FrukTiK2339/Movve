@@ -1,5 +1,5 @@
 //
-//  NetRequestMovieDetails.swift
+//  NetRequestTVShowOverview.swift
 //  Movve
 //
 //  Created by Дмитрий Рыбаков on 30.12.2022.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-class NetRequestMovieDetails {
+class NetRequestTVShowDetails {
     
-    func getDetails(with url: URL, _ urlSession: URLSession, result: @escaping (MovieDetails?) -> Void) {
+    func getDetails(with url: URL, _ urlSession: URLSession, result: @escaping (TVShowDetails?) -> Void) {
         netRequester.processRequest(with: url, urlSession) { details in
             guard let details = details else {
                 DLog("Error processing TVShow Details call.")
@@ -20,21 +20,22 @@ class NetRequestMovieDetails {
         }
     }
     
-    //MARK: - Private
+    //MARK: - Private 
     
     private let dispatchGroup = DispatchGroup()
     
-    private func parseJSON(_ detailDict: [String: Any]) -> MovieDetails? {
+    private func parseJSON(_ detailDict: [String: Any]) -> TVShowDetails? {
+        
         guard let genresDict = detailDict["genres"] as? [[String: Any]],
               let homepage = detailDict["homepage"] as? String,
               let overview = detailDict["overview"] as? String,
               let rating = detailDict["vote_average"] as? Double,
-              let runtime = detailDict["runtime"] as? Int,
+              let seasons = detailDict["seasons"] as? [[String: Any]],
               let imageStr = detailDict["backdrop_path"] as? String
         else {
             return nil
         }
-        var receivedDetails: MovieDetails?
+        var receivedDetails: TVShowDetails?
         
         var receivedGenres = [Genre]()
         for genreDict in genresDict {
@@ -49,10 +50,10 @@ class NetRequestMovieDetails {
         }
         dispatchGroup.enter()
         imageLoader.download(with: imageStr) { [weak self] image in
-            receivedDetails = MovieDetails(
+            receivedDetails = TVShowDetails(
                 genres: receivedGenres,
-                runtime: runtime,
                 rating: rating,
+                seasons: seasons.count,
                 overview: overview,
                 homepage: homepage,
                 image: image

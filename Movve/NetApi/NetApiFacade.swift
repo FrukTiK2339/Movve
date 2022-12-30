@@ -14,16 +14,16 @@ class NetApiFacade: NetApiFacadeProtocol {
     
     func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void) {
         ///generate URL
-        generateURL(with: movve, category)
+        url = urlGenerator.generateCategoryURL(with: movve, category)
         
         guard let masterURL = url, let masterURLSession = urlSession else {
             DLog("Error: masterURL/masterURLSession == nil")
             result(nil)
             return
         }
-        DLog("\(movve)")
+        
         let request = NetRequestMovve(with: movve)
-        request.process(with: masterURL, masterURLSession, result: { data in
+        request.getMovve(with: masterURL, masterURLSession, result: { data in
             guard data != nil else {
                 DLog("")
                 result(nil)
@@ -34,11 +34,23 @@ class NetApiFacade: NetApiFacadeProtocol {
     }
     
     func loadDetailsData(for movie: Movie, result: @escaping (MovieOverview?) -> Void) {
-        generateURL(with: movie)
+        guard let details = getMovieDetails(for: movie),
+              let cast = getCast(for: movie) else {
+            DLog("Error: details/cast data == nil")
+            return
+        }
+        let movieOverview = MovieOverview(info: movie, details: details, cast: cast)
+        result(movieOverview)
     }
     
     func loadDetailsData(for tvshow: TVShow, result: @escaping (TVShowOverview?) -> Void) {
-        generateURL(with: tvshow)
+        guard let details = getTVShowDetails(for: tvshow),
+              let cast = getCast(for: tvshow) else {
+            DLog("Error: details/cast data == nil")
+            return
+        }
+        let tvshowOverview = TVShowOverview(info: tvshow, details: details, cast: cast)
+        result(tvshowOverview)
     }
     
     func setupURLSession() {
@@ -51,32 +63,79 @@ class NetApiFacade: NetApiFacadeProtocol {
     //MARK: - Private
     private var url: URL?
    
+    private let dispatchGroup = DispatchGroup()
     
-    private func generateURL(with movve: Movve, _ category: MovveCategory) {
-        let urlStr: String = .dataURLBasic + movve.urlPart + category.urlPart + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL.")
-            return
+    private func getMovieDetails(for movie: Movie) -> MovieDetails? {
+        url = urlGenerator.generateDetailsURL(with: movie, movve: .movie)
+        DLog(self.url)
+        guard let masterURL = url, let masterURLSession = urlSession else {
+            DLog("Error: masterURL/masterURLSession == nil")
+            return nil
         }
-        self.url = url
+        
+        var movieDetails: MovieDetails?
+        let requestDetails = NetRequestMovieDetails()
+        dispatchGroup.enter()
+        requestDetails.getDetails(with: masterURL, masterURLSession, result: { details in
+            guard details != nil else {
+                DLog("")
+                return
+            }
+            movieDetails = details
+            self.dispatchGroup.leave()
+        })
+        dispatchGroup.wait()
+        return movieDetails
     }
     
-    private func generateURL(with movie: Movie, movve: Movve? = .movie) {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(movie.id)" + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for movie.")
-            return
+    private func getTVShowDetails(for tvshow: TVShow) -> TVShowDetails? {
+        url = urlGenerator.generateDetailsURL(with: tvshow, movve: .tvshow)
+        
+        guard let masterURL = url, let masterURLSession = urlSession else {
+            DLog("Error: masterURL/masterURLSession == nil")
+            return nil
         }
-        self.url = url
+        
+        var tvshowDetails: TVShowDetails?
+        let requestDetails = NetRequestTVShowDetails()
+        dispatchGroup.enter()
+        requestDetails.getDetails(with: masterURL, masterURLSession, result: { details in
+            guard details != nil else {
+                DLog("")
+                return
+            }
+            tvshowDetails = details
+            self.dispatchGroup.leave()
+        })
+        dispatchGroup.wait()
+        return tvshowDetails
     }
     
-    private func generateURL(with tvshow: TVShow, movve: Movve? = .tvshow) {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(tvshow.id)" + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for tvshow.")
-            return
+    private func getCast(for target: Any) -> [Cast]?{
+        if let movie = target as? Movie {
+            url = urlGenerator.generateCastURL(with: movie, movve: .movie)
+        } else if let tvshow = target as? TVShow {
+            url = urlGenerator.generateCastURL(with: tvshow, movve: .tvshow)
         }
-        self.url = url
+        DLog(url)
+        
+        guard let masterURL = url, let masterURLSession = urlSession else {
+            DLog("Error: masterURL/masterURLSession == nil")
+            return nil
+        }
+        
+        var cast: [Cast]?
+        let requestCast = NetRequestActorCast()
+        dispatchGroup.enter()
+        requestCast.getCast(with: masterURL, masterURLSession) { castData in
+            guard castData != nil else {
+                DLog("Occured nil Actor Cast Data.")
+                return
+            }
+            cast = castData
+            self.dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        return cast
     }
-    
 }

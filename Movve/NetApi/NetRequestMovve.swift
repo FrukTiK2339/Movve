@@ -15,41 +15,21 @@ class NetRequestMovve {
         self.movve = movve
     }
     
-    func process(with url: URL,_ urlSession: URLSession, result: @escaping ([Any]?) -> Void) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        urlSession.dataTask(with: request, completionHandler: { [self] data, response, error in
-            
-            guard let httpResponse = response as? HTTPURLResponse, let data = data else {
-                DLog("Error: Not a valid http response. Check your VPN")
+    func getMovve(with url: URL,_ urlSession: URLSession, result: @escaping ([Any]?) -> Void) {
+        netRequester.processRequest(with: url, urlSession) { data in
+            guard let recivedData = data else {
+                DLog("Error processing Movve call.")
                 result(nil)
                 return
             }
-            switch httpResponse.statusCode {
-            case 200:
-                do {
-                    guard let recivedData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-                        result(nil)
-                        return
-                    }
-                    switch self.movve {
-                    case .movie:
-                        result(self.parseMovieJSON(for: recivedData))
-                    case .tvshow:
-                        result(self.parseTVShowJSON(for: recivedData))
-                   
-                    }
-                }
-            case 400:
-                DLog("Status code - 400.")
-                fallthrough
-            default:
-                result(nil)
+            switch self.movve {
+            case .movie:
+                result(self.parseMovieJSON(for: recivedData))
+            case .tvshow:
+                result(self.parseTVShowJSON(for: recivedData))
+           
             }
-        }).resume()
+        }
     }
     
     //MARK: - Private
