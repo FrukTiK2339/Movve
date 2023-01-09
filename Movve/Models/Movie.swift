@@ -15,8 +15,7 @@ public struct Movie {
     var posterImage: UIImage?
     
     func getReleaseDateYear() -> String {
-        let dateFormatter = DateFormatter()
-        return dateFormatter.showOnlyYear(from: releaseDate)
+        return DateFormatter.showOnlyYear(from: releaseDate)
     }
 }
 

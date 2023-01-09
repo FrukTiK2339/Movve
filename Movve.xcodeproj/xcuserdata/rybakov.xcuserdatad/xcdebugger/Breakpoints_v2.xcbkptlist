@@ -110,8 +110,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
             landmarkName = "loadData(for:category:result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,8 +126,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "loadData(for:category:result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
             landmarkName = "getMovieDetails(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "Movve/DataManagers/MovveManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "loadTVShowData(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +174,8 @@
             filePath = "Movve/DataManagers/MovveManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "loadMovieData(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "Movve/DataManagers/MovveManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "loadMovieData(for:)"
             landmarkType = "7">
             <Locations>
@@ -253,8 +253,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "loadDetailsData(for:result:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -269,10 +269,42 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "loadDetailsData(for:result:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EA96CC97-2859-4941-84BD-7A410E1216D4 - 69f560e8823819b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.loadDetailsData(for: Movve.Movie, result: (Swift.Optional&lt;Movve.MovieOverview&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "EA96CC97-2859-4941-84BD-7A410E1216D4 - 69f560e8823819b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.loadDetailsData(for: Movve.Movie, result: (Swift.Optional&lt;Movve.MovieOverview&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "144">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -285,8 +317,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "getCast(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -301,10 +333,42 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "getCast(for:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9F4789BB-4B69-4DEF-A7FD-3100C447A590 - de29fe95504283fe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.getCast(for: Any) -&gt; Swift.Optional&lt;Swift.Array&lt;Movve.Cast&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "1644">
+               </Location>
+               <Location
+                  uuid = "9F4789BB-4B69-4DEF-A7FD-3100C447A590 - de29fe95504283fe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.getCast(for: Any) -&gt; Swift.Optional&lt;Swift.Array&lt;Movve.Cast&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "1820">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

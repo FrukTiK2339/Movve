@@ -53,9 +53,9 @@ extension CGFloat {
 }
 
 extension UIImage {
-    static let noImage     : UIImage? = UIImage(systemName: "xmark")
-    static let dismissImage: UIImage? = UIImage(systemName: "chevron.down")
-    static let starImage   : UIImage? = UIImage(systemName: "star.fill")
+    static let noImage      = UIImage(systemName: "xmark")
+    static let dismissImage = UIImage(systemName: "chevron.down")
+    static let starImage    = UIImage(systemName: "star.fill")
 }
 
 extension UIColor {
@@ -66,10 +66,10 @@ extension UIColor {
 }
 
 extension String {
-    static let appIconTitleAddon  : String = "Watch on"
-    static let appIconTittleFull  : String = "Movve"
-    static let appIconTittleFirst : String = "Mov"
-    static let appIconTittleSecond: String = "ve"
+    static let appIconTitleAddon   = "Watch on"
+    static let appIconTittleFull   = "Movve"
+    static let appIconTittleFirst  = "Mov"
+    static let appIconTittleSecond = "ve"
     
     static let castSectionTitle     = "Cast"
     static let overviewSectionTitle = "Overview"
@@ -77,5 +77,5 @@ extension String {
 }
 
 extension CGSize {
-    static let castRowSize: CGSize = CGSize(width: 90, height: 120)
+    static let castRowSize = CGSize(width: 90, height: 120)
 }

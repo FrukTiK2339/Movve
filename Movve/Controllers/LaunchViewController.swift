@@ -7,6 +7,12 @@
 
 import UIKit
 
+extension LaunchViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class LaunchViewController: UIViewController {
     
     private let iconLabel = UILabel()

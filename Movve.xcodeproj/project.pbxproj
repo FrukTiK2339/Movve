@@ -26,23 +26,22 @@
 		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
 		EF3C2425295DB81000AD6A7A /* MovveDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2424295DB81000AD6A7A /* MovveDataProvider.swift */; };
 		EF3C2427295DB8B100AD6A7A /* MovveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2426295DB8B100AD6A7A /* MovveManager.swift */; };
-		EF3C2429295DC0A100AD6A7A /* NetApiFacadeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2428295DC0A100AD6A7A /* NetApiFacadeProvider.swift */; };
 		EF3C242B295DC40B00AD6A7A /* MovveEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242A295DC40B00AD6A7A /* MovveEnum.swift */; };
 		EF3C242D295DD80800AD6A7A /* NetApiFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242C295DD80800AD6A7A /* NetApiFacade.swift */; };
 		EF3C242F295DE9E500AD6A7A /* NetRequestMovve.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242E295DE9E500AD6A7A /* NetRequestMovve.swift */; };
-		EF3C2431295DECCB00AD6A7A /* NetImageLoaderProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2430295DECCB00AD6A7A /* NetImageLoaderProvider.swift */; };
 		EF3C2433295DED1500AD6A7A /* NetImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */; };
+		EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7694D4296C415100F4CC96 /* URLSessionManager.swift */; };
 		EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBE736A295AF489009A5AAD /* AppNetConfig.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
 		EFD4429B295ED29500EA6775 /* NetRequestTVShowDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4429A295ED29500EA6775 /* NetRequestTVShowDetails.swift */; };
 		EFD4429D295ED64300EA6775 /* NetRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4429C295ED64300EA6775 /* NetRequester.swift */; };
-		EFD4429F295EDC4D00EA6775 /* NetRequesterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4429E295EDC4D00EA6775 /* NetRequesterProvider.swift */; };
 		EFD442A1295EDE5800EA6775 /* NetRequestActorCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442A0295EDE5800EA6775 /* NetRequestActorCast.swift */; };
 		EFD442A6295EDFFC00EA6775 /* NetRequestMovieDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442A5295EDFFC00EA6775 /* NetRequestMovieDetails.swift */; };
-		EFD442A8295EF91600EA6775 /* URLGeneratorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442A7295EF91600EA6775 /* URLGeneratorProvider.swift */; };
+		EFD442A8295EF91600EA6775 /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442A7295EF91600EA6775 /* DI.swift */; };
 		EFD442AA295EF92800EA6775 /* URLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442A9295EF92800EA6775 /* URLGenerator.swift */; };
+		EFD442AC295F2C3000EA6775 /* NetRequestBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD442AB295F2C3000EA6775 /* NetRequestBasic.swift */; };
 		EFD7ADD42951B445002E47B5 /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD32951B445002E47B5 /* RatingView.swift */; };
-		EFD7ADD62951D149002E47B5 /* HorizontalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */; };
+		EFD7ADD62951D149002E47B5 /* CastHorizontalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD7ADD52951D148002E47B5 /* CastHorizontalCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,23 +66,22 @@
 		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		EF3C2424295DB81000AD6A7A /* MovveDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovveDataProvider.swift; sourceTree = "<group>"; };
 		EF3C2426295DB8B100AD6A7A /* MovveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovveManager.swift; sourceTree = "<group>"; };
-		EF3C2428295DC0A100AD6A7A /* NetApiFacadeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetApiFacadeProvider.swift; sourceTree = "<group>"; };
 		EF3C242A295DC40B00AD6A7A /* MovveEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovveEnum.swift; sourceTree = "<group>"; };
 		EF3C242C295DD80800AD6A7A /* NetApiFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetApiFacade.swift; sourceTree = "<group>"; };
 		EF3C242E295DE9E500AD6A7A /* NetRequestMovve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestMovve.swift; sourceTree = "<group>"; };
-		EF3C2430295DECCB00AD6A7A /* NetImageLoaderProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageLoaderProvider.swift; sourceTree = "<group>"; };
 		EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageLoader.swift; sourceTree = "<group>"; };
+		EF7694D4296C415100F4CC96 /* URLSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
 		EFBE736A295AF489009A5AAD /* AppNetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetConfig.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EFD4429A295ED29500EA6775 /* NetRequestTVShowDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestTVShowDetails.swift; sourceTree = "<group>"; };
 		EFD4429C295ED64300EA6775 /* NetRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequester.swift; sourceTree = "<group>"; };
-		EFD4429E295EDC4D00EA6775 /* NetRequesterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequesterProvider.swift; sourceTree = "<group>"; };
 		EFD442A0295EDE5800EA6775 /* NetRequestActorCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestActorCast.swift; sourceTree = "<group>"; };
 		EFD442A5295EDFFC00EA6775 /* NetRequestMovieDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestMovieDetails.swift; sourceTree = "<group>"; };
-		EFD442A7295EF91600EA6775 /* URLGeneratorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLGeneratorProvider.swift; sourceTree = "<group>"; };
+		EFD442A7295EF91600EA6775 /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		EFD442A9295EF92800EA6775 /* URLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLGenerator.swift; sourceTree = "<group>"; };
+		EFD442AB295F2C3000EA6775 /* NetRequestBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetRequestBasic.swift; sourceTree = "<group>"; };
 		EFD7ADD32951B445002E47B5 /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
-		EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCollectionViewCell.swift; sourceTree = "<group>"; };
+		EFD7ADD52951D148002E47B5 /* CastHorizontalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastHorizontalCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				EF3C242C295DD80800AD6A7A /* NetApiFacade.swift */,
+				EFD442AB295F2C3000EA6775 /* NetRequestBasic.swift */,
 				EF3C242E295DE9E500AD6A7A /* NetRequestMovve.swift */,
 				EFD4429A295ED29500EA6775 /* NetRequestTVShowDetails.swift */,
 				EFD442A5295EDFFC00EA6775 /* NetRequestMovieDetails.swift */,
@@ -162,7 +161,8 @@
 				EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */,
 				EFD4429C295ED64300EA6775 /* NetRequester.swift */,
 				EFD442A9295EF92800EA6775 /* URLGenerator.swift */,
-				EFD442A2295EDF8000EA6775 /* Providers */,
+				EF7694D4296C415100F4CC96 /* URLSessionManager.swift */,
+				EFD442A7295EF91600EA6775 /* DI.swift */,
 			);
 			path = NetApi;
 			sourceTree = "<group>";
@@ -202,7 +202,7 @@
 				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
 				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
 				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
-				EFD7ADD52951D148002E47B5 /* HorizontalCollectionViewCell.swift */,
+				EFD7ADD52951D148002E47B5 /* CastHorizontalCollectionViewCell.swift */,
 			);
 			path = CollectionViewCells;
 			sourceTree = "<group>";
@@ -241,17 +241,6 @@
 			);
 			name = AppConfiguration;
 			path = AppExtensions;
-			sourceTree = "<group>";
-		};
-		EFD442A2295EDF8000EA6775 /* Providers */ = {
-			isa = PBXGroup;
-			children = (
-				EFD442A7295EF91600EA6775 /* URLGeneratorProvider.swift */,
-				EFD4429E295EDC4D00EA6775 /* NetRequesterProvider.swift */,
-				EF3C2430295DECCB00AD6A7A /* NetImageLoaderProvider.swift */,
-				EF3C2428295DC0A100AD6A7A /* NetApiFacadeProvider.swift */,
-			);
-			path = Providers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,14 +315,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */,
-				EF3C2431295DECCB00AD6A7A /* NetImageLoaderProvider.swift in Sources */,
 				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
-				EFD442A8295EF91600EA6775 /* URLGeneratorProvider.swift in Sources */,
+				EFD442A8295EF91600EA6775 /* DI.swift in Sources */,
 				EFD4429B295ED29500EA6775 /* NetRequestTVShowDetails.swift in Sources */,
 				EFD442AA295EF92800EA6775 /* URLGenerator.swift in Sources */,
 				EF3C242D295DD80800AD6A7A /* NetApiFacade.swift in Sources */,
 				EF21C896294C65D200E3661D /* LaunchViewController.swift in Sources */,
 				EFD7ADD42951B445002E47B5 /* RatingView.swift in Sources */,
+				EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */,
 				EF3C2425295DB81000AD6A7A /* MovveDataProvider.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
 				EF3C242B295DC40B00AD6A7A /* MovveEnum.swift in Sources */,
@@ -341,15 +330,14 @@
 				EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */,
 				EF21C89C294C6ACC00E3661D /* MovieSection.swift in Sources */,
 				EFD442A6295EDFFC00EA6775 /* NetRequestMovieDetails.swift in Sources */,
-				EF3C2429295DC0A100AD6A7A /* NetApiFacadeProvider.swift in Sources */,
 				EFD4429D295ED64300EA6775 /* NetRequester.swift in Sources */,
 				EF21C892294C615200E3661D /* AppConsts.swift in Sources */,
 				EF21C8A5294C809B00E3661D /* BasicDetails.swift in Sources */,
 				EF21C894294C615E00E3661D /* DLog.swift in Sources */,
 				EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */,
-				EFD4429F295EDC4D00EA6775 /* NetRequesterProvider.swift in Sources */,
+				EFD442AC295F2C3000EA6775 /* NetRequestBasic.swift in Sources */,
 				EF3C2433295DED1500AD6A7A /* NetImageLoader.swift in Sources */,
-				EFD7ADD62951D149002E47B5 /* HorizontalCollectionViewCell.swift in Sources */,
+				EFD7ADD62951D149002E47B5 /* CastHorizontalCollectionViewCell.swift in Sources */,
 				EFD442A1295EDE5800EA6775 /* NetRequestActorCast.swift in Sources */,
 				EF3C2427295DB8B100AD6A7A /* MovveManager.swift in Sources */,
 				EF21C86A294C5FD900E3661D /* AppDelegate.swift in Sources */,
@@ -514,7 +502,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -548,7 +536,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

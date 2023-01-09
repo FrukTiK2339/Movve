@@ -7,16 +7,22 @@
 
 import UIKit
 
+protocol NetImageLoaderProtocol: AnyObject {
+    func download(with urlString: String, completion: @escaping (UIImage?) -> Void)
+}
+
+extension NetImageLoader: URLSessionProvider {
+    var urlSessionProvider: URLSessionManagerProtocol {
+        return URLSessionManager.shared
+    }
+}
+
 class NetImageLoader: NetImageLoaderProtocol {
     static let shared = NetImageLoader()
     
-    var urlSession: URLSession? {
-        return NetApiFacade.shared.urlSession
-    }
-    
     func download(with urlString: String, completion: @escaping (UIImage?) -> Void) {
         let urlStr: String = .imageURLBasic + urlString
-        guard let url = URL(string: urlStr), let urlSession = urlSession else {
+        guard let url = URL(string: urlStr), let urlSession = urlSessionProvider.urlSession else {
             DLog("Invalid url")
             completion(nil)
             return

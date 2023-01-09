@@ -14,8 +14,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
     private let movieTitleLabel = UILabel ()
     private let dateReleaseLabel = UILabel()
     
-    private let dateFormatter = DateFormatter()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupContentView()
@@ -84,7 +82,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
         }
         
         movieTitleLabel.text = viewModel.title
-        dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
+        dateReleaseLabel.text = DateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }
 

@@ -7,6 +7,12 @@
 
 import Foundation
 
+extension MovveManager: NetApiFacadeProviderProtocol {
+    var netApiFacade: NetApiFacadeProtocol {
+        return NetApiFacade.shared
+    }
+}
+
 class MovveManager: MovveDataManagerProtocol {
     static let shared = MovveManager()
     
@@ -42,6 +48,7 @@ class MovveManager: MovveDataManagerProtocol {
         netApiFacade.loadData(for: movve, category: category) { [weak self] movveData in
             guard movveData != nil else {
                 DLog("Bad data occured! Couldn't load data.")
+                NotificationCenter.default.post(name: NSNotification.Name.errorLoadingData, object: nil)
                 return
             }
             switch movve {
@@ -67,6 +74,7 @@ class MovveManager: MovveDataManagerProtocol {
         netApiFacade.loadDetailsData(for: movie) { [self] movieData in
             guard movieData != nil else {
                 DLog("Bad data occured! Couldn't load movie details.")
+                NotificationCenter.default.post(name: NSNotification.Name.errorLoadingData, object: nil)
                 return
             }
             self.movieData = movieData

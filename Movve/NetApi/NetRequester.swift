@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol NetRequesterProtocol: AnyObject {
+    func processRequest(with url: URL, _ urlSession: URLSession, result: @escaping ([String: Any]?) -> Void)
+}
+
 class NetRequester: NetRequesterProtocol {
     
     func processRequest(with url: URL, _ urlSession: URLSession, result: @escaping ([String: Any]?) -> Void) {

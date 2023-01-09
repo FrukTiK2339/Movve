@@ -11,8 +11,6 @@ class TVShowCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "TVShowCollectionViewCell"
     
-    private let dateFormatter = DateFormatter()
-    
     private let posterImageView = UIImageView()
     private let tvShowTitleLabel = UILabel ()
     private let dateReleaseLabel = UILabel()
@@ -85,7 +83,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
         }
         
         tvShowTitleLabel.text = viewModel.name
-        dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
+        dateReleaseLabel.text = DateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }
 

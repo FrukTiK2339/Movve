@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetRequestMovieDetails {
+class NetRequestMovieDetails: NetRequestBasic {
     
     func getDetails(with url: URL, _ urlSession: URLSession, result: @escaping (MovieDetails?) -> Void) {
         netRequester.processRequest(with: url, urlSession) { details in
