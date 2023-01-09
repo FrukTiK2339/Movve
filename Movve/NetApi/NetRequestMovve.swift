@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetRequestMovve {
+class NetRequestMovve: NetRequestBasic {
     
     var movve: Movve
     

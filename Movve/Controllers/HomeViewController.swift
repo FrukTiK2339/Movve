@@ -7,6 +7,12 @@
 
 import UIKit
 
+extension HomeViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private var iconLabel = UILabel()
@@ -74,6 +80,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func setupUI() {
         view.backgroundColor = .mainAppColor
         
+        
         guard let collectionView = collectionView else {
             fatalError()
         }
@@ -139,7 +146,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func showDetailsVC() {
         DispatchQueue.main.async {
-        let vc = DetailsViewController()
+            let vc = DetailsViewController()
+            let backButton = UIBarButtonItem()
+            backButton.title = .none
+            self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

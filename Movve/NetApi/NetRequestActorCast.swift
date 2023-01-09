@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetRequestActorCast {
+class NetRequestActorCast: NetRequestBasic {
     
     func getCast(with url: URL, _ urlSession: URLSession, result: @escaping ([Cast]?) -> Void) {
         netRequester.processRequest(with: url, urlSession) { data in

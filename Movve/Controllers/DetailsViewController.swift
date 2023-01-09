@@ -8,6 +8,12 @@
 import UIKit
 import SafariServices
 
+extension DetailsViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class DetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
       
     private var loadingIndicator = UIActivityIndicatorView()
@@ -49,7 +55,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
-        
+    
         castCollectionView.delegate = self
         castCollectionView.dataSource = self
         addSubviews()
@@ -126,7 +132,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         castSectionLabel.text = .castSectionTitle
         
         castCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        castCollectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
+        castCollectionView.register(CastHorizontalCollectionViewCell.self, forCellWithReuseIdentifier: CastHorizontalCollectionViewCell.identifier)
         castCollectionView.showsHorizontalScrollIndicator = false
         castCollectionView.backgroundColor = .mainAppColor
         
@@ -348,7 +354,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalCollectionViewCell.identifier, for: indexPath) as? HorizontalCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastHorizontalCollectionViewCell.identifier, for: indexPath) as? CastHorizontalCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(with: cast[indexPath.row])
         return cell
     }

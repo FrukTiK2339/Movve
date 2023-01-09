@@ -14,8 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        ///Create main URL Session
-        NetApiFacade.shared.setupURLSession()
+        //Config Nav Bar
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = .mainAppColor
+        navBarAppearance.shadowColor = .clear
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
+        
+        //Config UrlSession
+        URLSessionManager.shared.configureURLSession()
         
         return true
     }

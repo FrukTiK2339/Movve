@@ -7,17 +7,27 @@
 
 import Foundation
 
+protocol NetApiFacadeProtocol: AnyObject {
+    func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void)
+    func loadDetailsData(for movie: Movie, result: @escaping (MovieOverview?) -> Void)
+    func loadDetailsData(for tvshow: TVShow, result: @escaping (TVShowOverview?) -> Void)
+}
+
+extension NetApiFacade: URLSessionProvider {
+    var urlSessionProvider: URLSessionManagerProtocol {
+        return URLSessionManager.shared
+    }
+}
+
 class NetApiFacade: NetApiFacadeProtocol {
-    static let shared = NetApiFacade()
-    
-    var urlSession: URLSession?
+    static let shared: NetApiFacadeProtocol = NetApiFacade()
     
     func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void) {
         ///generate URL
         url = urlGenerator.generateCategoryURL(with: movve, category)
         
-        guard let masterURL = url, let masterURLSession = urlSession else {
-            DLog("Error: masterURL/masterURLSession == nil")
+        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
+            DLog("Error: masterURL/masterURLSession == nil /n URL = \(String(describing: url))")
             result(nil)
             return
         }
@@ -53,23 +63,18 @@ class NetApiFacade: NetApiFacadeProtocol {
         result(tvshowOverview)
     }
     
-    func setupURLSession() {
-        let config = URLSessionConfiguration.default
-        let operQueue = OperationQueue()
-        operQueue.maxConcurrentOperationCount = 3
-        self.urlSession = URLSession(configuration: config, delegate: nil, delegateQueue: operQueue)
-    }
-    
     //MARK: - Private
     private var url: URL?
    
+    fileprivate init() {}
+        
     private let dispatchGroup = DispatchGroup()
     
     private func getMovieDetails(for movie: Movie) -> MovieDetails? {
         url = urlGenerator.generateDetailsURL(with: movie, movve: .movie)
         DLog(self.url)
-        guard let masterURL = url, let masterURLSession = urlSession else {
-            DLog("Error: masterURL/masterURLSession == nil")
+        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
+            DLog("Error: masterURL/masterURLSession == nil /n URL = \(String(describing: url))")
             return nil
         }
         
@@ -91,7 +96,7 @@ class NetApiFacade: NetApiFacadeProtocol {
     private func getTVShowDetails(for tvshow: TVShow) -> TVShowDetails? {
         url = urlGenerator.generateDetailsURL(with: tvshow, movve: .tvshow)
         
-        guard let masterURL = url, let masterURLSession = urlSession else {
+        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
             DLog("Error: masterURL/masterURLSession == nil")
             return nil
         }
@@ -119,7 +124,7 @@ class NetApiFacade: NetApiFacadeProtocol {
         }
         DLog(url)
         
-        guard let masterURL = url, let masterURLSession = urlSession else {
+        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
             DLog("Error: masterURL/masterURLSession == nil")
             return nil
         }

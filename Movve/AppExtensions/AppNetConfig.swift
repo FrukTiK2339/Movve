@@ -14,29 +14,6 @@ extension String {
     static let castURLPart   = "/credits"
 }
 
-extension DetailsViewController: MovveDataManagerProviderProtocol {
-    var dataManager: MovveDataManagerProtocol {
-        return MovveManager.shared
-    }
-}
-
-extension HomeViewController: MovveDataManagerProviderProtocol {
-    var dataManager: MovveDataManagerProtocol {
-        return MovveManager.shared
-    }
-}
-
-extension LaunchViewController: MovveDataManagerProviderProtocol {
-    var dataManager: MovveDataManagerProtocol {
-        return MovveManager.shared
-    }
-}
-
-extension MovveManager: NetApiFacadeProviderProtocol {
-    var netApiFacade: NetApiFacadeProtocol {
-        return NetApiFacade.shared
-    }
-}
 
 extension NetApiFacade: URLGeneratorProviderProtocol {
     var urlGenerator: URLGeneratorProtocol {
@@ -44,37 +21,9 @@ extension NetApiFacade: URLGeneratorProviderProtocol {
     }
 }
 
-extension NetRequestMovve: NetImageLoaderProviderProtocol, NetRequesterProviderProtocol {
-    var imageLoader: NetImageLoaderProtocol {
-        return NetImageLoader.shared
-    }
-    
-    var netRequester: NetRequesterProtocol {
-        return NetRequester()
-    }
-}
+typealias NetRequestService = NetImageLoaderProviderProtocol & NetRequesterProviderProtocol
 
-extension NetRequestTVShowDetails: NetImageLoaderProviderProtocol, NetRequesterProviderProtocol {
-    var imageLoader: NetImageLoaderProtocol {
-        return NetImageLoader.shared
-    }
-    
-    var netRequester: NetRequesterProtocol {
-        return NetRequester()
-    }
-}
-
-extension NetRequestMovieDetails: NetImageLoaderProviderProtocol, NetRequesterProviderProtocol {
-    var imageLoader: NetImageLoaderProtocol {
-        return NetImageLoader.shared
-    }
-    
-    var netRequester: NetRequesterProtocol {
-        return NetRequester()
-    }
-}
-
-extension NetRequestActorCast: NetImageLoaderProviderProtocol, NetRequesterProviderProtocol {
+extension NetRequestBasic: NetRequestService {
     var imageLoader: NetImageLoaderProtocol {
         return NetImageLoader.shared
     }

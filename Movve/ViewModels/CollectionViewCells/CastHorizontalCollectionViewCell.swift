@@ -7,9 +7,9 @@
 
 import UIKit
 
-class HorizontalCollectionViewCell: UICollectionViewCell {
+class CastHorizontalCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "HorizontalCollectionViewCell"
+    static let identifier = "CastHorizontalCollectionViewCell"
     
     private let imageView = UIImageView()
     private let actorNameLabel = UILabel()
@@ -63,11 +63,9 @@ class HorizontalCollectionViewCell: UICollectionViewCell {
             actorNameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor),
             actorNameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             actorNameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-            actorNameLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
 
             characterNameLabel.topAnchor.constraint(equalTo: actorNameLabel.bottomAnchor),
             characterNameLabel.widthAnchor.constraint(equalTo: actorNameLabel.widthAnchor),
-            characterNameLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
         ]
         NSLayoutConstraint.activate(constraints)
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetRequestTVShowDetails {
+class NetRequestTVShowDetails: NetRequestBasic {
     
     func getDetails(with url: URL, _ urlSession: URLSession, result: @escaping (TVShowDetails?) -> Void) {
         netRequester.processRequest(with: url, urlSession) { details in
