@@ -13,13 +13,18 @@ protocol NetApiFacadeProtocol: AnyObject {
     func loadDetailsData(for tvshow: TVShow, result: @escaping (TVShowOverview?) -> Void)
 }
 
-extension NetApiFacade: URLSessionProvider {
+extension NetApiFacade: URLSessionProvider & URLGeneratorProviderProtocol {
+    var urlGenerator: URLGeneratorProtocol {
+        return URLGenerator()
+    }
+    
     var urlSessionProvider: URLSessionManagerProtocol {
         return URLSessionManager.shared
     }
 }
 
 class NetApiFacade: NetApiFacadeProtocol {
+
     static let shared: NetApiFacadeProtocol = NetApiFacade()
     
     func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void) {

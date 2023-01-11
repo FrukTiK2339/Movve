@@ -7,6 +7,12 @@
 
 import Foundation
 
-class NetRequestBasic {
+class NetRequestBasic: NetImageLoaderProviderProtocol & NetRequesterProviderProtocol {
+    var imageLoader: NetImageLoaderProtocol {
+        return NetImageLoader.shared
+    }
     
+    var netRequester: NetRequesterProtocol {
+        return NetRequester()
+    }
 }

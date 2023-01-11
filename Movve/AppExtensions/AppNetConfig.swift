@@ -13,22 +13,3 @@ extension String {
     static let apiKey        = "?api_key=fdfae958cd30be7aefb41723716ceb03"
     static let castURLPart   = "/credits"
 }
-
-
-extension NetApiFacade: URLGeneratorProviderProtocol {
-    var urlGenerator: URLGeneratorProtocol {
-        return URLGenerator()
-    }
-}
-
-typealias NetRequestService = NetImageLoaderProviderProtocol & NetRequesterProviderProtocol
-
-extension NetRequestBasic: NetRequestService {
-    var imageLoader: NetImageLoaderProtocol {
-        return NetImageLoader.shared
-    }
-    
-    var netRequester: NetRequesterProtocol {
-        return NetRequester()
-    }
-}
