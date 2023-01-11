@@ -14,10 +14,361 @@
             filePath = "Movve/Models/RatingView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "configureViews()"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "StarsView"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2CD8D0F8-059A-4830-AC69-A30B266D04B1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetRequestMovve.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
+            landmarkName = "getMovve(with:_:result:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3B225969-AB57-40A5-9608-F0A5AC64B352"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetRequestMovve.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "parseMovieJSON(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "02743CF2-035F-4C73-B15D-BE560F5C42F9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetRequestMovve.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "parseMovieJSON(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "02743CF2-035F-4C73-B15D-BE560F5C42F9 - 9b09aae4296aa74b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetRequestMovve.parseMovieJSON(for: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; Swift.Optional&lt;Swift.Array&lt;Any&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetRequestMovve.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "1864">
+               </Location>
+               <Location
+                  uuid = "02743CF2-035F-4C73-B15D-BE560F5C42F9 - 8cbb1d724f2bcd89"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.UIImage&gt;) -&gt; () in Movve.NetRequestMovve.parseMovieJSON(for: Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; Swift.Optional&lt;Swift.Array&lt;Any&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetRequestMovve.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44"
+                  offsetFromSymbolStart = "108">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8D454AA0-DF10-4FDD-AB4C-D92DFD7F8670"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "loadData(for:category:result:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8AF6D416-2C03-419C-BAE2-BB61FE491ED1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "loadData(for:category:result:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E2647E52-7E45-41BC-81ED-E745B33E5500"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "getMovieDetails(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F970972B-38DB-4355-A25E-20AE25F239A2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/DataManagers/MovveManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
+            landmarkName = "loadTVShowData(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "81E30A2C-E8C5-41B1-8744-36023C705078"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/DataManagers/MovveManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "loadMovieData(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7CD505BC-573F-42A0-A649-CA593110D292"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/DataManagers/MovveManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "loadMovieData(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7CD505BC-573F-42A0-A649-CA593110D292 - f55398650d05363d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.MovveManager.loadMovieData(for: Movve.Movie) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/DataManagers/MovveManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "7CD505BC-573F-42A0-A649-CA593110D292 - f55398650d05363d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.MovveManager.loadMovieData(for: Movve.Movie) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/DataManagers/MovveManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "232">
+               </Location>
+               <Location
+                  uuid = "7CD505BC-573F-42A0-A649-CA593110D292 - a9e1d33d85866301"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Movve.MovieOverview&gt;) -&gt; () in Movve.MovveManager.loadMovieData(for: Movve.Movie) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/DataManagers/MovveManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7BE00948-BECB-4B0F-A6B2-D3AA8EF1024C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "loadDetailsData(for:result:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EA96CC97-2859-4941-84BD-7A410E1216D4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "loadDetailsData(for:result:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "EA96CC97-2859-4941-84BD-7A410E1216D4 - 69f560e8823819b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.loadDetailsData(for: Movve.Movie, result: (Swift.Optional&lt;Movve.MovieOverview&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "116">
+               </Location>
+               <Location
+                  uuid = "EA96CC97-2859-4941-84BD-7A410E1216D4 - 69f560e8823819b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.loadDetailsData(for: Movve.Movie, result: (Swift.Optional&lt;Movve.MovieOverview&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "144">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBBC0E3C-ACEE-438D-9B98-22DBADFC3BEF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "getCast(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9F4789BB-4B69-4DEF-A7FD-3100C447A590"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/NetApi/NetApiFacade.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "getCast(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9F4789BB-4B69-4DEF-A7FD-3100C447A590 - de29fe95504283fe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.getCast(for: Any) -&gt; Swift.Optional&lt;Swift.Array&lt;Movve.Cast&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "1644">
+               </Location>
+               <Location
+                  uuid = "9F4789BB-4B69-4DEF-A7FD-3100C447A590 - de29fe95504283fe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Movve.NetApiFacade.getCast(for: Any) -&gt; Swift.Optional&lt;Swift.Array&lt;Movve.Cast&gt;&gt;"
+                  moduleName = "Movve"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rybakov/Desktop/My%20Projects%20GIT/Movve/Movve/Movve/NetApi/NetApiFacade.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "1820">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

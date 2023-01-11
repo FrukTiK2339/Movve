@@ -7,6 +7,12 @@
 
 import UIKit
 
+extension LaunchViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class LaunchViewController: UIViewController {
     
     private let iconLabel = UILabel()
@@ -54,7 +60,7 @@ class LaunchViewController: UIViewController {
     private func normalRun() {
         showLoadingIndicator()
         DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.dataManager.getReqiedData()
+            self?.dataManager.loadReqiedData()
         }
       
     }

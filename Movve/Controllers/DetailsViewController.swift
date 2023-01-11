@@ -8,6 +8,12 @@
 import UIKit
 import SafariServices
 
+extension DetailsViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class DetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
       
     private var loadingIndicator = UIActivityIndicatorView()
@@ -43,13 +49,13 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDetailsLoading, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDetailsLoading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDataLoading, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDataLoading, object: nil)
     }
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
-        
+    
         castCollectionView.delegate = self
         castCollectionView.dataSource = self
         addSubviews()
@@ -126,7 +132,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         castSectionLabel.text = .castSectionTitle
         
         castCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        castCollectionView.register(HorizontalCollectionViewCell.self, forCellWithReuseIdentifier: HorizontalCollectionViewCell.identifier)
+        castCollectionView.register(CastHorizontalCollectionViewCell.self, forCellWithReuseIdentifier: CastHorizontalCollectionViewCell.identifier)
         castCollectionView.showsHorizontalScrollIndicator = false
         castCollectionView.backgroundColor = .mainAppColor
         
@@ -195,7 +201,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithMovieData() {
-        guard let movieOverview = dataManager.movieOverview else {
+        guard let movieOverview = dataManager.movieData else {
             DLog("No data received from DataManager!")
             return
         }
@@ -242,7 +248,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func updateUIWithTVShowData() {
-        guard let tvshowOverview = dataManager.tvshowOverview else {
+        guard let tvshowOverview = dataManager.tvshowData else {
             DLog("No data received from DataManager!")
             return
         }
@@ -304,14 +310,12 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.loadingIndicator.startAnimating()
             self.loadingIndicator.isHidden = false
         }
-        
     }
     
     private func hideLoadingIndicator() {
         DispatchQueue.main.async {
             self.loadingIndicator.stopAnimating()
             self.loadingIndicator.isHidden = true
-            
         }
     }
     
@@ -350,7 +354,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HorizontalCollectionViewCell.identifier, for: indexPath) as? HorizontalCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastHorizontalCollectionViewCell.identifier, for: indexPath) as? CastHorizontalCollectionViewCell else { return UICollectionViewCell() }
         cell.configure(with: cast[indexPath.row])
         return cell
     }

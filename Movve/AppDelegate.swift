@@ -14,11 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        ///Create main URL Session
-        let config = URLSessionConfiguration.default
-        let operQ = OperationQueue()
-        operQ.maxConcurrentOperationCount = 3
-        ImageLoader.shared.urlSession = URLSession(configuration: config, delegate: nil, delegateQueue: operQ)
+        //Config Nav Bar
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = .mainAppColor
+        navBarAppearance.shadowColor = .clear
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
+        
+        //Config UrlSession
+        URLSessionManager.shared.configureURLSession()
         
         return true
     }

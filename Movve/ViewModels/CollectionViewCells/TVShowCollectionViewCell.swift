@@ -1,5 +1,5 @@
 //
-//  MovieCollectionViewCell.swift
+//  TVShowCollectionViewCell.swift
 //  Movve
 //
 //  Created by Дмитрий Рыбаков on 16.12.2022.
@@ -7,14 +7,13 @@
 
 import UIKit
 
-class MovieCollectionViewCell: UICollectionViewCell {
-    static let identifier = "MovieCollectionViewCell"
+class TVShowCollectionViewCell: UICollectionViewCell {
+    
+    static let identifier = "TVShowCollectionViewCell"
     
     private let posterImageView = UIImageView()
-    private let movieTitleLabel = UILabel ()
+    private let tvShowTitleLabel = UILabel ()
     private let dateReleaseLabel = UILabel()
-    
-    private let dateFormatter = DateFormatter()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,7 +28,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     private func setupContentView() {
         contentView.clipsToBounds = true
         contentView.addSubview(posterImageView)
-        contentView.addSubview(movieTitleLabel)
+        contentView.addSubview(tvShowTitleLabel)
         contentView.addSubview(dateReleaseLabel)
         contentView.layer.masksToBounds = true
     }
@@ -41,26 +40,26 @@ class MovieCollectionViewCell: UICollectionViewCell {
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        movieTitleLabel.numberOfLines = 0
-        movieTitleLabel.textColor = .prettyWhite
-        movieTitleLabel.font = .cellTitleFont
-        movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tvShowTitleLabel.numberOfLines = 0
+        tvShowTitleLabel.textColor = .prettyWhite
+        tvShowTitleLabel.font = .cellTitleFont
+        tvShowTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         dateReleaseLabel.numberOfLines = 0
         dateReleaseLabel.translatesAutoresizingMaskIntoConstraints = false
         dateReleaseLabel.textColor = .prettyGray
         dateReleaseLabel.font = .cellDateFont
-            
+        
         let constraints = [
             posterImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             posterImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             posterImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3/2),
             
-            movieTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
-            movieTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            movieTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
+            tvShowTitleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: .smallPadding),
+            tvShowTitleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            tvShowTitleLabel.bottomAnchor.constraint(equalTo: dateReleaseLabel.topAnchor),
             
-            dateReleaseLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor),
+            dateReleaseLabel.topAnchor.constraint(equalTo: tvShowTitleLabel.bottomAnchor),
             dateReleaseLabel.heightAnchor.constraint(equalToConstant: .cellDateHeight),
             dateReleaseLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
         ]
@@ -72,19 +71,19 @@ class MovieCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         posterImageView.image = nil
-        movieTitleLabel.text = nil
+        tvShowTitleLabel.text = nil
         dateReleaseLabel.text = nil
     }
     
-    func configure(with viewModel: Movie) {
+    func configure(with viewModel: TVShow) {
         if let image = viewModel.posterImage {
             posterImageView.image = image
         } else {
             posterImageView.image = .noImage
         }
         
-        movieTitleLabel.text = viewModel.title
-        dateReleaseLabel.text = dateFormatter.switchDateFormat(from: viewModel.releaseDate)
+        tvShowTitleLabel.text = viewModel.name
+        dateReleaseLabel.text = DateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }
 

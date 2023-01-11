@@ -7,15 +7,21 @@
 
 import UIKit
 
+extension HomeViewController: MovveDataManagerProviderProtocol {
+    var dataManager: MovveDataManagerProtocol {
+        return MovveManager.shared
+    }
+}
+
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
-    private var sections = [TargetSection]()
+    private var sections = [MovveSection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        
         configureModels()
         setupCollectionView()
         setupIconLabel()
@@ -25,19 +31,19 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func configureModels() {
         ///Movies(popular) section
         sections.append(
-            TargetSection(
+            MovveSection(
                 type: .movies,
-                cells: dataManager.movieArray.compactMap({
-                    return TargetCell.movie(viewModel: $0)
+                cells: dataManager.movies.compactMap({
+                    return MovveCell.movie(viewModel: $0)
                 })
             )
         )
         ///TV Show(top rated) section
         sections.append(
-            TargetSection(
+            MovveSection(
                 type: .tvshows,
-                cells: dataManager.tvshowArray.compactMap({
-                    return TargetCell.tvshow(viewModel: $0)
+                cells: dataManager.tvshows.compactMap({
+                    return MovveCell.tvshow(viewModel: $0)
                 })
             )
         )
@@ -73,6 +79,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
+        
         
         guard let collectionView = collectionView else {
             fatalError()
@@ -127,25 +134,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = sections[indexPath.section].cells[indexPath.row]
-        
-        switch model {
-        case .movie(let movie):
-            DispatchQueue.global(qos: .background).async {
-                self.dataManager.getMovieOverview(for: movie)
-            }
-        case .tvshow(let tvshow):
-            DispatchQueue.global(qos: .background).async {
-                self.dataManager.getTVShowOverview(for: tvshow)
-            }
-        }
-        DispatchQueue.main.async {
-            self.showDetailsVC()
+        loadDetails(for: model)
+        showDetailsVC()
+    }
+    
+    private func loadDetails(for movve: MovveCell) {
+        DispatchQueue.global(qos: .background).async {
+            self.dataManager.loadDetailsData(for: movve)
         }
     }
     
     private func showDetailsVC() {
-        let vc = DetailsViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        DispatchQueue.main.async {
+            let vc = DetailsViewController()
+            let backButton = UIBarButtonItem()
+            backButton.title = .none
+            self.navigationItem.backBarButtonItem = backButton
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func layout(for section: Int) -> NSCollectionLayoutSection {
@@ -244,7 +250,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         return header
     }
-    
 }
 
 
