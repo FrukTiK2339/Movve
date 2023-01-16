@@ -7,9 +7,9 @@
 
 import UIKit
 
-extension HomeViewController: MovveDataManagerProviderProtocol {
-    var dataManager: MovveDataManagerProtocol {
-        return MovveManager.shared
+extension HomeViewController: NetApiFacadeProviderProtocol {
+    var netApiFacade: NetApiFacadeProtocol {
+        return NetApiFacade.shared
     }
 }
 
@@ -17,36 +17,62 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
-    private var sections = [MovveSection]()
+    private var sections = [CinemaItemSection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         configureModels()
         setupCollectionView()
         setupIconLabel()
         setupUI()
     }
     
+    @objc private func handleEnterForeground() {
+        sections = getRandomSections()
+        let indexSet = IndexSet(sections.indices)
+        collectionView?.reloadSections(indexSet)
+    }
+    
+    private func getRandomSections() -> [CinemaItemSection] {
+        var newSections = [CinemaItemSection]()
+        netApiFacade.loadItems(for: .movie, searchType: CinemaItemSearchType.allCases.randomElement()!) { result in
+            switch result {
+            case .success(let data):
+                newSections.append(CinemaItemSection(type: .movie, cells: data))
+            case .failure(let error):
+                print(error)
+            }
+        }
+        netApiFacade.loadItems(for: .tvshow, searchType: CinemaItemSearchType.allCases.randomElement()!) { result in
+            switch result {
+            case .success(let data):
+                newSections.append(CinemaItemSection(type: .tvshow, cells: data))
+            case .failure(let error):
+                print(error)
+            }
+        }
+        return newSections
+    }
+    
     private func configureModels() {
         ///Movies(popular) section
-        sections.append(
-            MovveSection(
-                type: .movies,
-                cells: dataManager.movies.compactMap({
-                    return MovveCell.movie(viewModel: $0)
-                })
-            )
-        )
-        ///TV Show(top rated) section
-        sections.append(
-            MovveSection(
-                type: .tvshows,
-                cells: dataManager.tvshows.compactMap({
-                    return MovveCell.tvshow(viewModel: $0)
-                })
-            )
-        )
+        netApiFacade.loadItems(for: .movie, searchType: .popular) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.sections.append(CinemaItemSection(type: .movie, cells: data))
+            case .failure(let error):
+                print(error)
+            }
+        }
+        netApiFacade.loadItems(for: .tvshow, searchType: .topRated) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.sections.append(CinemaItemSection(type: .movie, cells: data))
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     private func setupCollectionView() {
@@ -110,43 +136,38 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = sections[indexPath.section].cells[indexPath.row]
-        switch model {
-        case .movie(let viewModel):
+        switch model.type {
+        case .movie:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MovieCollectionViewCell.identifier,
-                for: indexPath) as? MovieCollectionViewCell
+                for: indexPath) as? MovieCollectionViewCell, let movie = model as? Movie
             else {
                 return UICollectionViewCell()
             }
-            cell.configure(with: viewModel)
+            
+            cell.configure(with: movie)
             return cell
-        case .tvshow(viewModel: let viewModel):
+        case .tvshow:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: TVShowCollectionViewCell.identifier,
-                for: indexPath) as? TVShowCollectionViewCell
+                for: indexPath) as? TVShowCollectionViewCell, let tvshow = model as? TVShow
             else {
                 return UICollectionViewCell()
             }
-            cell.configure(with: viewModel)
+            cell.configure(with: tvshow)
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let model = sections[indexPath.section].cells[indexPath.row]
-        loadDetails(for: model)
-        showDetailsVC()
+        showDetails(for: model)
     }
     
-    private func loadDetails(for movve: MovveCell) {
-        DispatchQueue.global(qos: .background).async {
-            self.dataManager.loadDetailsData(for: movve)
-        }
-    }
-    
-    private func showDetailsVC() {
+    private func showDetails(for item: CinemaItemProtocol) {
         DispatchQueue.main.async {
             let vc = DetailsViewController()
+            vc.currentCinemaItem = item
             let backButton = UIBarButtonItem()
             backButton.title = .none
             self.navigationItem.backBarButtonItem = backButton
@@ -159,7 +180,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
         switch sectionType {
 
-        case .movies:
+        case .movie:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -196,7 +217,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             return sectionLayout
 
-        case .tvshows:
+        case .tvshow:
             let tvshowRowWidth = view.frame.size.width/2.8
             let tvshowRowHeight = tvshowRowWidth*2
             
@@ -243,9 +264,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         switch sectionType {
             
-        case .movies:
+        case .movie:
             header.configure(with: sectionType.title)
-        case .tvshows:
+        case .tvshow:
             header.configure(with: sectionType.title)
         }
         return header

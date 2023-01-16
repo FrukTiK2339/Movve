@@ -7,22 +7,25 @@
 
 import Foundation
 
-class NetRequestMovve: NetRequestBasic {
+enum NetRequestError: Error {
+    case jsonParsingError
+}
+
+class NetParseCinemaItems: NetDataParser {
     
-    var movve: Movve
+    var cinemaType: CinemaItemType
     
-    init(with movve: Movve) {
-        self.movve = movve
+    init(with cinemaType: CinemaItemType) {
+        self.cinemaType = cinemaType
     }
     
-    func getMovve(with url: URL,_ urlSession: URLSession, result: @escaping ([Any]?) -> Void) {
+    func getItems(with url: URL,_ urlSession: URLSession, result: @escaping ([CinemaItemProtocol]) -> Void) {
         netRequester.processRequest(with: url, urlSession) { data in
             guard let recivedData = data else {
                 DLog("Error processing Movve call.")
-                result(nil)
                 return
             }
-            switch self.movve {
+            switch self.cinemaType {
             case .movie:
                 result(self.parseMovieJSON(for: recivedData))
             case .tvshow:
@@ -35,10 +38,10 @@ class NetRequestMovve: NetRequestBasic {
     //MARK: - Private
     private let dispatchGroup = DispatchGroup()
     
-    private func parseMovieJSON(for data: [String: Any]) -> [Any]? {
+    private func parseMovieJSON(for data: [String: Any]) -> [Movie] {
         guard let movieDicts = data["results"] as? [[String: Any]] else {
-            DLog("Bad data!")
-            return nil
+            assertionFailure("Bad data!")
+            return []
         }
         DLog(movieDicts)
         var receivedMovies = [Movie]()
@@ -68,10 +71,10 @@ class NetRequestMovve: NetRequestBasic {
         return receivedMovies
     }
     
-    private func parseTVShowJSON(for data: [String: Any]) -> [Any]? {
+    private func parseTVShowJSON(for data: [String: Any]) -> [TVShow] {
         guard let tvshowDicts = data["results"] as? [[String: Any]] else {
-            DLog("Bad data!")
-            return nil
+            assertionFailure("Bad data!")
+            return []
         }
         DLog(tvshowDicts)
         var receivedTVShows = [TVShow]()
@@ -79,7 +82,7 @@ class NetRequestMovve: NetRequestBasic {
         for tDict in tvshowDicts {
             
             if let id = tDict["id"] as? Int,
-               let name = tDict["name"] as? String,
+               let title = tDict["name"] as? String,
                let releaseDate = tDict["first_air_date"] as? String,
                let imageURL = tDict["poster_path"] as? String {
                 dispatchGroup.enter()
@@ -87,7 +90,7 @@ class NetRequestMovve: NetRequestBasic {
                     
                     let newMovie = TVShow(
                         id: id,
-                        name: name,
+                        title: title,
                         releaseDate: releaseDate,
                         posterImage: image
                     )

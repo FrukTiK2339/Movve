@@ -8,23 +8,23 @@
 import UIKit
 import SafariServices
 
-extension DetailsViewController: MovveDataManagerProviderProtocol {
-    var dataManager: MovveDataManagerProtocol {
-        return MovveManager.shared
+extension DetailsViewController: NetApiFacadeProviderProtocol {
+    var netApiFacade: NetApiFacadeProtocol {
+        return NetApiFacade.shared
     }
 }
 
 class DetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-      
+    
+    var currentCinemaItem: CinemaItemProtocol?
+    
     private var loadingIndicator = UIActivityIndicatorView()
-    
-    
     private var scrollView = UIScrollView()
     
     private var imageView = UIImageView()
     private var titleLabel = UILabel()
     private var infoLabel = UILabel()
-    private var ratingView = UIView()
+    private var ratingView = UIStackView()
     private var overviewSectionLabel = UILabel()
     private var overviewLabel = UILabel()
     
@@ -42,20 +42,15 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addObservers()
         setupUI()
         showLoadingIndicator()
         hideUI()
-    }
-    
-    private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedMovieData), name: NSNotification.Name.successMovieDataLoading, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didRecivedTVShowData), name: NSNotification.Name.successTVShowDataLoading, object: nil)
+        loadData(for: currentCinemaItem)
     }
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
-    
+        
         castCollectionView.delegate = self
         castCollectionView.dataSource = self
         addSubviews()
@@ -169,7 +164,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             infoLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor),
             
             ratingView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor),
-            ratingView.widthAnchor.constraint(equalTo: imageView.widthAnchor),
+            ratingView.widthAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/2),
+            ratingView.centerXAnchor.constraint(equalTo: safeG.centerXAnchor),
             ratingView.heightAnchor.constraint(equalToConstant: .ratingViewHeight),
             
             overviewSectionLabel.topAnchor.constraint(equalTo: ratingView.bottomAnchor),
@@ -194,98 +190,105 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         NSLayoutConstraint.activate(constraints)
     }
     
-    @objc private func didRecivedMovieData() {
-        updateUIWithMovieData()
-        hideLoadingIndicator()
-        showUI()
-    }
-    
-    private func updateUIWithMovieData() {
-        guard let movieOverview = dataManager.movieData else {
-            DLog("No data received from DataManager!")
+    private func loadData(for item: CinemaItemProtocol?) {
+        guard let cinemaItem = item else {
             return
         }
-        updateUI(with: movieOverview)
+        DispatchQueue.global(qos: .background).async {
+            self.netApiFacade.loadItemData(for: cinemaItem) { [weak self] result in
+                switch result {
+                    
+                case .success(let data):
+                    DispatchQueue.main.async {
+                        self?.updateUI(with: data)
+                        self?.hideLoadingIndicator()
+                        self?.showUI()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
     
-    private func updateUI(with model: MovieOverview) {
+    private func updateUI(with itemData: CinemaItemDataProtocol) {
         ///Image
-        if let image = model.details.image {
+        if let image = itemData.details.image {
             imageView.image = image
         } else {
             imageView.image = .noImage
         }
         
         ///Title
-        titleLabel.text = model.info.title
+        titleLabel.text = itemData.item.title
         
-        ///Info Label ( Year(from Date) * Genre-Genre-Genre * RunTime )
-        let dateInfo = model.info.getReleaseDateYear()
-        let genres = model.details.getGenres()
-        let runtime = model.details.getRuntime()
-        infoLabel.text = "\(dateInfo) * \(genres) * \(runtime)"
+        
+        ///Info Label
+        updateLabelInfo(with: itemData)
         
         ///Rating View
-        let starsView = StarsView(rating: model.details.rating)
-        ratingView.addSubview(starsView)
-        starsView.frame = ratingView.bounds
+        let ratingLabel = UILabel()
+        ratingLabel.text = String(format: "%.1f", itemData.details.rating)
+        ratingLabel.textColor = .systemYellow
+        ratingView.addArrangedSubview(ratingLabel)
+        ratingView.axis = .horizontal
+        ratingView.alignment = .center
+        ratingView.distribution = .fillEqually
+        ratingView.spacing = .smallPadding
+        let starsCount = Int(itemData.details.rating / 1.5)
+        for _  in 1...starsCount {
+            let star = UIImageView(image: .starImage)
+            star.tintColor = .systemYellow
+            ratingView.addArrangedSubview(star)
+        }
+        if starsCount < 5 {
+            for _ in 1...5 - starsCount {
+                let emptyStar = UIImageView(image: .starImage)
+                emptyStar.tintColor = .prettyGray
+                ratingView.addArrangedSubview(emptyStar)
+            }
+        }
         
         ///Overview
-        overviewLabel.text = model.details.overview
+        overviewLabel.text = itemData.details.overview
         
         ///Cast
-        self.cast = model.cast
+        self.cast = itemData.cast
         castCollectionView.reloadData()
         
         ///Button
-        self.watchButtonTarget = model.details.homepage
-    }
-    
-    @objc private func didRecivedTVShowData() {
-        updateUIWithTVShowData()
-        hideLoadingIndicator()
-        showUI()
-    }
-    
-    private func updateUIWithTVShowData() {
-        guard let tvshowOverview = dataManager.tvshowData else {
-            DLog("No data received from DataManager!")
-            return
-        }
-        updateUI(with: tvshowOverview)
-    }
-    
-    private func updateUI(with model: TVShowOverview) {
-        ///Image
-        if let image = model.details.image {
-            imageView.image = image
+        if itemData.details.homepage.isEmpty {
+            watchButton.isEnabled = false
+            watchButton.alpha = 0.5
         } else {
-            imageView.image = .noImage
+            self.watchButtonTarget = itemData.details.homepage
+            watchButton.isEnabled = true
         }
         
-        ///Title
-        titleLabel.text = model.info.name
-        
-        ///Info Label ( Date * Genre-Genre-Genre * RunTime )
-        let dateInfo = model.info.getReleaseDateYear()
-        let genres = model.details.getGenres()
-        let seasonCount = model.details.seasons
-        infoLabel.text = "\(dateInfo) * \(genres) * \(seasonCount) season(s)"
-        
-        ///Rating View
-        let starsView = StarsView(rating: model.details.rating)
-        ratingView.addSubview(starsView)
-        starsView.frame = ratingView.bounds
-        
-        ///Overview
-        overviewLabel.text = model.details.overview
-        
-        ///Cast
-        self.cast = model.cast
-        castCollectionView.reloadData()
-        
-        ///Button
-        self.watchButtonTarget = model.details.homepage
+    }
+    
+    private func updateLabelInfo(with itemData: CinemaItemDataProtocol) {
+        switch itemData.item.type {
+            
+        case .movie:
+            guard let movieDetails = itemData.details as? MovieDetails else {
+                return
+            }
+            let dateInfo = itemData.item.getReleaseDateYear()
+            let genres = movieDetails.getGenres()
+            let runtime = movieDetails.getRuntime()
+            infoLabel.text = "\(dateInfo) * \(genres) * \(runtime)"
+            
+        case .tvshow:
+            guard let tvshowDetails = itemData.details as? TVShowDetails else {
+                return
+            }
+            
+            let dateInfo = itemData.item.getReleaseDateYear()
+            let genres = tvshowDetails.getGenres()
+            let seasonCount = tvshowDetails.seasons
+            infoLabel.text = "\(dateInfo) * \(genres) * \(seasonCount) season(s)"
+        }
     }
     
     @objc private func didTapWatchButton() {

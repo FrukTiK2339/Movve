@@ -82,7 +82,7 @@ class TVShowCollectionViewCell: UICollectionViewCell {
             posterImageView.image = .noImage
         }
         
-        tvShowTitleLabel.text = viewModel.name
+        tvShowTitleLabel.text = viewModel.title
         dateReleaseLabel.text = DateFormatter.switchDateFormat(from: viewModel.releaseDate)
     }
 }

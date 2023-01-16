@@ -7,26 +7,21 @@
 
 import UIKit
 
-public struct TVShow {
-    ///Main Screen
+public struct TVShow: CinemaItemProtocol {
+    var type: CinemaItemType = .tvshow
     var id: Int
-    var name: String
+    var title: String
     var releaseDate: String
     var posterImage: UIImage?
-    
-    func getReleaseDateYear() -> String {
-        return DateFormatter.showOnlyYear(from: releaseDate)
-    }
 }
 
-public struct TVShowOverview {
-    ///TVShow Overview (Details) Screen
-    var info: TVShow
-    var details: TVShowDetails
+public struct TVShowData: CinemaItemDataProtocol {
+    var item: CinemaItemProtocol
+    var details: CinemaItemDetailsProtocol
     var cast: [Cast]
 }
 
-struct TVShowDetails {
+struct TVShowDetails: CinemaItemDetailsProtocol {
     var genres: [Genre]
     var rating: Double
     var seasons: Int

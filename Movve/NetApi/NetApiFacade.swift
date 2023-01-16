@@ -7,10 +7,13 @@
 
 import Foundation
 
+enum NetError: Error {
+    case smthGoWrong
+}
+
 protocol NetApiFacadeProtocol: AnyObject {
-    func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void)
-    func loadDetailsData(for movie: Movie, result: @escaping (MovieOverview?) -> Void)
-    func loadDetailsData(for tvshow: TVShow, result: @escaping (TVShowOverview?) -> Void)
+    func loadItems(for itemType: CinemaItemType, searchType: CinemaItemSearchType, result: @escaping (Result<[CinemaItemProtocol], Error>) -> Void)
+    func loadItemData(for item: CinemaItemProtocol, result: @escaping (Result<CinemaItemDataProtocol, Error>) -> Void)
 }
 
 extension NetApiFacade: URLSessionProvider & URLGeneratorProviderProtocol {
@@ -24,110 +27,87 @@ extension NetApiFacade: URLSessionProvider & URLGeneratorProviderProtocol {
 }
 
 class NetApiFacade: NetApiFacadeProtocol {
-
+    
     static let shared: NetApiFacadeProtocol = NetApiFacade()
     
-    func loadData(for movve: Movve, category: MovveCategory, result: @escaping ([Any]?) -> Void) {
-        ///generate URL
-        url = urlGenerator.generateCategoryURL(with: movve, category)
+    func loadItems(for itemType: CinemaItemType, searchType: CinemaItemSearchType, result: @escaping (Result<[CinemaItemProtocol], Error>) -> Void) {
         
-        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
-            DLog("Error: masterURL/masterURLSession == nil /n URL = \(String(describing: url))")
-            result(nil)
+        guard let items = getItems(with: itemType, searchType: searchType) else {
+            assertionFailure("Error: items == nil")
+            result(.failure(NetError.smthGoWrong))
             return
         }
-        
-        let request = NetRequestMovve(with: movve)
-        request.getMovve(with: masterURL, masterURLSession, result: { data in
-            guard data != nil else {
-                DLog("")
-                result(nil)
-                return
-            }
-            result(data)
-        })
+        result(.success(items))
     }
     
-    func loadDetailsData(for movie: Movie, result: @escaping (MovieOverview?) -> Void) {
-        guard let details = getMovieDetails(for: movie),
-              let cast = getCast(for: movie) else {
-            DLog("Error: details/cast data == nil")
+    func loadItemData(for item: CinemaItemProtocol, result: @escaping (Result<CinemaItemDataProtocol, Error>) -> Void) {
+        guard let details = getDetails(for: item),
+              let cast = getCast(for: item) else {
+            assertionFailure("Error: details/cast data == nil")
+            result(.failure(NetError.smthGoWrong))
             return
         }
-        let movieOverview = MovieOverview(info: movie, details: details, cast: cast)
-        result(movieOverview)
-    }
-    
-    func loadDetailsData(for tvshow: TVShow, result: @escaping (TVShowOverview?) -> Void) {
-        guard let details = getTVShowDetails(for: tvshow),
-              let cast = getCast(for: tvshow) else {
-            DLog("Error: details/cast data == nil")
-            return
+        switch item.type {
+        case .movie:
+            let movieData = MovieData(item: item, details: details, cast: cast)
+            result(.success(movieData))
+        case .tvshow:
+            let tvshowData = TVShowData(item: item, details: details, cast: cast)
+            result(.success(tvshowData))
         }
-        let tvshowOverview = TVShowOverview(info: tvshow, details: details, cast: cast)
-        result(tvshowOverview)
     }
     
     //MARK: - Private
     private var url: URL?
-   
+    
     fileprivate init() {}
-        
+    
     private let dispatchGroup = DispatchGroup()
     
-    private func getMovieDetails(for movie: Movie) -> MovieDetails? {
-        url = urlGenerator.generateDetailsURL(with: movie, movve: .movie)
-        DLog(self.url)
+    private func getItems(with itemType: CinemaItemType, searchType: CinemaItemSearchType) -> [CinemaItemProtocol]? {
+        guard let url = urlGenerator.generateURL(with: itemType, searchType),
+              let urlSession = urlSessionProvider.urlSession else {
+            assertionFailure("Error getting master url session!")
+            return []
+        }
+        var cinemaItems: [CinemaItemProtocol]?
+        let requestItems = NetParseCinemaItems(with: itemType)
+        dispatchGroup.enter()
+        requestItems.getItems(with: url, urlSession) { items in
+            cinemaItems = items
+            self.dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
+        return cinemaItems
+    }
+    
+    private func getDetails(for item: CinemaItemProtocol) -> CinemaItemDetailsProtocol? {
+        url = urlGenerator.generateURL(with: item, type: item.type)
+        
         guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
-            DLog("Error: masterURL/masterURLSession == nil /n URL = \(String(describing: url))")
+            assertionFailure("Error: masterURL/masterURLSession == nil /n URL = \(String(describing: url))")
             return nil
         }
         
-        var movieDetails: MovieDetails?
-        let requestDetails = NetRequestMovieDetails()
-        dispatchGroup.enter()
-        requestDetails.getDetails(with: masterURL, masterURLSession, result: { details in
-            guard details != nil else {
-                DLog("")
-                return
-            }
-            movieDetails = details
-            self.dispatchGroup.leave()
-        })
+        var itemDetails: CinemaItemDetailsProtocol?
+        let requestDetails = NetParseDetails(itemType: item.type)
+            dispatchGroup.enter()
+            requestDetails.getDetails(with: masterURL, masterURLSession, result: { details in
+                guard details != nil else {
+                    assertionFailure("Error getting details for \(item)")
+                    return
+                }
+                itemDetails = details
+                self.dispatchGroup.leave()
+            })
         dispatchGroup.wait()
-        return movieDetails
+        return itemDetails
     }
     
-    private func getTVShowDetails(for tvshow: TVShow) -> TVShowDetails? {
-        url = urlGenerator.generateDetailsURL(with: tvshow, movve: .tvshow)
-        
-        guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
-            DLog("Error: masterURL/masterURLSession == nil")
-            return nil
-        }
-        
-        var tvshowDetails: TVShowDetails?
-        let requestDetails = NetRequestTVShowDetails()
-        dispatchGroup.enter()
-        requestDetails.getDetails(with: masterURL, masterURLSession, result: { details in
-            guard details != nil else {
-                DLog("")
-                return
-            }
-            tvshowDetails = details
-            self.dispatchGroup.leave()
-        })
-        dispatchGroup.wait()
-        return tvshowDetails
-    }
     
-    private func getCast(for target: Any) -> [Cast]?{
-        if let movie = target as? Movie {
-            url = urlGenerator.generateCastURL(with: movie, movve: .movie)
-        } else if let tvshow = target as? TVShow {
-            url = urlGenerator.generateCastURL(with: tvshow, movve: .tvshow)
-        }
-        DLog(url)
+    private func getCast(for item: CinemaItemProtocol) -> [Cast]?{
+        
+        url = urlGenerator.generateCastURL(with: item, type: item.type)
         
         guard let masterURL = url, let masterURLSession = urlSessionProvider.urlSession else {
             DLog("Error: masterURL/masterURLSession == nil")
@@ -135,7 +115,7 @@ class NetApiFacade: NetApiFacadeProtocol {
         }
         
         var cast: [Cast]?
-        let requestCast = NetRequestActorCast()
+        let requestCast = NetParseActorCast()
         dispatchGroup.enter()
         requestCast.getCast(with: masterURL, masterURLSession) { castData in
             guard castData != nil else {

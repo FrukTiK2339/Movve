@@ -8,55 +8,37 @@
 import Foundation
 
 protocol URLGeneratorProtocol: AnyObject {
-   func generateCategoryURL(with movve: Movve, _ category: MovveCategory) -> URL?
-   func generateDetailsURL(with movie: Movie, movve: Movve?) -> URL?
-   func generateDetailsURL(with tvshow: TVShow, movve: Movve?) -> URL?
-   func generateCastURL(with movie: Movie, movve: Movve?) -> URL?
-   func generateCastURL(with tvshow: TVShow, movve: Movve?) -> URL?
+   func generateURL(with type: CinemaItemType, _ searchType: CinemaItemSearchType) -> URL?
+   func generateURL(with cinema: CinemaItemProtocol, type: CinemaItemType?) -> URL?
+   func generateCastURL(with cinema: CinemaItemProtocol, type: CinemaItemType?) -> URL?
 }
 
 class URLGenerator: URLGeneratorProtocol {
     
-    func generateCategoryURL(with movve: Movve, _ category: MovveCategory) -> URL? {
-        let urlStr: String = .dataURLBasic + movve.urlPart + category.urlPart + .apiKey
+    func generateURL(with type: CinemaItemType, _ searchType: CinemaItemSearchType) -> URL? {
+        let urlStr: String = .dataURLBasic + type.urlPart + searchType.urlPart + .apiKey
+        
         guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL.")
+            assertionFailure("Error creating URL!")
+            return nil
+        }
+       
+        return url
+    }
+    
+    func generateURL(with cinema: CinemaItemProtocol, type: CinemaItemType?) -> URL? {
+        let urlStr: String = .dataURLBasic + (type?.urlPart ?? "") + "/\(cinema.id)" + .apiKey
+        guard let url = URL(string: urlStr) else {
+            assertionFailure("Error generating URL for movie.")
             return nil
         }
         return url
     }
     
-    func generateDetailsURL(with movie: Movie, movve: Movve? = .movie) -> URL? {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(movie.id)" + .apiKey
+    func generateCastURL(with cinema: CinemaItemProtocol, type: CinemaItemType?) -> URL? {
+        let urlStr: String = .dataURLBasic + (type?.urlPart ?? "") + "/\(cinema.id)" + .castURLPart + .apiKey
         guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for movie.")
-            return nil
-        }
-        return url
-    }
-    
-    func generateDetailsURL(with tvshow: TVShow, movve: Movve? = .tvshow) -> URL? {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(tvshow.id)" + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for tvshow.")
-            return nil
-        }
-        return url
-    }
-    
-    func generateCastURL(with movie: Movie, movve: Movve? = .movie) -> URL? {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(movie.id)" + .castURLPart + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for movie.")
-            return nil
-        }
-        return url
-    }
-    
-    func generateCastURL(with tvshow: TVShow, movve: Movve? = .tvshow) -> URL? {
-        let urlStr: String = .dataURLBasic + (movve?.urlPart ?? "") + "/\(tvshow.id)" + .castURLPart + .apiKey
-        guard let url = URL(string: urlStr) else {
-            DLog("Error generating URL for tvshow.")
+            assertionFailure("Error generating URL for \(cinema).")
             return nil
         }
         return url

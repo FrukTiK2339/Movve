@@ -7,26 +7,21 @@
 
 import UIKit
 
-public struct Movie {
-    ///Main Screen
+public struct Movie: CinemaItemProtocol {
+    var type: CinemaItemType = .movie
     var id: Int
     var title: String
     var releaseDate: String
     var posterImage: UIImage?
-    
-    func getReleaseDateYear() -> String {
-        return DateFormatter.showOnlyYear(from: releaseDate)
-    }
 }
 
-public struct MovieOverview {
-    ///Movie Overview (Details) Screen
-    var info: Movie
-    var details: MovieDetails
+public struct MovieData : CinemaItemDataProtocol{
+    var item: CinemaItemProtocol
+    var details: CinemaItemDetailsProtocol
     var cast: [Cast]
 }
 
-struct MovieDetails {
+struct MovieDetails: CinemaItemDetailsProtocol {
     var genres: [Genre]
     var runtime: Int
     var rating: Double
