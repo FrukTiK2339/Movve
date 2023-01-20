@@ -37,6 +37,7 @@ class NetApiFacade: NetApiFacadeProtocol {
             result(.failure(NetError.smthGoWrong))
             return
         }
+        NotificationCenter.default.post(name: Notification.Name.successDataLoading, object: nil)
         result(.success(items))
     }
     

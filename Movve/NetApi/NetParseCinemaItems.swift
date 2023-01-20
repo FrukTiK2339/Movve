@@ -23,6 +23,7 @@ class NetParseCinemaItems: NetDataParser {
         netRequester.processRequest(with: url, urlSession) { data in
             guard let recivedData = data else {
                 DLog("Error processing Movve call.")
+                result([])
                 return
             }
             switch self.cinemaType {

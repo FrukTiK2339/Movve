@@ -16,8 +16,10 @@ extension DetailsViewController: NetApiFacadeProviderProtocol {
 
 class DetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    //MARK: - Public
     var currentCinemaItem: CinemaItemProtocol?
     
+    //MARK: - Private
     private var loadingIndicator = UIActivityIndicatorView()
     private var scrollView = UIScrollView()
     
@@ -40,6 +42,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         return collectionView
     }()
     
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -350,7 +353,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
-    //MARK: - Collection View Methods
+    //MARK: - Collection View Delegate & DataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cast.count

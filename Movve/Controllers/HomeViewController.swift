@@ -15,64 +15,64 @@ extension HomeViewController: NetApiFacadeProviderProtocol {
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    //MARK: - Private
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
     private var sections = [CinemaItemSection]()
     
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        configureModels()
+        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+
+        refreshSections()
         setupCollectionView()
         setupIconLabel()
         setupUI()
     }
     
-    @objc private func handleEnterForeground() {
-        sections = getRandomSections()
+    private func refreshSections() {
+        sections = getSections()
         let indexSet = IndexSet(sections.indices)
         collectionView?.reloadSections(indexSet)
     }
     
-    private func getRandomSections() -> [CinemaItemSection] {
+    @objc private func handleEnterForeground() {
+        refreshSections()
+    }
+    
+    @objc private func occuredLoadingDataError() {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Loading Failed", message: "Please check your Internet connection and try again.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Try Again", style: .default) { _ in
+                self.refreshSections()
+            })
+            self.present(alert, animated: true)
+        }
+    }
+    
+    private func getSections() -> [CinemaItemSection] {
         var newSections = [CinemaItemSection]()
-        netApiFacade.loadItems(for: .movie, searchType: CinemaItemSearchType.allCases.randomElement()!) { result in
+        netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
             switch result {
             case .success(let data):
                 newSections.append(CinemaItemSection(type: .movie, cells: data))
             case .failure(let error):
-                print(error)
+                DLog(error)
+                self.occuredLoadingDataError()
             }
         }
-        netApiFacade.loadItems(for: .tvshow, searchType: CinemaItemSearchType.allCases.randomElement()!) { result in
+        netApiFacade.loadItems(for: .tvshow, searchType: .topRated) { result in
             switch result {
             case .success(let data):
                 newSections.append(CinemaItemSection(type: .tvshow, cells: data))
             case .failure(let error):
-                print(error)
+                DLog(error)
+                self.occuredLoadingDataError()
             }
         }
         return newSections
-    }
-    
-    private func configureModels() {
-        ///Movies(popular) section
-        netApiFacade.loadItems(for: .movie, searchType: .popular) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.sections.append(CinemaItemSection(type: .movie, cells: data))
-            case .failure(let error):
-                print(error)
-            }
-        }
-        netApiFacade.loadItems(for: .tvshow, searchType: .topRated) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.sections.append(CinemaItemSection(type: .movie, cells: data))
-            case .failure(let error):
-                print(error)
-            }
-        }
     }
     
     private func setupCollectionView() {
@@ -105,7 +105,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
-        
         
         guard let collectionView = collectionView else {
             fatalError()
@@ -175,7 +174,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    func layout(for section: Int) -> NSCollectionLayoutSection {
+    private func layout(for section: Int) -> NSCollectionLayoutSection {
         let sectionType = sections[section].type
 
         switch sectionType {
