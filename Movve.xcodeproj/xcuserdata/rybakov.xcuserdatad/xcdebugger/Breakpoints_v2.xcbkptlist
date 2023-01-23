@@ -110,8 +110,8 @@
             filePath = "Movve/NetApi/NetApiFacade.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "getDetails(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -221,9 +221,9 @@
             filePath = "Movve/Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "getSections()"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "refreshSections()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -237,9 +237,9 @@
             filePath = "Movve/Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "getSections()"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "refreshSections()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -262,22 +262,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AD5D7CDF-061D-4824-859D-19BD1294E51E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Movve/Controllers/HomeViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "25A47D2F-280B-4DB0-A95E-3ABFC77062FA"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -285,8 +269,8 @@
             filePath = "Movve/Controllers/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "occuredLoadingDataError()"
             landmarkType = "7">
          </BreakpointContent>
@@ -304,6 +288,22 @@
             startingLineNumber = "43"
             endingLineNumber = "43"
             landmarkName = "processRequest(with:_:result:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9CAA301E-4F71-4F1D-B36D-1BDC74EEF4D0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/Controllers/HomeViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "handleSuccessLoadingData()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

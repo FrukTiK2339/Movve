@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  Movve
 //
 //  Created by Дмитрий Рыбаков on 16.12.2022.
@@ -19,23 +19,46 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
     private var sections = [CinemaItemSection]()
+    private var fakeSecions = [CinemaItemSection]()
+    private var isAnimating: Bool = false
+    private let dispatchGroup = DispatchGroup()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
-
-        refreshSections()
-        setupCollectionView()
-        setupIconLabel()
         setupUI()
+        refreshSections()
     }
     
-    private func refreshSections() {
-        sections = getSections()
-        let indexSet = IndexSet(sections.indices)
-        collectionView?.reloadSections(indexSet)
+    private func setupUI() {
+        view.backgroundColor = .mainAppColor
+        isAnimating = true
+        
+        addObservers()
+        setupFakeSections()
+        setupIconLabel()
+        setupCollectionView()
+        setupConstraints()
+    }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+    }
+    
+    private func setupFakeSections() {
+       
+        fakeSecions.append(CinemaItemSection(type: .movie, cells: [Movie(id: 0, title: "", releaseDate: ""),Movie(id: 0, title: "", releaseDate: ""),Movie(id: 0, title: "", releaseDate: "")]))
+        fakeSecions.append(CinemaItemSection(type: .tvshow, cells: [TVShow(id: 0, title: "", releaseDate: ""),TVShow(id: 0, title: "", releaseDate: ""),TVShow(id: 0, title: "", releaseDate: "")]))
+    }
+    
+    @objc private func handleSuccessLoadingData() {
+        DispatchQueue.main.async {
+            let indexSet = IndexSet(self.sections.indices)
+            self.isAnimating = false
+            self.collectionView?.reloadSections(indexSet)
+        }
+        
     }
     
     @objc private func handleEnterForeground() {
@@ -52,27 +75,34 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    private func getSections() -> [CinemaItemSection] {
-        var newSections = [CinemaItemSection]()
-        netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
-            switch result {
-            case .success(let data):
-                newSections.append(CinemaItemSection(type: .movie, cells: data))
-            case .failure(let error):
-                DLog(error)
-                self.occuredLoadingDataError()
+    private func refreshSections() {
+        sections = [CinemaItemSection]()
+        DispatchQueue.global(qos: .background).async {
+            self.dispatchGroup.enter()
+            self.netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
+                switch result {
+                case .success(let data):
+                    self.sections.append(CinemaItemSection(type: .movie, cells: data))
+                case .failure(let error):
+                    DLog(error)
+                    self.occuredLoadingDataError()
+                }
+                self.dispatchGroup.leave()
             }
-        }
-        netApiFacade.loadItems(for: .tvshow, searchType: .topRated) { result in
-            switch result {
-            case .success(let data):
-                newSections.append(CinemaItemSection(type: .tvshow, cells: data))
-            case .failure(let error):
-                DLog(error)
-                self.occuredLoadingDataError()
+            self.dispatchGroup.enter()
+            self.netApiFacade.loadItems(for: .tvshow, searchType: .topRated) { result in
+                switch result {
+                case .success(let data):
+                    self.sections.append(CinemaItemSection(type: .tvshow, cells: data))
+                case .failure(let error):
+                    DLog(error)
+                    self.occuredLoadingDataError()
+                }
+                self.dispatchGroup.leave()
             }
+            self.dispatchGroup.wait()
+            self.handleSuccessLoadingData()
         }
-        return newSections
     }
     
     private func setupCollectionView() {
@@ -81,6 +111,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         let collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
         
+        collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCollectionViewCell.identifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
         collectionView.register(TVShowCollectionViewCell.self, forCellWithReuseIdentifier: TVShowCollectionViewCell.identifier)
         collectionView.register(CollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeader.identifier)
@@ -103,64 +135,87 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         iconLabel.attributedText = string
     }
     
-    private func setupUI() {
-        view.backgroundColor = .mainAppColor
-        
-        guard let collectionView = collectionView else {
-            fatalError()
-        }
+   
+     private func setupConstraints() {
+         guard let collectionView = collectionView else {
+             fatalError()
+         }
+         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let constraints = [
+        NSLayoutConstraint.activate([
             iconLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             iconLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .smallPadding),
             
             collectionView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .iconPadding),
             collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
     
     //MARK: - Collection View Delegate & DataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count
+        return isAnimating ? fakeSecions.count : sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sections[section].cells.count
+        return isAnimating ? fakeSecions[section].cells.count : sections[section].cells.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = sections[indexPath.section].cells[indexPath.row]
-        switch model.type {
-        case .movie:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MovieCollectionViewCell.identifier,
-                for: indexPath) as? MovieCollectionViewCell, let movie = model as? Movie
-            else {
+        if isAnimating {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCollectionViewCell.identifier, for: indexPath) as? EmptyCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            let angle = -60 * CGFloat.pi / 180
+            //Gradient Layer
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.colors = [UIColor.clear.cgColor, UIColor.white.cgColor, UIColor.clear.cgColor]
+            gradientLayer.locations = [0, 0.5, 1]
+            gradientLayer.frame = CGRect(x: 0, y: 0, width: cell.frame.width*5, height: cell.frame.height/2)
+            gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
+            cell.layer.mask = gradientLayer
             
-            cell.configure(with: movie)
+            //Animation
+            let animation = CABasicAnimation(keyPath: "transform.translation.x")
+            animation.duration = 1.5
+            animation.fromValue = -cell.frame.width*3
+            animation.toValue = cell.frame.width/3
+            animation.repeatCount = Float.infinity
+            gradientLayer.add(animation, forKey: "")
+            
             return cell
-        case .tvshow:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TVShowCollectionViewCell.identifier,
-                for: indexPath) as? TVShowCollectionViewCell, let tvshow = model as? TVShow
-            else {
-                return UICollectionViewCell()
+        } else {
+            let model = sections[indexPath.section].cells[indexPath.row]
+            switch model.type {
+            case .movie:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: MovieCollectionViewCell.identifier,
+                    for: indexPath) as? MovieCollectionViewCell, let movie = model as? Movie
+                else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(with: movie)
+                return cell
+            case .tvshow:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TVShowCollectionViewCell.identifier,
+                    for: indexPath) as? TVShowCollectionViewCell, let tvshow = model as? TVShow
+                else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(with: tvshow)
+                return cell
             }
-            cell.configure(with: tvshow)
-            return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let model = sections[indexPath.section].cells[indexPath.row]
-        showDetails(for: model)
+        if !isAnimating {
+            let model = sections[indexPath.section].cells[indexPath.row]
+            showDetails(for: model)
+        }
     }
     
     private func showDetails(for item: CinemaItemProtocol) {
@@ -175,10 +230,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     private func layout(for section: Int) -> NSCollectionLayoutSection {
-        let sectionType = sections[section].type
-
+        let sectionType = isAnimating ? fakeSecions[section].type : sections[section].type
+        
         switch sectionType {
-
         case .movie:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -209,13 +263,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     widthDimension: .estimated(movieRowWidth),
                     heightDimension: .estimated(movieRowHeight)),
                 subitems: [item])
-
+            
             let sectionLayout = NSCollectionLayoutSection(group: group)
             sectionLayout.orthogonalScrollingBehavior = .continuous
             sectionLayout.boundarySupplementaryItems = [headerItem]
-
+            
             return sectionLayout
-
+            
         case .tvshow:
             let tvshowRowWidth = view.frame.size.width/2.8
             let tvshowRowHeight = tvshowRowWidth*2
@@ -242,13 +296,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 alignment: .top
             )
             
-
+            
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .absolute(tvshowRowWidth),
                     heightDimension: .absolute(tvshowRowHeight)),
                 subitems: [item])
-    
+            
             let sectionLayout = NSCollectionLayoutSection(group: group)
             sectionLayout.orthogonalScrollingBehavior = .continuous
             sectionLayout.boundarySupplementaryItems = [headerItem]
@@ -257,7 +311,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let sectionType = sections[indexPath.section].type
+        let sectionType = isAnimating ? fakeSecions[indexPath.section].type : sections[indexPath.section].type
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.identifier, for: indexPath) as? CollectionHeader else {
             return UICollectionReusableView()
         }
@@ -269,6 +323,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             header.configure(with: sectionType.title)
         }
         return header
+        
     }
 }
 

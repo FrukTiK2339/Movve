@@ -63,6 +63,7 @@ extension UIColor {
     static let mainAppColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
     static let prettyWhite  = #colorLiteral(red: 0.9681384154, green: 0.9681384154, blue: 0.9681384154, alpha: 1)
     static let prettyGray   = #colorLiteral(red: 0.5794862689, green: 0.5794862689, blue: 0.5794862689, alpha: 1)
+    static let emptySpace = UIColor(white: 1, alpha: 0.2)
 }
 
 extension String {
