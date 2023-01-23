@@ -32,7 +32,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
-        isAnimating = true
         
         addObservers()
         setupFakeSections()
@@ -76,6 +75,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     private func refreshSections() {
+        isAnimating = true
         sections = [CinemaItemSection]()
         DispatchQueue.global(qos: .background).async {
             self.dispatchGroup.enter()
@@ -212,10 +212,43 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !isAnimating {
-            let model = sections[indexPath.section].cells[indexPath.row]
-            showDetails(for: model)
-        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        
+        UIView.transition(from: cell.contentView,
+                          to: cell.contentView,
+                          duration: 1,
+                          options: [.transitionFlipFromRight, .showHideTransitionViews],
+                          completion:{ _ in
+            var animations = [CABasicAnimation]()
+            let moveAnim = CABasicAnimation(keyPath: "position")
+            moveAnim.fromValue = [cell.layer.position.x, cell.layer.position.y]
+            moveAnim.toValue = [cell.layer.position.x, self.view.layer.position.y]
+            moveAnim.duration = 2
+            animations.append(moveAnim)
+            
+            let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
+            scaleAnim.fromValue = 1
+            scaleAnim.toValue = 2
+            scaleAnim.duration = 2
+            animations.append(scaleAnim)
+            
+            let group = CAAnimationGroup()
+            group.duration = 2
+            group.animations = animations
+            
+            cell.layer.add(group, forKey: nil)
+            
+        })
+        
+         
+       
+//        if !isAnimating {
+//            let model = sections[indexPath.section].cells[indexPath.row]
+//            showDetails(for: model)
+//        }
     }
     
     private func showDetails(for item: CinemaItemProtocol) {
