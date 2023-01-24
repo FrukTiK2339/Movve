@@ -13,7 +13,11 @@ extension HomeViewController: NetApiFacadeProviderProtocol {
     }
 }
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+protocol UpdateSectionDataDelegate {
+    func refreshSections()
+}
+
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UpdateSectionDataDelegate {
     
     //MARK: - Private
     private var iconLabel = UILabel()
@@ -22,7 +26,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let dispatchGroup = DispatchGroup()
     private let navigationControllerDelegate = NavigationControllerDelegate()
     private var loadingLayer = CAShapeLayer()
-    
+    private let transition = PopUpPanelTransition()
+
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.delegate = navigationControllerDelegate
@@ -31,10 +36,9 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        refreshSections()
         setupUI()
         hideUI()
-        refreshSections()
     }
     
     private func setupUI() {
@@ -49,10 +53,13 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     private func showLoadingAnimation() {
-        let loadAnimator = LoadingAnimator()
-        loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
-        view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
-        loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
+
+            let loadAnimator = LoadingAnimator()
+            loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
+            view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
+            loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
+
+
     }
     
     private func addObservers() {
@@ -63,7 +70,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     @objc private func handleSuccessLoadingData() {
         DispatchQueue.main.async {
-            
             let indexSet = IndexSet(self.sections.indices)
             self.collectionView?.insertSections(indexSet)
             self.loadingLayer.removeFromSuperlayer()
@@ -77,6 +83,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     @objc private func occuredLoadingDataError() {
+        /*
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Loading Failed", message: "Please check your Internet connection and try again.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Try Again", style: .default) { _ in
@@ -84,6 +91,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             })
             self.present(alert, animated: true)
         }
+        */
+        DispatchQueue.main.async {
+            self.showLoadingAnimation()
+            let popUpVC = CommonPopUpViewController()
+            popUpVC.delegate = self
+            popUpVC.transitioningDelegate = self.transition
+            popUpVC.modalPresentationStyle = .custom
+            self.present(popUpVC, animated: true)
+        }
+        
     }
     
     private func hideUI() {
@@ -98,7 +115,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    private func refreshSections() {
+     func refreshSections() {
         DispatchQueue.main.async {
             self.dispatchGroup.enter()
             self.netApiFacade.loadItems(for: .movie, searchType: .popular) { result in

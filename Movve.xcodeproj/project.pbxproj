@@ -18,10 +18,14 @@
 		EF21C892294C615200E3661D /* AppConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C891294C615200E3661D /* AppConsts.swift */; };
 		EF21C894294C615E00E3661D /* DLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C893294C615E00E3661D /* DLog.swift */; };
 		EF21C898294C65F300E3661D /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C897294C65F300E3661D /* DetailsViewController.swift */; };
-		EF21C89C294C6ACC00E3661D /* MovieSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C89B294C6ACC00E3661D /* MovieSection.swift */; };
 		EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */; };
 		EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */; };
 		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
+		EF30A9B129802B2D00F9EB72 /* PopUpPanelTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */; };
+		EF30A9B32980306F00F9EB72 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B22980306F00F9EB72 /* PresentationController.swift */; };
+		EF30A9B5298031D100F9EB72 /* DimmPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B4298031D100F9EB72 /* DimmPresentationController.swift */; };
+		EF30A9B7298033EC00F9EB72 /* PresentAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B6298033EC00F9EB72 /* PresentAnimation.swift */; };
+		EF30A9B9298035AD00F9EB72 /* DismissAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B8298035AD00F9EB72 /* DismissAnimation.swift */; };
 		EF3C242D295DD80800AD6A7A /* NetApiFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242C295DD80800AD6A7A /* NetApiFacade.swift */; };
 		EF3C242F295DE9E500AD6A7A /* NetParseCinemaItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242E295DE9E500AD6A7A /* NetParseCinemaItems.swift */; };
 		EF3C2433295DED1500AD6A7A /* NetImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */; };
@@ -29,7 +33,7 @@
 		EF816A72297FD56C00A57A1A /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */; };
 		EF816A74297FD67900A57A1A /* NavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */; };
 		EF816A77297FF79F00A57A1A /* LoadingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */; };
-		EFB6B994297ADE2B00840F66 /* EmptyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */; };
+		EF816A7C298029F800A57A1A /* CommonPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A7B298029F800A57A1A /* CommonPopUpViewController.swift */; };
 		EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBE736A295AF489009A5AAD /* AppNetConfig.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
 		EFD4429B295ED29500EA6775 /* NetParseDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD4429A295ED29500EA6775 /* NetParseDetails.swift */; };
@@ -56,10 +60,14 @@
 		EF21C891294C615200E3661D /* AppConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConsts.swift; sourceTree = "<group>"; };
 		EF21C893294C615E00E3661D /* DLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLog.swift; sourceTree = "<group>"; };
 		EF21C897294C65F300E3661D /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		EF21C89B294C6ACC00E3661D /* MovieSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSection.swift; sourceTree = "<group>"; };
 		EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowCollectionViewCell.swift; sourceTree = "<group>"; };
 		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
+		EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpPanelTransition.swift; sourceTree = "<group>"; };
+		EF30A9B22980306F00F9EB72 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		EF30A9B4298031D100F9EB72 /* DimmPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimmPresentationController.swift; sourceTree = "<group>"; };
+		EF30A9B6298033EC00F9EB72 /* PresentAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentAnimation.swift; sourceTree = "<group>"; };
+		EF30A9B8298035AD00F9EB72 /* DismissAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissAnimation.swift; sourceTree = "<group>"; };
 		EF3C242C295DD80800AD6A7A /* NetApiFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetApiFacade.swift; sourceTree = "<group>"; };
 		EF3C242E295DE9E500AD6A7A /* NetParseCinemaItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetParseCinemaItems.swift; sourceTree = "<group>"; };
 		EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageLoader.swift; sourceTree = "<group>"; };
@@ -67,7 +75,7 @@
 		EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
 		EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerDelegate.swift; sourceTree = "<group>"; };
 		EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimator.swift; sourceTree = "<group>"; };
-		EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCollectionViewCell.swift; sourceTree = "<group>"; };
+		EF816A7B298029F800A57A1A /* CommonPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonPopUpViewController.swift; sourceTree = "<group>"; };
 		EFBE736A295AF489009A5AAD /* AppNetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetConfig.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EFD4429A295ED29500EA6775 /* NetParseDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetParseDetails.swift; sourceTree = "<group>"; };
@@ -173,7 +181,8 @@
 			children = (
 				EF816A6E297FD4EB00A57A1A /* HomePage */,
 				EF816A6F297FD51D00A57A1A /* DetailsPage */,
-				EF816A70297FD54200A57A1A /* Transition */,
+				EF816A70297FD54200A57A1A /* NavigationTransition */,
+				EF816A782980253900A57A1A /* ViewControllerTransition */,
 				EF816A75297FF77E00A57A1A /* LoadingAnimator */,
 			);
 			path = UI;
@@ -183,11 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				EF21C86D294C5FD900E3661D /* HomeViewController.swift */,
-				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
-				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
-				EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */,
-				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
-				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
+				EF816A79298029A300A57A1A /* CollectionViewCustomClasses */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -201,13 +206,13 @@
 			name = DetailsPage;
 			sourceTree = "<group>";
 		};
-		EF816A70297FD54200A57A1A /* Transition */ = {
+		EF816A70297FD54200A57A1A /* NavigationTransition */ = {
 			isa = PBXGroup;
 			children = (
 				EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */,
 				EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */,
 			);
-			path = Transition;
+			path = NavigationTransition;
 			sourceTree = "<group>";
 		};
 		EF816A75297FF77E00A57A1A /* LoadingAnimator */ = {
@@ -216,6 +221,29 @@
 				EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */,
 			);
 			path = LoadingAnimator;
+			sourceTree = "<group>";
+		};
+		EF816A782980253900A57A1A /* ViewControllerTransition */ = {
+			isa = PBXGroup;
+			children = (
+				EF816A7B298029F800A57A1A /* CommonPopUpViewController.swift */,
+				EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */,
+				EF30A9B22980306F00F9EB72 /* PresentationController.swift */,
+				EF30A9B4298031D100F9EB72 /* DimmPresentationController.swift */,
+				EF30A9B6298033EC00F9EB72 /* PresentAnimation.swift */,
+				EF30A9B8298035AD00F9EB72 /* DismissAnimation.swift */,
+			);
+			path = ViewControllerTransition;
+			sourceTree = "<group>";
+		};
+		EF816A79298029A300A57A1A /* CollectionViewCustomClasses */ = {
+			isa = PBXGroup;
+			children = (
+				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
+				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
+				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
+			);
+			path = CollectionViewCustomClasses;
 			sourceTree = "<group>";
 		};
 		EFBE736C295B0880009A5AAD /* AppExtensions */ = {
@@ -312,18 +340,20 @@
 				EF816A72297FD56C00A57A1A /* TransitionAnimator.swift in Sources */,
 				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
 				EFD442A8295EF91600EA6775 /* DI.swift in Sources */,
+				EF30A9B5298031D100F9EB72 /* DimmPresentationController.swift in Sources */,
 				EFD4429B295ED29500EA6775 /* NetParseDetails.swift in Sources */,
 				EFD442AA295EF92800EA6775 /* URLGenerator.swift in Sources */,
+				EF30A9B32980306F00F9EB72 /* PresentationController.swift in Sources */,
 				EF3C242D295DD80800AD6A7A /* NetApiFacade.swift in Sources */,
-				EFB6B994297ADE2B00840F66 /* EmptyCollectionViewCell.swift in Sources */,
 				EF816A74297FD67900A57A1A /* NavigationControllerDelegate.swift in Sources */,
+				EF30A9B7298033EC00F9EB72 /* PresentAnimation.swift in Sources */,
 				EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
 				EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */,
 				EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */,
-				EF21C89C294C6ACC00E3661D /* MovieSection.swift in Sources */,
 				EF816A77297FF79F00A57A1A /* LoadingAnimator.swift in Sources */,
 				EFD4429D295ED64300EA6775 /* NetRequester.swift in Sources */,
+				EF816A7C298029F800A57A1A /* CommonPopUpViewController.swift in Sources */,
 				EF21C892294C615200E3661D /* AppConsts.swift in Sources */,
 				EF21C894294C615E00E3661D /* DLog.swift in Sources */,
 				EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */,
@@ -337,6 +367,8 @@
 				EF3C242F295DE9E500AD6A7A /* NetParseCinemaItems.swift in Sources */,
 				EF21C898294C65F300E3661D /* DetailsViewController.swift in Sources */,
 				EF21C886294C610000E3661D /* Movie.swift in Sources */,
+				EF30A9B9298035AD00F9EB72 /* DismissAnimation.swift in Sources */,
+				EF30A9B129802B2D00F9EB72 /* PopUpPanelTransition.swift in Sources */,
 				EF21C888294C611000E3661D /* TVShow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

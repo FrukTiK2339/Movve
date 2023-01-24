@@ -32,8 +32,7 @@ class NetApiFacade: NetApiFacadeProtocol {
     
     func loadItems(for itemType: CinemaItemType, searchType: CinemaItemSearchType, result: @escaping (Result<[CinemaItemProtocol], Error>) -> Void) {
         
-        guard let items = getItems(with: itemType, searchType: searchType) else {
-            assertionFailure("Error: items == nil")
+        guard let items = getItems(with: itemType, searchType: searchType), !items.isEmpty else {
             result(.failure(NetError.smthGoWrong))
             return
         }
