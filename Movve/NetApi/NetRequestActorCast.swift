@@ -37,14 +37,14 @@ class NetParseActorCast: NetDataParser {
                let character = mDict["character"] as? String,
                let imageStr = mDict["profile_path"] as? String {
                 dispatchGroup.enter()
-                imageLoader.download(with: imageStr) { [weak self] image in
+                imageLoader.download(with: imageStr) { [self] image in
                     let newCast = Cast(
                         name: name,
                         character: character,
                         avatar: image
                     )
                     receivedCast.append(newCast)
-                    self?.dispatchGroup.leave()
+                    self.dispatchGroup.leave()
                 }
             }
         }

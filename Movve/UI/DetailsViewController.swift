@@ -41,18 +41,29 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return collectionView
     }()
+    private let navigationControllerDelegate = NavigationControllerDelegate()
+    private var loadingLayer = CAShapeLayer()
+    
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        showLoadingAnimation()
         setupUI()
-        showLoadingIndicator()
         hideUI()
         loadData(for: currentCinemaItem)
     }
     
+    private func showLoadingAnimation() {
+        let loadAnimator = LoadingAnimator()
+        loadingLayer = loadAnimator.createDetailsCALayer(for: self.view)
+        view.layer.addSublayer(loadingLayer)
+        loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
+    }
+    
     private func setupUI() {
         view.backgroundColor = .mainAppColor
+        self.navigationController?.delegate = navigationControllerDelegate
         
         castCollectionView.delegate = self
         castCollectionView.dataSource = self
@@ -193,9 +204,11 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         NSLayoutConstraint.activate(constraints)
     }
     
+    
+    
     private func loadData(for item: CinemaItemProtocol?) {
         guard let cinemaItem = item else {
-            return
+            fatalError()
         }
         DispatchQueue.global(qos: .background).async {
             self.netApiFacade.loadItemData(for: cinemaItem) { [weak self] result in
@@ -204,7 +217,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
                 case .success(let data):
                     DispatchQueue.main.async {
                         self?.updateUI(with: data)
-                        self?.hideLoadingIndicator()
+                        self?.loadingLayer.removeFromSuperlayer()
                         self?.showUI()
                     }
                 case .failure(let error):
@@ -310,46 +323,34 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         let vc = SFSafariViewController(url: url)
         present(vc, animated: true)
     }
-    
-    private func showLoadingIndicator() {
-        DispatchQueue.main.async {
-            self.loadingIndicator.startAnimating()
-            self.loadingIndicator.isHidden = false
-        }
-    }
-    
-    private func hideLoadingIndicator() {
-        DispatchQueue.main.async {
-            self.loadingIndicator.stopAnimating()
-            self.loadingIndicator.isHidden = true
-        }
-    }
-    
+
     private func showUI() {
         DispatchQueue.main.async {
-            self.imageView.isHidden = false
-            self.castSectionLabel.isHidden = false
-            self.castCollectionView.isHidden = false
-            self.titleLabel.isHidden = false
-            self.infoLabel.isHidden = false
-            self.ratingView.isHidden = false
-            self.overviewSectionLabel.isHidden = false
-            self.overviewLabel.isHidden = false
-            self.watchButton.isHidden = false
+            UIView.animate(withDuration: 0.5) {
+                self.imageView.layer.opacity = 1
+                self.castSectionLabel.layer.opacity = 1
+                self.castCollectionView.layer.opacity = 1
+                self.titleLabel.layer.opacity = 1
+                self.infoLabel.layer.opacity = 1
+                self.ratingView.layer.opacity = 1
+                self.overviewSectionLabel.layer.opacity = 1
+                self.overviewLabel.layer.opacity = 1
+                self.watchButton.layer.opacity = 1
+            }
         }
     }
     
     private func hideUI() {
         DispatchQueue.main.async {
-            self.imageView.isHidden = true
-            self.castSectionLabel.isHidden = true
-            self.castCollectionView.isHidden = true
-            self.titleLabel.isHidden = true
-            self.infoLabel.isHidden = true
-            self.ratingView.isHidden = true
-            self.overviewSectionLabel.isHidden = true
-            self.overviewLabel.isHidden = true
-            self.watchButton.isHidden = true
+            self.imageView.layer.opacity = 0
+            self.castSectionLabel.layer.opacity = 0
+            self.castCollectionView.layer.opacity = 0
+            self.titleLabel.layer.opacity = 0
+            self.infoLabel.layer.opacity = 0
+            self.ratingView.layer.opacity = 0
+            self.overviewSectionLabel.layer.opacity = 0
+            self.overviewLabel.layer.opacity = 0
+            self.watchButton.layer.opacity = 0
         }
     }
     

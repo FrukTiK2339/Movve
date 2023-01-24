@@ -49,3 +49,18 @@ extension DateFormatter {
     }
 }
 
+extension UINavigationController {
+    func transitionType() -> TransitionType {
+        if let delegate = self.delegate as? NavigationControllerDelegate {
+            return delegate.transitionType
+        }
+        return .standard
+    }
+    
+    func setTransitionType(transitionType: TransitionType) {
+        if let delegate = self.delegate as? NavigationControllerDelegate {
+            delegate.transitionType = transitionType
+        }
+    }
+}
+

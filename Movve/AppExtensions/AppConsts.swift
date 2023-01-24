@@ -50,6 +50,11 @@ extension CGFloat {
     ///Width
     static let watchButtonWidth  : CGFloat = 180
     static let dismissButtonWidth: CGFloat = 60
+    
+    ///Bezier
+    static let xPadding: CGFloat = 16
+    static let yPadding: CGFloat = 24
+   
 }
 
 extension UIImage {
@@ -63,6 +68,9 @@ extension UIColor {
     static let mainAppColor = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
     static let prettyWhite  = #colorLiteral(red: 0.9681384154, green: 0.9681384154, blue: 0.9681384154, alpha: 1)
     static let prettyGray   = #colorLiteral(red: 0.5794862689, green: 0.5794862689, blue: 0.5794862689, alpha: 1)
+    static let emptySpace = UIColor(white: 1, alpha: 0.2)
+    static let beforeAnimCellColor = #colorLiteral(red: 0.3411764706, green: 0.3254901961, blue: 0.3647058824, alpha: 1)
+    static let afterAnimCellColor  = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
 }
 
 extension String {
