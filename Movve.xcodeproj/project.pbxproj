@@ -26,6 +26,9 @@
 		EF3C242F295DE9E500AD6A7A /* NetParseCinemaItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C242E295DE9E500AD6A7A /* NetParseCinemaItems.swift */; };
 		EF3C2433295DED1500AD6A7A /* NetImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */; };
 		EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7694D4296C415100F4CC96 /* URLSessionManager.swift */; };
+		EF816A72297FD56C00A57A1A /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */; };
+		EF816A74297FD67900A57A1A /* NavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */; };
+		EF816A77297FF79F00A57A1A /* LoadingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */; };
 		EFB6B994297ADE2B00840F66 /* EmptyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */; };
 		EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBE736A295AF489009A5AAD /* AppNetConfig.swift */; };
 		EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFBFCCFA29505E190006DD79 /* Extensions.swift */; };
@@ -61,6 +64,9 @@
 		EF3C242E295DE9E500AD6A7A /* NetParseCinemaItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetParseCinemaItems.swift; sourceTree = "<group>"; };
 		EF3C2432295DED1500AD6A7A /* NetImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetImageLoader.swift; sourceTree = "<group>"; };
 		EF7694D4296C415100F4CC96 /* URLSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
+		EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
+		EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerDelegate.swift; sourceTree = "<group>"; };
+		EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingAnimator.swift; sourceTree = "<group>"; };
 		EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCollectionViewCell.swift; sourceTree = "<group>"; };
 		EFBE736A295AF489009A5AAD /* AppNetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetConfig.swift; sourceTree = "<group>"; };
 		EFBFCCFA29505E190006DD79 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -109,9 +115,8 @@
 				EF21C86B294C5FD900E3661D /* SceneDelegate.swift */,
 				EFBE736D295B08D0009A5AAD /* AppConfiguration */,
 				EFBE736C295B0880009A5AAD /* AppExtensions */,
-				EF3C2423295DB6D500AD6A7A /* ViewModels */,
+				EF816A6D297FD4DA00A57A1A /* UI */,
 				EF21C87E294C5FF300E3661D /* Models */,
-				EF21C880294C600E00E3661D /* Controllers */,
 				EF21C87F294C600100E3661D /* NetApi */,
 				EF21C881294C602100E3661D /* Resources */,
 			);
@@ -145,15 +150,6 @@
 			path = NetApi;
 			sourceTree = "<group>";
 		};
-		EF21C880294C600E00E3661D /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				EF21C86D294C5FD900E3661D /* HomeViewController.swift */,
-				EF21C897294C65F300E3661D /* DetailsViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		EF21C881294C602100E3661D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,25 +168,54 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		EF21C89D294C779E00E3661D /* CollectionViewCells */ = {
+		EF816A6D297FD4DA00A57A1A /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				EF816A6E297FD4EB00A57A1A /* HomePage */,
+				EF816A6F297FD51D00A57A1A /* DetailsPage */,
+				EF816A70297FD54200A57A1A /* Transition */,
+				EF816A75297FF77E00A57A1A /* LoadingAnimator */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		EF816A6E297FD4EB00A57A1A /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				EF21C86D294C5FD900E3661D /* HomeViewController.swift */,
 				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
 				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
 				EFB6B993297ADE2B00840F66 /* EmptyCollectionViewCell.swift */,
 				EF21C89B294C6ACC00E3661D /* MovieSection.swift */,
 				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
-				EFD7ADD52951D148002E47B5 /* CastHorizontalCollectionViewCell.swift */,
 			);
-			path = CollectionViewCells;
+			path = HomePage;
 			sourceTree = "<group>";
 		};
-		EF3C2423295DB6D500AD6A7A /* ViewModels */ = {
+		EF816A6F297FD51D00A57A1A /* DetailsPage */ = {
 			isa = PBXGroup;
 			children = (
-				EF21C89D294C779E00E3661D /* CollectionViewCells */,
+				EF21C897294C65F300E3661D /* DetailsViewController.swift */,
+				EFD7ADD52951D148002E47B5 /* CastHorizontalCollectionViewCell.swift */,
 			);
-			path = ViewModels;
+			name = DetailsPage;
+			sourceTree = "<group>";
+		};
+		EF816A70297FD54200A57A1A /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */,
+				EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		EF816A75297FF77E00A57A1A /* LoadingAnimator */ = {
+			isa = PBXGroup;
+			children = (
+				EF816A76297FF79F00A57A1A /* LoadingAnimator.swift */,
+			);
+			path = LoadingAnimator;
 			sourceTree = "<group>";
 		};
 		EFBE736C295B0880009A5AAD /* AppExtensions */ = {
@@ -284,17 +309,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */,
+				EF816A72297FD56C00A57A1A /* TransitionAnimator.swift in Sources */,
 				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
 				EFD442A8295EF91600EA6775 /* DI.swift in Sources */,
 				EFD4429B295ED29500EA6775 /* NetParseDetails.swift in Sources */,
 				EFD442AA295EF92800EA6775 /* URLGenerator.swift in Sources */,
 				EF3C242D295DD80800AD6A7A /* NetApiFacade.swift in Sources */,
 				EFB6B994297ADE2B00840F66 /* EmptyCollectionViewCell.swift in Sources */,
+				EF816A74297FD67900A57A1A /* NavigationControllerDelegate.swift in Sources */,
 				EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
 				EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */,
 				EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */,
 				EF21C89C294C6ACC00E3661D /* MovieSection.swift in Sources */,
+				EF816A77297FF79F00A57A1A /* LoadingAnimator.swift in Sources */,
 				EFD4429D295ED64300EA6775 /* NetRequester.swift in Sources */,
 				EF21C892294C615200E3661D /* AppConsts.swift in Sources */,
 				EF21C894294C615E00E3661D /* DLog.swift in Sources */,

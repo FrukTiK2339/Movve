@@ -19,25 +19,40 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var iconLabel = UILabel()
     private var collectionView: UICollectionView?
     private var sections = [CinemaItemSection]()
-    private var fakeSecions = [CinemaItemSection]()
-    private var isAnimating: Bool = false
     private let dispatchGroup = DispatchGroup()
+    private let navigationControllerDelegate = NavigationControllerDelegate()
+    private var loadingLayer = CAShapeLayer()
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.delegate = navigationControllerDelegate
+    }
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
+        hideUI()
         refreshSections()
     }
     
     private func setupUI() {
         view.backgroundColor = .mainAppColor
+        self.navigationController?.delegate = self.navigationControllerDelegate
         
         addObservers()
-        setupFakeSections()
         setupIconLabel()
         setupCollectionView()
         setupConstraints()
+        showLoadingAnimation()
+    }
+    
+    private func showLoadingAnimation() {
+        let loadAnimator = LoadingAnimator()
+        loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
+        view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
+        loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
     }
     
     private func addObservers() {
@@ -45,17 +60,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
     }
     
-    private func setupFakeSections() {
-       
-        fakeSecions.append(CinemaItemSection(type: .movie, cells: [Movie(id: 0, title: "", releaseDate: ""),Movie(id: 0, title: "", releaseDate: ""),Movie(id: 0, title: "", releaseDate: "")]))
-        fakeSecions.append(CinemaItemSection(type: .tvshow, cells: [TVShow(id: 0, title: "", releaseDate: ""),TVShow(id: 0, title: "", releaseDate: ""),TVShow(id: 0, title: "", releaseDate: "")]))
-    }
     
     @objc private func handleSuccessLoadingData() {
         DispatchQueue.main.async {
+            
             let indexSet = IndexSet(self.sections.indices)
-            self.isAnimating = false
-            self.collectionView?.reloadSections(indexSet)
+            self.collectionView?.insertSections(indexSet)
+            self.loadingLayer.removeFromSuperlayer()
+            self.showUI()
         }
         
     }
@@ -74,10 +86,20 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    private func hideUI() {
+        collectionView?.layer.opacity = 0
+    }
+    
+    private func showUI() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5) {
+                self.collectionView?.layer.opacity = 1
+            }
+        }
+    }
+    
     private func refreshSections() {
-        isAnimating = true
-        sections = [CinemaItemSection]()
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.main.async {
             self.dispatchGroup.enter()
             self.netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
                 switch result {
@@ -111,8 +133,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         let collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
         
-        collectionView.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCollectionViewCell.identifier)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
         collectionView.register(TVShowCollectionViewCell.self, forCellWithReuseIdentifier: TVShowCollectionViewCell.identifier)
         collectionView.register(CollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeader.identifier)
@@ -135,12 +155,12 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         iconLabel.attributedText = string
     }
     
-   
-     private func setupConstraints() {
-         guard let collectionView = collectionView else {
-             fatalError()
-         }
-         
+    
+    private func setupConstraints() {
+        guard let collectionView = collectionView else {
+            fatalError()
+        }
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -156,37 +176,14 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     //MARK: - Collection View Delegate & DataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return isAnimating ? fakeSecions.count : sections.count
+        return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isAnimating ? fakeSecions[section].cells.count : sections[section].cells.count
+        return sections[section].cells.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if isAnimating {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCollectionViewCell.identifier, for: indexPath) as? EmptyCollectionViewCell else {
-                return UICollectionViewCell()
-            }
-            let angle = -60 * CGFloat.pi / 180
-            //Gradient Layer
-            let gradientLayer = CAGradientLayer()
-            gradientLayer.colors = [UIColor.clear.cgColor, UIColor.white.cgColor, UIColor.clear.cgColor]
-            gradientLayer.locations = [0, 0.5, 1]
-            gradientLayer.frame = CGRect(x: 0, y: 0, width: cell.frame.width*5, height: cell.frame.height/2)
-            gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
-            cell.layer.mask = gradientLayer
-            
-            //Animation
-            let animation = CABasicAnimation(keyPath: "transform.translation.x")
-            animation.duration = 1.5
-            animation.fromValue = -cell.frame.width*3
-            animation.toValue = cell.frame.width/3
-            animation.repeatCount = Float.infinity
-            gradientLayer.add(animation, forKey: "")
-            
-            return cell
-        } else {
             let model = sections[indexPath.section].cells[indexPath.row]
             switch model.type {
             case .movie:
@@ -208,62 +205,70 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 cell.configure(with: tvshow)
                 return cell
             }
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AnimaCell else { return }
+        let layer = createCellLayer(with: cell)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let model = self.sections[indexPath.section].cells[indexPath.row]
+            self.pushDetailsVC(for: model, with: .custom)
+        }
         
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-
-            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        
-        UIView.transition(from: cell.contentView,
-                          to: cell.contentView,
-                          duration: 1,
-                          options: [.transitionFlipFromRight, .showHideTransitionViews],
-                          completion:{ _ in
-            var animations = [CABasicAnimation]()
-            let moveAnim = CABasicAnimation(keyPath: "position")
-            moveAnim.fromValue = [cell.layer.position.x, cell.layer.position.y]
-            moveAnim.toValue = [cell.layer.position.x, self.view.layer.position.y]
-            moveAnim.duration = 2
-            animations.append(moveAnim)
-            
-            let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
-            scaleAnim.fromValue = 1
-            scaleAnim.toValue = 2
-            scaleAnim.duration = 2
-            animations.append(scaleAnim)
-            
-            let group = CAAnimationGroup()
-            group.duration = 2
-            group.animations = animations
-            
-            cell.layer.add(group, forKey: nil)
-            
-        })
-        
-         
-       
-//        if !isAnimating {
-//            let model = sections[indexPath.section].cells[indexPath.row]
-//            showDetails(for: model)
-//        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            layer.removeFromSuperlayer()
+        }
     }
     
-    private func showDetails(for item: CinemaItemProtocol) {
+    private func pushDetailsVC(for item: CinemaItemProtocol, with transitionType: TransitionType) {
         DispatchQueue.main.async {
             let vc = DetailsViewController()
             vc.currentCinemaItem = item
             let backButton = UIBarButtonItem()
             backButton.title = .none
             self.navigationItem.backBarButtonItem = backButton
+            self.navigationController?.setTransitionType(transitionType: transitionType)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
+    private func createCellLayer(with cell: AnimaCell) -> CALayer {
+        let layer = CALayer()
+        layer.frame = self.view?.layer.convert(cell.layer.frame, from: cell.superview?.layer) ?? .zero
+        layer.contents = cell.snapshotView(afterScreenUpdates: false)?.layer.contents
+        layer.cornerRadius = .cornerRadius
+        
+        self.view.layer.addSublayer(layer)
+        
+        ///ANIMATIONS
+        var animations = [CABasicAnimation]()
+        let moveAnim = CABasicAnimation(keyPath: "position")
+        moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
+                                                    y: self.view.frame.midY + self.view.frame.size.height/5)
+        )
+        moveAnim.duration = 2
+        animations.append(moveAnim)
+
+        let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnim.fromValue = [1,1]
+        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width, self.view.frame.size.height / layer.frame.size.height]
+        scaleAnim.duration = 2.5
+        animations.append(scaleAnim)
+
+        let fadeAnim = CABasicAnimation(keyPath: "opacity")
+        fadeAnim.toValue = 0
+        fadeAnim.duration = 2.5
+        animations.append(fadeAnim)
+        
+        let group = CAAnimationGroup()
+        group.duration = 2.5
+        group.animations = animations
+        layer.add(group, forKey: nil)
+        return layer
+    }
+    
     private func layout(for section: Int) -> NSCollectionLayoutSection {
-        let sectionType = isAnimating ? fakeSecions[section].type : sections[section].type
+        let sectionType = sections[section].type
         
         switch sectionType {
         case .movie:
@@ -344,7 +349,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let sectionType = isAnimating ? fakeSecions[indexPath.section].type : sections[indexPath.section].type
+        let sectionType = sections[indexPath.section].type
         guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.identifier, for: indexPath) as? CollectionHeader else {
             return UICollectionReusableView()
         }
@@ -360,4 +365,21 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 }
 
+/*
+let angle = -60 * CGFloat.pi / 180
+//Gradient Layer
+let gradientLayer = CAGradientLayer()
+gradientLayer.colors = [UIColor.clear.cgColor, UIColor.white.cgColor, UIColor.clear.cgColor]
+gradientLayer.locations = [0, 0.5, 1]
+gradientLayer.frame = CGRect(x: 0, y: 0, width: cell.frame.width*5, height: cell.frame.height/2)
+gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
+cell.layer.mask = gradientLayer
 
+//Animation
+let animation = CABasicAnimation(keyPath: "transform.translation.x")
+animation.duration = 1.5
+animation.fromValue = -cell.frame.width*3
+animation.toValue = cell.frame.width/3
+animation.repeatCount = Float.infinity
+gradientLayer.add(animation, forKey: "")
+*/
