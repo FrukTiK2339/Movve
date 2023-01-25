@@ -115,7 +115,11 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     private func hideUI() {
-        collectionView?.layer.opacity = 0
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5) {
+                self.collectionView?.layer.opacity = 0
+            }
+        }
     }
     
     private func showUI() {
@@ -155,10 +159,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.dispatchGroup.wait()
             if badData > 0 {
                 completion(false)
-//                self.occuredLoadingDataError()
             } else {
                 completion(true)
-//                self.handleSuccessLoadingData()
             }
         }
     }
@@ -246,13 +248,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? AnimaCell else { return }
         let layer = createCellLayer(with: cell)
+        hideUI()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let model = self.sections[indexPath.section].cells[indexPath.row]
             self.pushDetailsVC(for: model, with: .custom)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
             layer.removeFromSuperlayer()
+            self.showUI()
         }
     }
     
@@ -280,24 +284,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var animations = [CABasicAnimation]()
         let moveAnim = CABasicAnimation(keyPath: "position")
         moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
-                                                    y: self.view.frame.midY + self.view.frame.size.height/5)
+                                                    y: self.view.frame.midY)
         )
         moveAnim.duration = 2
         animations.append(moveAnim)
 
         let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
         scaleAnim.fromValue = [1,1]
-        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width, self.view.frame.size.height / layer.frame.size.height]
-        scaleAnim.duration = 2.5
+        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width * 0.8, self.view.frame.size.height / layer.frame.size.height * 0.8]
+        scaleAnim.duration = 1.5
         animations.append(scaleAnim)
 
         let fadeAnim = CABasicAnimation(keyPath: "opacity")
-        fadeAnim.toValue = 0
-        fadeAnim.duration = 2.5
+        fadeAnim.toValue = 1
+        fadeAnim.duration = 1.5
         animations.append(fadeAnim)
         
         let group = CAAnimationGroup()
-        group.duration = 2.5
+        group.duration = 1.5
         group.animations = animations
         layer.add(group, forKey: nil)
         return layer
@@ -400,22 +404,3 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
 }
-
-/*
-let angle = -60 * CGFloat.pi / 180
-//Gradient Layer
-let gradientLayer = CAGradientLayer()
-gradientLayer.colors = [UIColor.clear.cgColor, UIColor.white.cgColor, UIColor.clear.cgColor]
-gradientLayer.locations = [0, 0.5, 1]
-gradientLayer.frame = CGRect(x: 0, y: 0, width: cell.frame.width*5, height: cell.frame.height/2)
-gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
-cell.layer.mask = gradientLayer
-
-//Animation
-let animation = CABasicAnimation(keyPath: "transform.translation.x")
-animation.duration = 1.5
-animation.fromValue = -cell.frame.width*3
-animation.toValue = cell.frame.width/3
-animation.repeatCount = Float.infinity
-gradientLayer.add(animation, forKey: "")
-*/
