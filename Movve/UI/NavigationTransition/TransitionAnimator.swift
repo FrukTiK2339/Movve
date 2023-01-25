@@ -13,7 +13,7 @@ enum TransitionType {
 
 class TransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
-    private let duration: TimeInterval = 0.6
+    private let duration: TimeInterval = 0.5
     private let type: TransitionType
     private let operation: UINavigationController.Operation
     

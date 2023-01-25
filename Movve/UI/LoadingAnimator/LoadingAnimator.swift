@@ -61,11 +61,11 @@ class LoadingAnimator {
     }
     
     private func setupHomeBezierPaths(from view: UIView) {
-        let spacePadding: CGFloat = 16
-        let sectionPadding: CGFloat = 72
-        let yPadding: CGFloat = 220
+        let spacePadding: CGFloat = 8
+        let sectionPadding: CGFloat = 88
+        let yPadding: CGFloat = 190
         
-        let movieWidth = view.frame.width/2.6
+        let movieWidth = view.frame.width/2.3
         let movieHeight = movieWidth/2*2.7
         
         let tvshowWidth = view.frame.width/2.8

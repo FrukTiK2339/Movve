@@ -26,7 +26,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private var imageView = UIImageView()
     private var titleLabel = UILabel()
     private var infoLabel = UILabel()
-    private var ratingView = UIStackView()
+    private var ratingView = UIView()
     private var overviewSectionLabel = UILabel()
     private var overviewLabel = UILabel()
     
@@ -243,27 +243,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         updateLabelInfo(with: itemData)
         
         ///Rating View
-        let ratingLabel = UILabel()
-        ratingLabel.text = String(format: "%.1f", itemData.details.rating)
-        ratingLabel.textColor = .systemYellow
-        ratingView.addArrangedSubview(ratingLabel)
-        ratingView.axis = .horizontal
-        ratingView.alignment = .center
-        ratingView.distribution = .fillEqually
-        ratingView.spacing = .smallPadding
-        let starsCount = Int(itemData.details.rating / 1.5)
-        for _  in 1...starsCount {
-            let star = UIImageView(image: .starImage)
-            star.tintColor = .systemYellow
-            ratingView.addArrangedSubview(star)
-        }
-        if starsCount < 5 {
-            for _ in 1...5 - starsCount {
-                let emptyStar = UIImageView(image: .starImage)
-                emptyStar.tintColor = .prettyGray
-                ratingView.addArrangedSubview(emptyStar)
-            }
-        }
+        makeStars(for: ratingView, rating: itemData.details.rating)
+      
         
         ///Overview
         overviewLabel.text = itemData.details.overview
@@ -271,6 +252,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///Cast
         self.cast = itemData.cast
         castCollectionView.reloadData()
+        castCollectionView.showsHorizontalScrollIndicator = false
         
         ///Button
         if itemData.details.homepage.isEmpty {
@@ -325,16 +307,15 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     private func showUI() {
+        var time: TimeInterval = 0.3
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.5) {
-                self.imageView.layer.opacity = 1
-                self.castSectionLabel.layer.opacity = 1
-                self.castCollectionView.layer.opacity = 1
-                self.titleLabel.layer.opacity = 1
-                self.infoLabel.layer.opacity = 1
-                self.ratingView.layer.opacity = 1
-                self.overviewSectionLabel.layer.opacity = 1
-                self.overviewLabel.layer.opacity = 1
+            for view in self.scrollView.subviews {
+                UIView.animate(withDuration: time) {
+                    view.layer.opacity = 1
+                }
+                time += 0.1
+            }
+            UIView.animate(withDuration: time) {
                 self.watchButton.layer.opacity = 1
             }
         }
@@ -352,6 +333,45 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             self.overviewLabel.layer.opacity = 0
             self.watchButton.layer.opacity = 0
         }
+    }
+    
+    private func makeStars(for ratingView: UIView, rating: Double) {
+        let itemWidth = ratingView.frame.width/6
+        let ratingLabel = UILabel()
+        
+        //Rating Label
+        ratingLabel.text = String(format: "%.1f", rating)
+        ratingLabel.textColor = .systemYellow
+        ratingLabel.textAlignment = .center
+        ratingLabel.frame.size = .init(width: itemWidth, height: ratingView.frame.height)
+        ratingView.addSubview(ratingLabel)
+        
+        //Setting Gray Background View
+        let grayBGView = UIView()
+        grayBGView.frame = CGRect(x: itemWidth, y: 0, width: ratingView.frame.width - itemWidth, height: ratingView.frame.height)
+        ratingView.addSubview(grayBGView)
+        
+        //Setting Yellow Background View
+        let yellowBGView = UIView()
+        let yellowBGViewWidth = grayBGView.frame.width * (rating / 10)
+        yellowBGView.backgroundColor = .systemYellow
+        yellowBGView.frame.size = .init(width: yellowBGViewWidth, height: grayBGView.frame.height)
+        grayBGView.addSubview(yellowBGView)
+        
+        //Setting Stars Mask
+        let imageLayer = CALayer()
+        let image =  UIImage(systemName: "star.fill")!
+        imageLayer.contents = image.cgImage
+        imageLayer.frame = CGRect(x: 4, y: (grayBGView.frame.height - (grayBGView.frame.width/6 - 4))/2 , width: grayBGView.frame.width/6 - 4, height: grayBGView.frame.width/6 - 4)
+        
+        let replicatorLayer = CAReplicatorLayer()
+        replicatorLayer.instanceCount = 5
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation(grayBGView.frame.width/6 + 4 , 0, 0)
+        replicatorLayer.addSublayer(imageLayer)
+        
+        grayBGView.layer.addSublayer(replicatorLayer)
+        grayBGView.layer.mask = replicatorLayer
+        grayBGView.backgroundColor = .prettyGray
     }
     
     //MARK: - Collection View Delegate & DataSource

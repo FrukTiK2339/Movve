@@ -13,7 +13,13 @@ extension HomeViewController: NetApiFacadeProviderProtocol {
     }
 }
 
-class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+protocol UpdateSectionDataDelegate {
+    func refreshSections(completion: @escaping (Bool) -> Void)
+    func handleLoadingDataError()
+    func handleSuccessLoadingData()
+}
+
+class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UpdateSectionDataDelegate {
     
     //MARK: - Private
     private var iconLabel = UILabel()
@@ -22,7 +28,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let dispatchGroup = DispatchGroup()
     private let navigationControllerDelegate = NavigationControllerDelegate()
     private var loadingLayer = CAShapeLayer()
-    
+    private let transition = PopUpPanelTransition()
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.delegate = navigationControllerDelegate
@@ -31,10 +37,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
-        hideUI()
-        refreshSections()
     }
     
     private func setupUI() {
@@ -46,48 +49,77 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupCollectionView()
         setupConstraints()
         showLoadingAnimation()
+        hideUI()
+        refreshSections() { [self] success in
+            if success {
+                self.handleSuccessLoadingData()
+            } else {
+                self.handleLoadingDataError()
+            }
+        }
     }
     
     private func showLoadingAnimation() {
-        let loadAnimator = LoadingAnimator()
-        loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
-        view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
-        loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
+            self.loadingLayer.removeFromSuperlayer()
+            let loadAnimator = LoadingAnimator()
+            loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
+            view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
+            loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
     }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
     }
     
     
-    @objc private func handleSuccessLoadingData() {
+    func handleSuccessLoadingData() {
         DispatchQueue.main.async {
-            
             let indexSet = IndexSet(self.sections.indices)
             self.collectionView?.insertSections(indexSet)
             self.loadingLayer.removeFromSuperlayer()
             self.showUI()
         }
-        
     }
     
     @objc private func handleEnterForeground() {
-        refreshSections()
+        showLoadingAnimation()
+        hideUI()
+        refreshSections() { success in
+            if success {
+                self.handleSuccessRefreshingData()
+            } else {
+                self.handleLoadingDataError()
+            }
+        }
     }
     
-    @objc private func occuredLoadingDataError() {
+    @objc func handleLoadingDataError() {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Loading Failed", message: "Please check your Internet connection and try again.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Try Again", style: .default) { _ in
-                self.refreshSections()
-            })
-            self.present(alert, animated: true)
+            self.showLoadingAnimation()
+            let popUpVC = CommonPopUpViewController()
+            popUpVC.delegate = self
+            popUpVC.transitioningDelegate = self.transition
+            popUpVC.modalPresentationStyle = .custom
+            self.present(popUpVC, animated: true)
+        }
+    }
+    
+    private func handleSuccessRefreshingData() {
+        DispatchQueue.main.async {
+            let indexSet = IndexSet(self.sections.indices)
+            self.collectionView?.reloadSections(indexSet)
+            self.loadingLayer.removeFromSuperlayer()
+            self.showUI()
         }
     }
     
     private func hideUI() {
-        collectionView?.layer.opacity = 0
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.5) {
+                self.collectionView?.layer.opacity = 0
+            }
+        }
     }
     
     private func showUI() {
@@ -98,8 +130,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-    private func refreshSections() {
-        DispatchQueue.main.async {
+    func refreshSections(completion: @escaping (Bool) -> Void) {
+         sections = [CinemaItemSection]()
+         DispatchQueue.global(qos: .background).async {
+            var badData = 0
             self.dispatchGroup.enter()
             self.netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
                 switch result {
@@ -107,7 +141,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sections.append(CinemaItemSection(type: .movie, cells: data))
                 case .failure(let error):
                     DLog(error)
-                    self.occuredLoadingDataError()
+                    badData += 1
                 }
                 self.dispatchGroup.leave()
             }
@@ -118,12 +152,16 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sections.append(CinemaItemSection(type: .tvshow, cells: data))
                 case .failure(let error):
                     DLog(error)
-                    self.occuredLoadingDataError()
+                    badData += 1
                 }
                 self.dispatchGroup.leave()
             }
             self.dispatchGroup.wait()
-            self.handleSuccessLoadingData()
+            if badData > 0 {
+                completion(false)
+            } else {
+                completion(true)
+            }
         }
     }
     
@@ -210,13 +248,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? AnimaCell else { return }
         let layer = createCellLayer(with: cell)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        hideUI()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let model = self.sections[indexPath.section].cells[indexPath.row]
             self.pushDetailsVC(for: model, with: .custom)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             layer.removeFromSuperlayer()
+            self.showUI()
         }
     }
     
@@ -244,24 +284,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         var animations = [CABasicAnimation]()
         let moveAnim = CABasicAnimation(keyPath: "position")
         moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
-                                                    y: self.view.frame.midY + self.view.frame.size.height/5)
+                                                    y: self.view.frame.midY)
         )
-        moveAnim.duration = 2
+        moveAnim.duration = 1
         animations.append(moveAnim)
 
         let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
         scaleAnim.fromValue = [1,1]
-        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width, self.view.frame.size.height / layer.frame.size.height]
-        scaleAnim.duration = 2.5
+        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width * 0.8, self.view.frame.size.height / layer.frame.size.height * 0.8]
+        scaleAnim.duration = 1
         animations.append(scaleAnim)
 
         let fadeAnim = CABasicAnimation(keyPath: "opacity")
-        fadeAnim.toValue = 0
-        fadeAnim.duration = 2.5
+        fadeAnim.toValue = 0.5
+        fadeAnim.duration = 1
         animations.append(fadeAnim)
         
         let group = CAAnimationGroup()
-        group.duration = 2.5
+        group.duration = 1
         group.animations = animations
         layer.add(group, forKey: nil)
         return layer
@@ -364,22 +404,3 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
     }
 }
-
-/*
-let angle = -60 * CGFloat.pi / 180
-//Gradient Layer
-let gradientLayer = CAGradientLayer()
-gradientLayer.colors = [UIColor.clear.cgColor, UIColor.white.cgColor, UIColor.clear.cgColor]
-gradientLayer.locations = [0, 0.5, 1]
-gradientLayer.frame = CGRect(x: 0, y: 0, width: cell.frame.width*5, height: cell.frame.height/2)
-gradientLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
-cell.layer.mask = gradientLayer
-
-//Animation
-let animation = CABasicAnimation(keyPath: "transform.translation.x")
-animation.duration = 1.5
-animation.fromValue = -cell.frame.width*3
-animation.toValue = cell.frame.width/3
-animation.repeatCount = Float.infinity
-gradientLayer.add(animation, forKey: "")
-*/
