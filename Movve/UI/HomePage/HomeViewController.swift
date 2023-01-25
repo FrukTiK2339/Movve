@@ -254,7 +254,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.pushDetailsVC(for: model, with: .custom)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             layer.removeFromSuperlayer()
             self.showUI()
         }
@@ -286,22 +286,22 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
                                                     y: self.view.frame.midY)
         )
-        moveAnim.duration = 2
+        moveAnim.duration = 1
         animations.append(moveAnim)
 
         let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
         scaleAnim.fromValue = [1,1]
         scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width * 0.8, self.view.frame.size.height / layer.frame.size.height * 0.8]
-        scaleAnim.duration = 1.5
+        scaleAnim.duration = 1
         animations.append(scaleAnim)
 
         let fadeAnim = CABasicAnimation(keyPath: "opacity")
-        fadeAnim.toValue = 1
-        fadeAnim.duration = 1.5
+        fadeAnim.toValue = 0.5
+        fadeAnim.duration = 1
         animations.append(fadeAnim)
         
         let group = CAAnimationGroup()
-        group.duration = 1.5
+        group.duration = 1
         group.animations = animations
         layer.add(group, forKey: nil)
         return layer
