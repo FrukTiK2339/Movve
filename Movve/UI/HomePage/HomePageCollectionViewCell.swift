@@ -1,5 +1,5 @@
 //
-//  MovieCollectionViewCell.swift
+//  HomePageCollectionViewCell.swift
 //  Movve
 //
 //  Created by Дмитрий Рыбаков on 16.12.2022.
@@ -7,8 +7,9 @@
 
 import UIKit
 
-class MovieCollectionViewCell: UICollectionViewCell, AnimaCell {
-    static let identifier = "MovieCollectionViewCell"
+class HomePageCollectionViewCell: UICollectionViewCell {
+    
+    static let identifier = "HomePageCollectionViewCell"
     
     var imageView = UIImageView()
     var titleLabel = UILabel ()
@@ -48,7 +49,7 @@ class MovieCollectionViewCell: UICollectionViewCell, AnimaCell {
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textColor = .prettyGray
         dateLabel.font = .cellDateFont
-            
+        
         let constraints = [
             imageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
             imageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
@@ -74,7 +75,7 @@ class MovieCollectionViewCell: UICollectionViewCell, AnimaCell {
         dateLabel.text = nil
     }
     
-    func configure(with viewModel: Movie) {
+    func configure(with viewModel: CinemaItemProtocol) {
         if let image = viewModel.posterImage {
             imageView.image = image
         } else {

@@ -49,7 +49,6 @@ class NetParseActorCast: NetDataParser {
             }
         }
         dispatchGroup.wait()
-        DLog(receivedCast.description)
         return receivedCast
     }
 }

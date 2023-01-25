@@ -18,8 +18,7 @@
 		EF21C892294C615200E3661D /* AppConsts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C891294C615200E3661D /* AppConsts.swift */; };
 		EF21C894294C615E00E3661D /* DLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C893294C615E00E3661D /* DLog.swift */; };
 		EF21C898294C65F300E3661D /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C897294C65F300E3661D /* DetailsViewController.swift */; };
-		EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */; };
-		EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */; };
+		EF21C8A1294C77CF00E3661D /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A0294C77CF00E3661D /* HomePageCollectionViewCell.swift */; };
 		EF21C8A9294CB15F00E3661D /* CollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */; };
 		EF30A9B129802B2D00F9EB72 /* PopUpPanelTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */; };
 		EF30A9B32980306F00F9EB72 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF30A9B22980306F00F9EB72 /* PresentationController.swift */; };
@@ -60,8 +59,7 @@
 		EF21C891294C615200E3661D /* AppConsts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConsts.swift; sourceTree = "<group>"; };
 		EF21C893294C615E00E3661D /* DLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLog.swift; sourceTree = "<group>"; };
 		EF21C897294C65F300E3661D /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
-		EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowCollectionViewCell.swift; sourceTree = "<group>"; };
+		EF21C8A0294C77CF00E3661D /* HomePageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCell.swift; sourceTree = "<group>"; };
 		EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
 		EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpPanelTransition.swift; sourceTree = "<group>"; };
 		EF30A9B22980306F00F9EB72 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
@@ -181,7 +179,7 @@
 			children = (
 				EF816A6E297FD4EB00A57A1A /* HomePage */,
 				EF816A6F297FD51D00A57A1A /* DetailsPage */,
-				EF816A70297FD54200A57A1A /* NavigationTransition */,
+				EF816A70297FD54200A57A1A /* NavigationControllerTransition */,
 				EF816A782980253900A57A1A /* ViewControllerTransition */,
 				EF816A75297FF77E00A57A1A /* LoadingAnimator */,
 			);
@@ -192,7 +190,8 @@
 			isa = PBXGroup;
 			children = (
 				EF21C86D294C5FD900E3661D /* HomeViewController.swift */,
-				EF816A79298029A300A57A1A /* CollectionViewCustomClasses */,
+				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
+				EF21C8A0294C77CF00E3661D /* HomePageCollectionViewCell.swift */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -206,13 +205,13 @@
 			name = DetailsPage;
 			sourceTree = "<group>";
 		};
-		EF816A70297FD54200A57A1A /* NavigationTransition */ = {
+		EF816A70297FD54200A57A1A /* NavigationControllerTransition */ = {
 			isa = PBXGroup;
 			children = (
 				EF816A71297FD56C00A57A1A /* TransitionAnimator.swift */,
 				EF816A73297FD67900A57A1A /* NavigationControllerDelegate.swift */,
 			);
-			path = NavigationTransition;
+			path = NavigationControllerTransition;
 			sourceTree = "<group>";
 		};
 		EF816A75297FF77E00A57A1A /* LoadingAnimator */ = {
@@ -234,16 +233,6 @@
 				EF30A9B8298035AD00F9EB72 /* DismissAnimation.swift */,
 			);
 			path = ViewControllerTransition;
-			sourceTree = "<group>";
-		};
-		EF816A79298029A300A57A1A /* CollectionViewCustomClasses */ = {
-			isa = PBXGroup;
-			children = (
-				EF21C8A8294CB15F00E3661D /* CollectionHeader.swift */,
-				EF21C8A0294C77CF00E3661D /* TVShowCollectionViewCell.swift */,
-				EF21C89E294C77BA00E3661D /* MovieCollectionViewCell.swift */,
-			);
-			path = CollectionViewCustomClasses;
 			sourceTree = "<group>";
 		};
 		EFBE736C295B0880009A5AAD /* AppExtensions */ = {
@@ -338,7 +327,6 @@
 			files = (
 				EFBFCCFB29505E190006DD79 /* Extensions.swift in Sources */,
 				EF816A72297FD56C00A57A1A /* TransitionAnimator.swift in Sources */,
-				EF21C89F294C77BA00E3661D /* MovieCollectionViewCell.swift in Sources */,
 				EFD442A8295EF91600EA6775 /* DI.swift in Sources */,
 				EF30A9B5298031D100F9EB72 /* DimmPresentationController.swift in Sources */,
 				EFD4429B295ED29500EA6775 /* NetParseDetails.swift in Sources */,
@@ -350,7 +338,7 @@
 				EF7694D5296C415100F4CC96 /* URLSessionManager.swift in Sources */,
 				EF21C86E294C5FD900E3661D /* HomeViewController.swift in Sources */,
 				EFBE736B295AF489009A5AAD /* AppNetConfig.swift in Sources */,
-				EF21C8A1294C77CF00E3661D /* TVShowCollectionViewCell.swift in Sources */,
+				EF21C8A1294C77CF00E3661D /* HomePageCollectionViewCell.swift in Sources */,
 				EF816A77297FF79F00A57A1A /* LoadingAnimator.swift in Sources */,
 				EFD4429D295ED64300EA6775 /* NetRequester.swift in Sources */,
 				EF816A7C298029F800A57A1A /* CommonPopUpViewController.swift in Sources */,

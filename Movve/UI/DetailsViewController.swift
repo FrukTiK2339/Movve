@@ -20,7 +20,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     var currentCinemaItem: CinemaItemProtocol?
     
     //MARK: - Private
-    private var loadingIndicator = UIActivityIndicatorView()
     private var scrollView = UIScrollView()
     
     private var imageView = UIImageView()
@@ -74,7 +73,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     private func addSubviews() {
         view.addSubview(scrollView)
-        view.addSubview(loadingIndicator)
         
         scrollView.addSubview(imageView)
         scrollView.addSubview(titleLabel)
@@ -89,9 +87,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func setupSubviews() {
-        ///Loading indicator
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.style = .large
         
         ///Scroll View
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -158,15 +153,13 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         let contentG = scrollView.contentLayoutGuide
         
         let constraints = [
-            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             scrollView.topAnchor.constraint(equalTo: safeG.topAnchor),
             scrollView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             scrollView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
             scrollView.bottomAnchor.constraint(equalTo: watchButton.topAnchor, constant: -.smallPadding),
             
-            imageView.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .iconPadding),
+            imageView.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .normalPadding),
             imageView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             imageView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/2),
@@ -197,8 +190,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             castCollectionView.bottomAnchor.constraint(equalTo: contentG.bottomAnchor, constant: -.smallPadding),
             
             watchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            watchButton.widthAnchor.constraint(equalToConstant: .watchButtonWidth),
-            watchButton.heightAnchor.constraint(equalToConstant: .watchButtonHeight),
+            watchButton.widthAnchor.constraint(equalToConstant: .bigButtonWidth),
+            watchButton.heightAnchor.constraint(equalToConstant: .bigButtonHeight),
             watchButton.bottomAnchor.constraint(equalTo: safeG.bottomAnchor, constant: -.smallPadding)
         ]
         NSLayoutConstraint.activate(constraints)
@@ -251,7 +244,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         ///Cast
         self.cast = itemData.cast
-        castCollectionView.reloadData()
+        let indexSet = IndexSet(0..<castCollectionView.numberOfSections)
+        castCollectionView.reloadSections(indexSet)
         castCollectionView.showsHorizontalScrollIndicator = false
         
         ///Button

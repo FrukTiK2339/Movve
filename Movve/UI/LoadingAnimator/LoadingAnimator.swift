@@ -9,7 +9,8 @@ import UIKit
 
 class LoadingAnimator {
     
-    let color = UIColor(red: 0.341, green: 0.325, blue: 0.365, alpha: 1.000)
+    let color: UIColor = .emptySpace
+//    UIColor(red: 0.341, green: 0.325, blue: 0.365, alpha: 1.000)
     let myLayer = CAShapeLayer()
     var bezierPaths = [UIBezierPath]()
     
