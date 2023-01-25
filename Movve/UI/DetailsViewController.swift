@@ -252,6 +252,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         ///Cast
         self.cast = itemData.cast
         castCollectionView.reloadData()
+        castCollectionView.showsHorizontalScrollIndicator = false
         
         ///Button
         if itemData.details.homepage.isEmpty {
@@ -306,16 +307,15 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     private func showUI() {
+        var time: TimeInterval = 0.3
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.5) {
-                self.imageView.layer.opacity = 1
-                self.castSectionLabel.layer.opacity = 1
-                self.castCollectionView.layer.opacity = 1
-                self.titleLabel.layer.opacity = 1
-                self.infoLabel.layer.opacity = 1
-                self.ratingView.layer.opacity = 1
-                self.overviewSectionLabel.layer.opacity = 1
-                self.overviewLabel.layer.opacity = 1
+            for view in self.scrollView.subviews {
+                UIView.animate(withDuration: time) {
+                    view.layer.opacity = 1
+                }
+                time += 0.1
+            }
+            UIView.animate(withDuration: time) {
                 self.watchButton.layer.opacity = 1
             }
         }

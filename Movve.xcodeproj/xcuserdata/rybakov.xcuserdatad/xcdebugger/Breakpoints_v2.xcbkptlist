@@ -311,7 +311,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "5643742B-1595-49CA-B075-31DD14ACF5F1"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -343,7 +343,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "92A9561E-60A7-4C60-8DD0-AFC8FDAF7AD1"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -359,7 +359,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "885DE7BE-F8F9-4279-8FDA-EB9FC5191ACD"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -415,8 +415,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "13"
             endingLineNumber = "13"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "dimmView"
+            landmarkType = "24">
             <Locations>
                <Location
                   uuid = "5737F742-F4A1-4058-BCF8-853D448C759D - 3585583fbc2f11bb"
@@ -579,7 +579,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "FB377F8B-CD70-403C-AAB6-2359EF3B6EF4"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -627,7 +627,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "456A7278-F7EA-458B-AA33-C76178C65094"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -643,7 +643,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "A12A100C-A3C9-494A-A669-58F3D1611037"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
@@ -652,6 +652,22 @@
             startingLineNumber = "67"
             endingLineNumber = "67"
             landmarkName = "showLoadingAnimation()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A5F33E8F-6806-4375-96EC-6B3BFA06F8D1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/UI/DetailsViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
+            landmarkName = "showUI()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -39,8 +39,8 @@ class CommonPopUpViewController: UIViewController {
         
         discripLabel.textAlignment = .center
         discripLabel.numberOfLines = 0
-        discripLabel.font = .headerFont
-        discripLabel.text = "No Internet connection. \n Please, make sure VPN is turned up."
+        discripLabel.font = .cellTitleFont
+        discripLabel.text = "This content may not be available in your country. \n Try turning on the VPN."
         discripLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     

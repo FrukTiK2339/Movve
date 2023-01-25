@@ -13,7 +13,7 @@ class PresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         let bounds = containerView!.bounds
         let quaterHeight = bounds.height / 4
-        return CGRect(x: 0, y: bounds.height*3/4, width: bounds.width, height: quaterHeight)
+        return CGRect(x: 0, y: bounds.height*2/3, width: bounds.width, height: quaterHeight)
     }
     
     //Иерархия вьюшек вручную

@@ -249,7 +249,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         guard let cell = collectionView.cellForItem(at: indexPath) as? AnimaCell else { return }
         let layer = createCellLayer(with: cell)
         hideUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let model = self.sections[indexPath.section].cells[indexPath.row]
             self.pushDetailsVC(for: model, with: .custom)
         }
