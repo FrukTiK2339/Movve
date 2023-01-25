@@ -9,7 +9,8 @@ import UIKit
 
 class CommonPopUpViewController: UIViewController {
     
-    private let errorButton = UIButton()
+    private let discripLabel = UILabel()
+    private let panelButton = UIButton()
     var delegate: UpdateSectionDataDelegate?
     
     override func viewDidLoad() {
@@ -22,26 +23,50 @@ class CommonPopUpViewController: UIViewController {
         view.backgroundColor = UIColor(white: 1, alpha: 0.4)
         view.layer.cornerRadius = 24
         
-        setupButton()
+        setupSubviews()
+        setupConstraints()
     }
     
-    private func setupButton() {
-        view.addSubview(errorButton)
+    private func setupSubviews() {
+        view.addSubview(panelButton)
+        view.addSubview(discripLabel)
         
-        errorButton.setTitle("Try again", for: .normal)
-        errorButton.addTarget(self, action: #selector(errorButtonTapped), for: .touchUpInside)
+        panelButton.setTitle("Try again", for: .normal)
+        panelButton.addTarget(self, action: #selector(errorButtonTapped), for: .touchUpInside)
+        panelButton.backgroundColor = .redIconColor
+        panelButton.layer.cornerRadius = .cornerRadius
+        panelButton.translatesAutoresizingMaskIntoConstraints = false
         
-        errorButton.translatesAutoresizingMaskIntoConstraints = false
+        discripLabel.textAlignment = .center
+        discripLabel.numberOfLines = 0
+        discripLabel.font = .headerFont
+        discripLabel.text = "No Internet connection. \n Please, make sure VPN is turned up."
+        discripLabel.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
-            errorButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            errorButton.widthAnchor.constraint(equalToConstant: 200),
-            errorButton.heightAnchor.constraint(equalToConstant: 80),
+            discripLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: .iconPadding),
+            discripLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .iconPadding),
+            discripLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.iconPadding),
+            discripLabel.bottomAnchor.constraint(equalTo: panelButton.topAnchor, constant: -.iconPadding),
+            
+            panelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            panelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -.iconPadding),
+            panelButton.widthAnchor.constraint(equalToConstant: .watchButtonWidth),
+            panelButton.heightAnchor.constraint(equalToConstant: .watchButtonHeight),
             ])
     }
     
     @objc func errorButtonTapped() {
-        delegate?.refreshSections()
+        delegate?.refreshSections() { [self] success in
+            if success {
+                self.delegate?.handleSuccessLoadingData()
+            } else {
+                self.delegate?.handleLoadingDataError()
+            }
+        }
         self.dismiss(animated: true)
     }
 }

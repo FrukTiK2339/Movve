@@ -14,7 +14,9 @@ extension HomeViewController: NetApiFacadeProviderProtocol {
 }
 
 protocol UpdateSectionDataDelegate {
-    func refreshSections()
+    func refreshSections(completion: @escaping (Bool) -> Void)
+    func handleLoadingDataError()
+    func handleSuccessLoadingData()
 }
 
 class HomeViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UpdateSectionDataDelegate {
@@ -27,7 +29,6 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private let navigationControllerDelegate = NavigationControllerDelegate()
     private var loadingLayer = CAShapeLayer()
     private let transition = PopUpPanelTransition()
-
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.delegate = navigationControllerDelegate
@@ -36,9 +37,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        refreshSections()
         setupUI()
-        hideUI()
     }
     
     private func setupUI() {
@@ -50,48 +49,52 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupCollectionView()
         setupConstraints()
         showLoadingAnimation()
+        hideUI()
+        refreshSections() { [self] success in
+            if success {
+                self.handleSuccessLoadingData()
+            } else {
+                self.handleLoadingDataError()
+            }
+        }
     }
     
     private func showLoadingAnimation() {
-
+            self.loadingLayer.removeFromSuperlayer()
             let loadAnimator = LoadingAnimator()
             loadingLayer = loadAnimator.createHomeCALayer(for: self.view)
             view.layer.insertSublayer(loadingLayer, above: collectionView?.layer)
             loadAnimator.addGradientAnimation(for: loadingLayer, for: self.view)
-
-
     }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(occuredLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
     }
     
     
-    @objc private func handleSuccessLoadingData() {
+    func handleSuccessLoadingData() {
         DispatchQueue.main.async {
             let indexSet = IndexSet(self.sections.indices)
             self.collectionView?.insertSections(indexSet)
             self.loadingLayer.removeFromSuperlayer()
             self.showUI()
         }
-        
     }
     
     @objc private func handleEnterForeground() {
-        refreshSections()
+        showLoadingAnimation()
+        hideUI()
+        refreshSections() { success in
+            if success {
+                self.handleSuccessRefreshingData()
+            } else {
+                self.handleLoadingDataError()
+            }
+        }
     }
     
-    @objc private func occuredLoadingDataError() {
-        /*
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Loading Failed", message: "Please check your Internet connection and try again.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Try Again", style: .default) { _ in
-                self.refreshSections()
-            })
-            self.present(alert, animated: true)
-        }
-        */
+    @objc func handleLoadingDataError() {
         DispatchQueue.main.async {
             self.showLoadingAnimation()
             let popUpVC = CommonPopUpViewController()
@@ -100,7 +103,15 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             popUpVC.modalPresentationStyle = .custom
             self.present(popUpVC, animated: true)
         }
-        
+    }
+    
+    private func handleSuccessRefreshingData() {
+        DispatchQueue.main.async {
+            let indexSet = IndexSet(self.sections.indices)
+            self.collectionView?.reloadSections(indexSet)
+            self.loadingLayer.removeFromSuperlayer()
+            self.showUI()
+        }
     }
     
     private func hideUI() {
@@ -115,8 +126,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
-     func refreshSections() {
-        DispatchQueue.main.async {
+    func refreshSections(completion: @escaping (Bool) -> Void) {
+         sections = [CinemaItemSection]()
+         DispatchQueue.global(qos: .background).async {
+            var badData = 0
             self.dispatchGroup.enter()
             self.netApiFacade.loadItems(for: .movie, searchType: .popular) { result in
                 switch result {
@@ -124,7 +137,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sections.append(CinemaItemSection(type: .movie, cells: data))
                 case .failure(let error):
                     DLog(error)
-                    self.occuredLoadingDataError()
+                    badData += 1
                 }
                 self.dispatchGroup.leave()
             }
@@ -135,12 +148,18 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
                     self.sections.append(CinemaItemSection(type: .tvshow, cells: data))
                 case .failure(let error):
                     DLog(error)
-                    self.occuredLoadingDataError()
+                    badData += 1
                 }
                 self.dispatchGroup.leave()
             }
             self.dispatchGroup.wait()
-            self.handleSuccessLoadingData()
+            if badData > 0 {
+                completion(false)
+//                self.occuredLoadingDataError()
+            } else {
+                completion(true)
+//                self.handleSuccessLoadingData()
+            }
         }
     }
     

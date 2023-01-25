@@ -23,7 +23,6 @@ class NetRequester: NetRequesterProtocol {
             
             guard let httpResponse = response as? HTTPURLResponse, let data = data else {
                 DLog("Error: Not a valid http response. Check your VPN")
-                NotificationCenter.default.post(name: Notification.Name.errorLoadingData, object: nil)
                 result(nil)
                 return
             }
