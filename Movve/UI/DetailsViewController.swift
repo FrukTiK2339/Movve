@@ -246,7 +246,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         self.cast = itemData.cast
         let indexSet = IndexSet(0..<castCollectionView.numberOfSections)
         castCollectionView.reloadSections(indexSet)
-        castCollectionView.showsHorizontalScrollIndicator = false
         
         ///Button
         if itemData.details.homepage.isEmpty {
@@ -301,7 +300,7 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     private func showUI() {
-        var time: TimeInterval = 0.3
+        var time: TimeInterval = 0.4
         DispatchQueue.main.async {
             for view in self.scrollView.subviews {
                 UIView.animate(withDuration: time) {

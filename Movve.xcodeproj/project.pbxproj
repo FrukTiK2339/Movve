@@ -179,6 +179,7 @@
 			children = (
 				EF816A6E297FD4EB00A57A1A /* HomePage */,
 				EF816A6F297FD51D00A57A1A /* DetailsPage */,
+				EFFB757729828EF500F009ED /* CommonPopUp */,
 				EF816A70297FD54200A57A1A /* NavigationControllerTransition */,
 				EF816A782980253900A57A1A /* ViewControllerTransition */,
 				EF816A75297FF77E00A57A1A /* LoadingAnimator */,
@@ -225,7 +226,6 @@
 		EF816A782980253900A57A1A /* ViewControllerTransition */ = {
 			isa = PBXGroup;
 			children = (
-				EF816A7B298029F800A57A1A /* CommonPopUpViewController.swift */,
 				EF30A9B029802B2D00F9EB72 /* PopUpPanelTransition.swift */,
 				EF30A9B22980306F00F9EB72 /* PresentationController.swift */,
 				EF30A9B4298031D100F9EB72 /* DimmPresentationController.swift */,
@@ -252,6 +252,14 @@
 			);
 			name = AppConfiguration;
 			path = AppExtensions;
+			sourceTree = "<group>";
+		};
+		EFFB757729828EF500F009ED /* CommonPopUp */ = {
+			isa = PBXGroup;
+			children = (
+				EF816A7B298029F800A57A1A /* CommonPopUpViewController.swift */,
+			);
+			path = CommonPopUp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
