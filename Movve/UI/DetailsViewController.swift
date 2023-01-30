@@ -18,6 +18,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     //MARK: - Public
     var currentCinemaItem: CinemaItemProtocol?
+    var cinemaTitle : String?
+    var titleFrame = CGRect()
     
     //MARK: - Private
     private var scrollView = UIScrollView()
@@ -43,24 +45,41 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     private let navigationControllerDelegate = NavigationControllerDelegate()
     private var loadingLayer = CAShapeLayer()
     private let fLabel = UILabel()
-    var cinemaTitle : String?
-    var titleFrame = CGRect()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        
         showLoadingAnimation()
         hideUI()
         loadData(for: currentCinemaItem)
-        fly()
+        startLabelAnimate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        finishLabelAnimate()
+    }
+    
+    private func startLabelAnimate() {
+        let fontMultiplierDiv: CGFloat = 32/14 * 1.2
+        fLabel.text = cinemaTitle
+        fLabel.frame = titleFrame
+        fLabel.textAlignment = .left
+        fLabel.font = .cellTitleFont
+        fLabel.numberOfLines = 0
+        fLabel.sizeToFit()
+        view.addSubview(fLabel)
+        UIView.animate(withDuration: 0.8) {
+            self.fLabel.transform = CGAffineTransform(scaleX: fontMultiplierDiv, y: fontMultiplierDiv)
+            self.fLabel.layer.position.x = self.view.frame.width/2
+            self.fLabel.layer.position.y = self.view.frame.height/2
+            self.fLabel.textAlignment = .center
+        }
+    }
+    
+    private func finishLabelAnimate() {
         let fontMultiplierDiv: CGFloat = 32/14
-        
         UIView.animate(withDuration: 0.5) {
             self.fLabel.transform = CGAffineTransform(scaleX: fontMultiplierDiv, y: fontMultiplierDiv)
             self.fLabel.frame.origin.y = self.scrollView.frame.origin.y + self.imageView.frame.height + .normalPadding + .smallPadding
@@ -69,30 +88,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
                 self.titleLabel.layer.opacity = 1
             }
         }
-      
     }
-    
-    private func fly() {
-        let fontMultiplierDiv: CGFloat = 32/14 * 1.2
-        
-        fLabel.text = cinemaTitle
-        fLabel.frame = titleFrame
-        fLabel.textAlignment = .left
-        fLabel.font = .cellTitleFont
-        fLabel.numberOfLines = 0
-        fLabel.sizeToFit()
-        view.addSubview(fLabel)
-        
-        UIView.animate(withDuration: 0.8) {
-            self.fLabel.transform = CGAffineTransform(scaleX: fontMultiplierDiv, y: fontMultiplierDiv)
-            self.fLabel.layer.position.x = self.view.frame.width/2
-            self.fLabel.layer.position.y = self.view.frame.height/2
-            self.fLabel.textAlignment = .center
-        }
-        
-    }
-    
-    
+
     private func showLoadingAnimation() {
         let loadAnimator = LoadingAnimator()
         loadingLayer = loadAnimator.createDetailsCALayer(for: self.view)
