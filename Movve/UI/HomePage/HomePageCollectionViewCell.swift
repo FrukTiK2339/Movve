@@ -44,11 +44,14 @@ class HomePageCollectionViewCell: UICollectionViewCell {
         titleLabel.textColor = .prettyWhite
         titleLabel.font = .cellTitleFont
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textAlignment = .left
+        
         
         dateLabel.numberOfLines = 0
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textColor = .prettyGray
         dateLabel.font = .cellDateFont
+        dateLabel.textAlignment = .left
         
         let constraints = [
             imageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),

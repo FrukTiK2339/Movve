@@ -232,66 +232,24 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? HomePageCollectionViewCell else { return }
-        let layer = createMovingSnapshot(for: cell)
-        hideUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            let item = self.sections[indexPath.section].cells[indexPath.row]
-            self.pushDetailsVC(for: item, transitionType: .custom)
-        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            layer.removeFromSuperlayer()
-            self.showUI()
-        }
+        let item = sections[indexPath.section].cells[indexPath.row]
+        let vc = DetailsViewController()
+        vc.currentCinemaItem = item
+        vc.cinemaTitle = cell.titleLabel.text
+        vc.titleFrame = self.view?.layer.convert(cell.titleLabel.layer.frame, from: cell.titleLabel.superview?.layer) ?? .zero
+        
+        push(vc: vc, transitionType: .custom)
     }
     
-    private func pushDetailsVC(for item: CinemaItemProtocol, transitionType: TransitionType) {
-        DispatchQueue.main.async {
-            let vc = DetailsViewController()
-            vc.currentCinemaItem = item
+    private func push(vc: UIViewController, transitionType: TransitionType) {
             let backButton = UIBarButtonItem()
             backButton.title = .none
             self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.setTransitionType(transitionType: transitionType)
             self.navigationController?.pushViewController(vc, animated: true)
-        }
     }
-    
-    private func createMovingSnapshot(for cell: HomePageCollectionViewCell) -> CALayer {
-        //Snapshot
-        let layer = CALayer()
-        layer.frame = self.view?.layer.convert(cell.layer.frame, from: cell.superview?.layer) ?? .zero
-        layer.contents = cell.snapshotView(afterScreenUpdates: false)?.layer.contents
-        layer.cornerRadius = .cornerRadius
-        self.view.layer.addSublayer(layer)
-        
-        //Moving
-        var animations = [CABasicAnimation]()
-        let moveAnim = CABasicAnimation(keyPath: "position")
-        moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
-                                                    y: self.view.frame.midY)
-        )
-        moveAnim.duration = 1
-        animations.append(moveAnim)
 
-        let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnim.fromValue = [1,1]
-        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width * 0.8, self.view.frame.size.height / layer.frame.size.height * 0.8]
-        scaleAnim.duration = 1
-        animations.append(scaleAnim)
-
-        let fadeAnim = CABasicAnimation(keyPath: "opacity")
-        fadeAnim.toValue = 0.5
-        fadeAnim.duration = 1
-        animations.append(fadeAnim)
-        
-        let group = CAAnimationGroup()
-        group.duration = 1
-        group.animations = animations
-        layer.add(group, forKey: nil)
-        return layer
-    }
-    
     private func layout(for section: Int) -> NSCollectionLayoutSection {
         let sectionType = sections[section].type
         
