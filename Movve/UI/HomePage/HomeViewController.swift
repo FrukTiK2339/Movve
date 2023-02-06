@@ -50,6 +50,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupConstraints()
         showLoadingAnimation()
         hideUI()
+        updateData()
+    }
+    
+    private func updateData() {
         refreshSections() { [self] success in
             if success {
                 self.handleSuccessLoadingData()
@@ -70,6 +74,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAlertDismissed), name: Notification.Name.alertDismissed, object: nil)
     }
     
     
@@ -85,13 +90,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @objc private func handleEnterForeground() {
         showLoadingAnimation()
         hideUI()
-        refreshSections() { success in
-            if success {
-                self.handleSuccessRefreshingData()
-            } else {
-                self.handleLoadingDataError()
-            }
-        }
+        updateData()
     }
     
     @objc func handleLoadingDataError() {
@@ -103,6 +102,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             popUpVC.modalPresentationStyle = .custom
             self.present(popUpVC, animated: true)
         }
+    }
+    
+    @objc func handleAlertDismissed() {
+        updateData()
     }
     
     private func handleSuccessRefreshingData() {

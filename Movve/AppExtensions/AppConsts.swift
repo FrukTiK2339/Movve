@@ -11,6 +11,7 @@ import UIKit
 extension Notification.Name {
     public static let successDataLoading       = Notification.Name("successDataLoading")
     public static let errorLoadingData         = Notification.Name("errorLoadingData")
+    public static let alertDismissed           = Notification.Name("alertDismissed")
     
 }
 

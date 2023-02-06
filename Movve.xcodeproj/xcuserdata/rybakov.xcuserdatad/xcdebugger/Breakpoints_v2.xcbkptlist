@@ -301,10 +301,10 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
-            landmarkType = "7">
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "Collection View Delegate &amp; DataSource"
+            landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -317,9 +317,9 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "handleSuccessLoadingData()"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "addObservers()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -333,9 +333,9 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "handleSuccessLoadingData()"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "addObservers()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -349,17 +349,17 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
-            landmarkName = "collectionView(_:cellForItemAt:)"
-            landmarkType = "7">
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "HomeViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "5737F742-F4A1-4058-BCF8-853D448C759D"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Movve/UI/ViewControllerTransition/DimmPresentationController.swift"
@@ -505,8 +505,8 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "refreshSections(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -521,9 +521,9 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "handleLoadingDataError()"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "handleEnterForeground()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -537,9 +537,9 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "handleEnterForeground()"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "handleSuccessLoadingData()"
             landmarkType = "7">
             <Locations>
                <Location
@@ -585,10 +585,10 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
-            landmarkName = "handleSuccessLoadingData()"
-            landmarkType = "7">
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "HomeViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -601,10 +601,10 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "showLoadingAnimation()"
-            landmarkType = "7">
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "HomeViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -681,8 +681,8 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
+            startingLineNumber = "243"
+            endingLineNumber = "243"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -697,9 +697,9 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -713,10 +713,10 @@
             filePath = "Movve/UI/HomePage/HomeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "collectionView(_:didSelectItemAt:)"
-            landmarkType = "7">
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "HomeViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -748,6 +748,22 @@
             startingLineNumber = "46"
             endingLineNumber = "46"
             landmarkName = "setupDetailsBezierPaths(from:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "832BA6AD-82BA-47C0-8AB6-C14AA3DC1DA3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Movve/UI/ViewControllerTransition/TransitionDriver/TransitionDriver.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "isProjectedToHalf(maxTranslation:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
