@@ -40,6 +40,7 @@ class CommonPopUpViewController: UIViewController {
         discripLabel.textAlignment = .center
         discripLabel.numberOfLines = 0
         discripLabel.font = .cellTitleFont
+        discripLabel.textColor = .prettyWhite
         discripLabel.text = "This content may not be available in your country. \n Try turning on the VPN."
         discripLabel.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -47,15 +48,15 @@ class CommonPopUpViewController: UIViewController {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            discripLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: .iconPadding),
-            discripLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .iconPadding),
-            discripLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.iconPadding),
-            discripLabel.bottomAnchor.constraint(equalTo: panelButton.topAnchor, constant: -.iconPadding),
+            discripLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: .normalPadding),
+            discripLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .normalPadding),
+            discripLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -.normalPadding),
+            discripLabel.bottomAnchor.constraint(equalTo: panelButton.topAnchor, constant: -.normalPadding),
             
             panelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            panelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -.iconPadding),
-            panelButton.widthAnchor.constraint(equalToConstant: .watchButtonWidth),
-            panelButton.heightAnchor.constraint(equalToConstant: .watchButtonHeight),
+            panelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -.normalPadding),
+            panelButton.widthAnchor.constraint(equalToConstant: .bigButtonWidth),
+            panelButton.heightAnchor.constraint(equalToConstant: .bigButtonHeight),
             ])
     }
     

@@ -10,7 +10,13 @@ import UIKit
 class PopUpPanelTransition: NSObject, UIViewControllerTransitioningDelegate {
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return PresentationController(presentedViewController: presented, presenting: presenting ?? source)
+        driver.link(to: presented)
+        
+        let presentationController = DimmPresentationController(presentedViewController: presented, presenting: presenting ?? source)
+        
+        presentationController.driver = driver
+        
+        return presentationController
     }
     
     //Настройка класса, который будет управлять анимацией появления
@@ -20,5 +26,12 @@ class PopUpPanelTransition: NSObject, UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return DismissAnimation()
+    }
+    
+    //Обработчик жестов
+    private let driver = TransitionDriver()
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return driver
     }
 }

@@ -21,7 +21,7 @@ public struct MovieData : CinemaItemDataProtocol{
     var cast: [Cast]
 }
 
-struct MovieDetails: CinemaItemDetailsProtocol {
+public struct MovieDetails: CinemaItemDetailsProtocol {
     var genres: [Genre]
     var runtime: Int
     var rating: Double

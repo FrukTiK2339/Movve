@@ -9,7 +9,7 @@ import UIKit
 
 class LoadingAnimator {
     
-    let color = UIColor(red: 0.341, green: 0.325, blue: 0.365, alpha: 1.000)
+    let color: UIColor = .emptySpace
     let myLayer = CAShapeLayer()
     var bezierPaths = [UIBezierPath]()
     
@@ -42,21 +42,21 @@ class LoadingAnimator {
     }
     
     private func setupDetailsBezierPaths(from view: UIView) {
-        let size: CGFloat = 24
-        let yPadding = view.frame.height/6
-        let dWidth = view.frame.width - size*2
-        let dHeight = dWidth*2/3
+        let size: CGFloat = 8
+        let yPadding: CGFloat = 110
+        let dWidth = view.frame.width - 16
+        let dHeight = dWidth*1/2
         let opalSize = (view.frame.width - size*5)/4
         bezierPaths = [
             UIBezierPath(roundedRect: CGRect(x: size, y: yPadding, width: dWidth, height: dHeight), cornerRadius: 4),
-         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding + size + dHeight, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
-         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding + size*2 + dHeight + .ratingViewHeight, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
-         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding + size*3 + dHeight + .ratingViewHeight*2, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
+         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding*2 + size + dHeight, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
+         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding*2 + size*3 + dHeight + .ratingViewHeight, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
+         UIBezierPath(roundedRect: CGRect(x: size, y: yPadding*2 + size*5 + dHeight + .ratingViewHeight*2, width: dWidth, height: .ratingViewHeight), cornerRadius: 4),
          
-         UIBezierPath(ovalIn: CGRect(x: size, y: yPadding + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
-         UIBezierPath(ovalIn: CGRect(x: size*2 + opalSize, y: yPadding + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
-         UIBezierPath(ovalIn: CGRect(x: size*3 + opalSize*2, y: yPadding + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
-         UIBezierPath(ovalIn: CGRect(x: size*4 + opalSize*3, y: yPadding + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize))
+         UIBezierPath(ovalIn: CGRect(x: size, y: yPadding*2 + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
+         UIBezierPath(ovalIn: CGRect(x: size*2 + opalSize, y: yPadding*2 + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
+         UIBezierPath(ovalIn: CGRect(x: size*3 + opalSize*2, y: yPadding*2 + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize)),
+         UIBezierPath(ovalIn: CGRect(x: size*4 + opalSize*3, y: yPadding*2 + size*4 + dHeight + .ratingViewHeight*4, width: opalSize, height: opalSize))
         ]
     }
     

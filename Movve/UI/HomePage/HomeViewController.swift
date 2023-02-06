@@ -50,6 +50,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         setupConstraints()
         showLoadingAnimation()
         hideUI()
+        updateData()
+    }
+    
+    private func updateData() {
         refreshSections() { [self] success in
             if success {
                 self.handleSuccessLoadingData()
@@ -70,6 +74,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleLoadingDataError), name: Notification.Name.errorLoadingData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAlertDismissed), name: Notification.Name.alertDismissed, object: nil)
     }
     
     
@@ -85,13 +90,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @objc private func handleEnterForeground() {
         showLoadingAnimation()
         hideUI()
-        refreshSections() { success in
-            if success {
-                self.handleSuccessRefreshingData()
-            } else {
-                self.handleLoadingDataError()
-            }
-        }
+        updateData()
     }
     
     @objc func handleLoadingDataError() {
@@ -103,6 +102,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             popUpVC.modalPresentationStyle = .custom
             self.present(popUpVC, animated: true)
         }
+    }
+    
+    @objc func handleAlertDismissed() {
+        updateData()
     }
     
     private func handleSuccessRefreshingData() {
@@ -171,9 +174,8 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         let collectionView = UICollectionView(frame: .zero,collectionViewLayout: layout)
         
-        collectionView.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
-        collectionView.register(TVShowCollectionViewCell.self, forCellWithReuseIdentifier: TVShowCollectionViewCell.identifier)
-        collectionView.register(CollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CollectionHeader.identifier)
+        collectionView.register(HomePageCollectionViewCell.self, forCellWithReuseIdentifier: HomePageCollectionViewCell.identifier)
+        collectionView.register(HomePageCollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomePageCollectionHeader.identifier)
         
         collectionView.backgroundColor = .mainAppColor
         collectionView.delegate = self
@@ -206,7 +208,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
             iconLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             iconLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: .smallPadding),
             
-            collectionView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .iconPadding),
+            collectionView.topAnchor.constraint(equalTo: iconLabel.bottomAnchor, constant: .normalPadding),
             collectionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -222,91 +224,35 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let model = sections[indexPath.section].cells[indexPath.row]
-            switch model.type {
-            case .movie:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: MovieCollectionViewCell.identifier,
-                    for: indexPath) as? MovieCollectionViewCell, let movie = model as? Movie
-                else {
-                    return UICollectionViewCell()
-                }
-                cell.configure(with: movie)
-                return cell
-            case .tvshow:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TVShowCollectionViewCell.identifier,
-                    for: indexPath) as? TVShowCollectionViewCell, let tvshow = model as? TVShow
-                else {
-                    return UICollectionViewCell()
-                }
-                cell.configure(with: tvshow)
-                return cell
-            }
+        let item = sections[indexPath.section].cells[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePageCollectionViewCell.identifier, for: indexPath) as? HomePageCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.configure(with: item)
+        return cell
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? AnimaCell else { return }
-        let layer = createCellLayer(with: cell)
-        hideUI()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            let model = self.sections[indexPath.section].cells[indexPath.row]
-            self.pushDetailsVC(for: model, with: .custom)
-        }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? HomePageCollectionViewCell else { return }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            layer.removeFromSuperlayer()
-            self.showUI()
-        }
+        let item = sections[indexPath.section].cells[indexPath.row]
+        let vc = DetailsViewController()
+        vc.currentCinemaItem = item
+        vc.cinemaTitle = cell.titleLabel.text
+        vc.titleFrame = self.view?.layer.convert(cell.titleLabel.layer.frame, from: cell.titleLabel.superview?.layer) ?? .zero
+        
+        push(vc: vc, transitionType: .custom)
     }
     
-    private func pushDetailsVC(for item: CinemaItemProtocol, with transitionType: TransitionType) {
-        DispatchQueue.main.async {
-            let vc = DetailsViewController()
-            vc.currentCinemaItem = item
+    private func push(vc: UIViewController, transitionType: TransitionType) {
             let backButton = UIBarButtonItem()
             backButton.title = .none
             self.navigationItem.backBarButtonItem = backButton
             self.navigationController?.setTransitionType(transitionType: transitionType)
             self.navigationController?.pushViewController(vc, animated: true)
-        }
     }
-    
-    private func createCellLayer(with cell: AnimaCell) -> CALayer {
-        let layer = CALayer()
-        layer.frame = self.view?.layer.convert(cell.layer.frame, from: cell.superview?.layer) ?? .zero
-        layer.contents = cell.snapshotView(afterScreenUpdates: false)?.layer.contents
-        layer.cornerRadius = .cornerRadius
-        
-        self.view.layer.addSublayer(layer)
-        
-        ///ANIMATIONS
-        var animations = [CABasicAnimation]()
-        let moveAnim = CABasicAnimation(keyPath: "position")
-        moveAnim.toValue = NSValue(cgPoint: CGPoint(x: self.view.frame.midX,
-                                                    y: self.view.frame.midY)
-        )
-        moveAnim.duration = 1
-        animations.append(moveAnim)
 
-        let scaleAnim = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnim.fromValue = [1,1]
-        scaleAnim.toValue = [self.view.frame.size.width / layer.frame.size.width * 0.8, self.view.frame.size.height / layer.frame.size.height * 0.8]
-        scaleAnim.duration = 1
-        animations.append(scaleAnim)
-
-        let fadeAnim = CABasicAnimation(keyPath: "opacity")
-        fadeAnim.toValue = 0.5
-        fadeAnim.duration = 1
-        animations.append(fadeAnim)
-        
-        let group = CAAnimationGroup()
-        group.duration = 1
-        group.animations = animations
-        layer.add(group, forKey: nil)
-        return layer
-    }
-    
     private func layout(for section: Int) -> NSCollectionLayoutSection {
         let sectionType = sections[section].type
         
@@ -390,7 +336,7 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let sectionType = sections[indexPath.section].type
-        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.identifier, for: indexPath) as? CollectionHeader else {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HomePageCollectionHeader.identifier, for: indexPath) as? HomePageCollectionHeader else {
             return UICollectionReusableView()
         }
         switch sectionType {

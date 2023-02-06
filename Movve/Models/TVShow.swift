@@ -21,7 +21,7 @@ public struct TVShowData: CinemaItemDataProtocol {
     var cast: [Cast]
 }
 
-struct TVShowDetails: CinemaItemDetailsProtocol {
+public struct TVShowDetails: CinemaItemDetailsProtocol {
     var genres: [Genre]
     var rating: Double
     var seasons: Int

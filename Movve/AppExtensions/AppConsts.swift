@@ -10,9 +10,8 @@ import UIKit
 
 extension Notification.Name {
     public static let successDataLoading       = Notification.Name("successDataLoading")
-    public static let successMovieDataLoading  = Notification.Name("successMovieDetailsLoading")
-    public static let successTVShowDataLoading = Notification.Name("successTVShowDetailsLoading")
     public static let errorLoadingData         = Notification.Name("errorLoadingData")
+    public static let alertDismissed           = Notification.Name("alertDismissed")
     
 }
 
@@ -31,8 +30,7 @@ extension UIFont {
 
 extension CGFloat {
     ///Padding
-    static let iconPadding      : CGFloat = 16
-    static let launchIconPadding: CGFloat = 104
+    static let normalPadding      : CGFloat = 16
     static let smallPadding     : CGFloat = 8
     
     ///Layers
@@ -42,19 +40,13 @@ extension CGFloat {
     ///Height Consts
     static let cellTitleHeight   : CGFloat = 40
     static let cellDateHeight    : CGFloat = 20
-    static let watchButtonHeight : CGFloat = 60
+    static let bigButtonHeight : CGFloat = 60
     static let ratingViewHeight  : CGFloat = 40
     static let castViewHeight    : CGFloat = 120
     static let castImageViewHeigt: CGFloat = 80
     
     ///Width
-    static let watchButtonWidth  : CGFloat = 180
-    static let dismissButtonWidth: CGFloat = 60
-    
-    ///Bezier
-    static let xPadding: CGFloat = 16
-    static let yPadding: CGFloat = 24
-   
+    static let bigButtonWidth  : CGFloat = 180
 }
 
 extension UIImage {
@@ -69,8 +61,6 @@ extension UIColor {
     static let prettyWhite  = #colorLiteral(red: 0.9681384154, green: 0.9681384154, blue: 0.9681384154, alpha: 1)
     static let prettyGray   = #colorLiteral(red: 0.5794862689, green: 0.5794862689, blue: 0.5794862689, alpha: 1)
     static let emptySpace = UIColor(white: 1, alpha: 0.2)
-    static let beforeAnimCellColor = #colorLiteral(red: 0.3411764706, green: 0.3254901961, blue: 0.3647058824, alpha: 1)
-    static let afterAnimCellColor  = #colorLiteral(red: 0.1764705882, green: 0.1568627451, blue: 0.2078431373, alpha: 1)
 }
 
 extension String {

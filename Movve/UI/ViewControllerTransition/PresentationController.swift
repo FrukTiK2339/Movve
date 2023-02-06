@@ -27,4 +27,15 @@ class PresentationController: UIPresentationController {
         super.containerViewDidLayoutSubviews()
         presentedView?.frame = frameOfPresentedViewInContainerView
     }
+    
+    //Добавляю TransitionDriver
+    
+    var driver: TransitionDriver!
+    override func presentationTransitionDidEnd(_ completed: Bool) {
+        super.presentationTransitionDidEnd(completed)
+        
+        if completed {
+            driver.direction = .dismiss
+        }
+    }
 }

@@ -18,9 +18,10 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     //MARK: - Public
     var currentCinemaItem: CinemaItemProtocol?
+    var cinemaTitle : String?
+    var titleFrame = CGRect()
     
     //MARK: - Private
-    private var loadingIndicator = UIActivityIndicatorView()
     private var scrollView = UIScrollView()
     
     private var imageView = UIImageView()
@@ -43,17 +44,52 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }()
     private let navigationControllerDelegate = NavigationControllerDelegate()
     private var loadingLayer = CAShapeLayer()
-    
+    private let fLabel = UILabel()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        showLoadingAnimation()
+        
         setupUI()
+        showLoadingAnimation()
         hideUI()
         loadData(for: currentCinemaItem)
+        startLabelAnimate()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        finishLabelAnimate()
+    }
+    
+    private func startLabelAnimate() {
+        let fontMultiplierDiv: CGFloat = 32/14 * 1.2
+        fLabel.text = cinemaTitle
+        fLabel.frame = titleFrame
+        fLabel.textAlignment = .left
+        fLabel.font = .cellTitleFont
+        fLabel.numberOfLines = 0
+        fLabel.sizeToFit()
+        view.addSubview(fLabel)
+        UIView.animate(withDuration: 0.8) {
+            self.fLabel.transform = CGAffineTransform(scaleX: fontMultiplierDiv, y: fontMultiplierDiv)
+            self.fLabel.layer.position.x = self.view.frame.width/2
+            self.fLabel.layer.position.y = self.view.frame.height/2
+            self.fLabel.textAlignment = .center
+        }
+    }
+    
+    private func finishLabelAnimate() {
+        let fontMultiplierDiv: CGFloat = 32/14
+        UIView.animate(withDuration: 0.5) {
+            self.fLabel.transform = CGAffineTransform(scaleX: fontMultiplierDiv, y: fontMultiplierDiv)
+            self.fLabel.frame.origin.y = self.scrollView.frame.origin.y + self.imageView.frame.height + .normalPadding + .smallPadding
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.fLabel.layer.opacity = 0
+                self.titleLabel.layer.opacity = 1
+            }
+        }
+    }
+
     private func showLoadingAnimation() {
         let loadAnimator = LoadingAnimator()
         loadingLayer = loadAnimator.createDetailsCALayer(for: self.view)
@@ -73,8 +109,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func addSubviews() {
+        view.clipsToBounds = false
         view.addSubview(scrollView)
-        view.addSubview(loadingIndicator)
         
         scrollView.addSubview(imageView)
         scrollView.addSubview(titleLabel)
@@ -89,13 +125,12 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func setupSubviews() {
-        ///Loading indicator
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.style = .large
         
         ///Scroll View
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.clipsToBounds = false
+        scrollView.alwaysBounceVertical = true
         
         ///Image View
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,12 +139,15 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         imageView.layer.cornerRadius = .cornerRadius
         
         ///Title Label
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = cinemaTitle
         titleLabel.font = .iconFont
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         titleLabel.textColor = .prettyWhite
+        titleLabel.sizeToFit()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
+    
         ///Info Label
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.font = .cellTitleFont
@@ -157,24 +195,22 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         let safeG = view.safeAreaLayoutGuide
         let contentG = scrollView.contentLayoutGuide
         
-        let constraints = [
-            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+        NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeG.topAnchor),
             scrollView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             scrollView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
-            scrollView.bottomAnchor.constraint(equalTo: watchButton.topAnchor, constant: -.smallPadding),
+            scrollView.bottomAnchor.constraint(equalTo: watchButton.topAnchor, constant: -.normalPadding),
             
-            imageView.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .iconPadding),
+            imageView.topAnchor.constraint(equalTo: contentG.topAnchor, constant: .normalPadding),
             imageView.leftAnchor.constraint(equalTo: safeG.leftAnchor, constant: .smallPadding),
             imageView.rightAnchor.constraint(equalTo: safeG.rightAnchor, constant: -.smallPadding),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1/2),
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: .smallPadding),
-            titleLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: titleFrame.width * 32/14),
             
-            infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: .smallPadding),
             infoLabel.widthAnchor.constraint(equalTo: imageView.widthAnchor),
             
             ratingView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor),
@@ -197,14 +233,11 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             castCollectionView.bottomAnchor.constraint(equalTo: contentG.bottomAnchor, constant: -.smallPadding),
             
             watchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            watchButton.widthAnchor.constraint(equalToConstant: .watchButtonWidth),
-            watchButton.heightAnchor.constraint(equalToConstant: .watchButtonHeight),
-            watchButton.bottomAnchor.constraint(equalTo: safeG.bottomAnchor, constant: -.smallPadding)
-        ]
-        NSLayoutConstraint.activate(constraints)
+            watchButton.widthAnchor.constraint(equalToConstant: .bigButtonWidth),
+            watchButton.heightAnchor.constraint(equalToConstant: .bigButtonHeight),
+            watchButton.bottomAnchor.constraint(equalTo: safeG.bottomAnchor, constant: -.normalPadding)
+        ])
     }
-    
-    
     
     private func loadData(for item: CinemaItemProtocol?) {
         guard let cinemaItem = item else {
@@ -235,10 +268,6 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
             imageView.image = .noImage
         }
         
-        ///Title
-        titleLabel.text = itemData.item.title
-        
-        
         ///Info Label
         updateLabelInfo(with: itemData)
         
@@ -251,8 +280,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         ///Cast
         self.cast = itemData.cast
-        castCollectionView.reloadData()
-        castCollectionView.showsHorizontalScrollIndicator = false
+        let indexSet = IndexSet(0..<castCollectionView.numberOfSections)
+        castCollectionView.reloadSections(indexSet)
         
         ///Button
         if itemData.details.homepage.isEmpty {
@@ -307,13 +336,15 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
 
     private func showUI() {
-        var time: TimeInterval = 0.3
+        var time: TimeInterval = 0.4
         DispatchQueue.main.async {
             for view in self.scrollView.subviews {
-                UIView.animate(withDuration: time) {
-                    view.layer.opacity = 1
+                if view != self.titleLabel {
+                    UIView.animate(withDuration: time) {
+                        view.layer.opacity = 1
+                    }
+                    time += 0.1
                 }
-                time += 0.1
             }
             UIView.animate(withDuration: time) {
                 self.watchButton.layer.opacity = 1
@@ -325,8 +356,8 @@ class DetailsViewController: UIViewController, UICollectionViewDelegate, UIColle
         DispatchQueue.main.async {
             self.imageView.layer.opacity = 0
             self.castSectionLabel.layer.opacity = 0
-            self.castCollectionView.layer.opacity = 0
             self.titleLabel.layer.opacity = 0
+            self.castCollectionView.layer.opacity = 0
             self.infoLabel.layer.opacity = 0
             self.ratingView.layer.opacity = 0
             self.overviewSectionLabel.layer.opacity = 0

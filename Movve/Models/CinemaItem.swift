@@ -95,7 +95,6 @@ public struct CinemaItemSection {
 public enum CinemaItemSearchType: CaseIterable {
     public static var allCases: [CinemaItemSearchType] = [.popular, .topRated]
     
-    
     case popular
     case topRated
     case id(Int)

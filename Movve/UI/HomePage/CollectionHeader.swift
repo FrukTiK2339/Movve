@@ -1,5 +1,5 @@
 //
-//  InteractiveHeader.swift
+//  HomePageCollectionHeader.swift
 //  Movve
 //
 //  Created by Дмитрий Рыбаков on 16.12.2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectionHeader: UICollectionReusableView {
+class HomePageCollectionHeader: UICollectionReusableView {
     
     static let identifier = "InteractiveHeader"
     
